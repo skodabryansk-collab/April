@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Дебрянск Авто | Дашборд продаж</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    
+    <!-- Фавикон -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    
+    <!-- PWA настройки -->
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Дебрянск Авто">
+    <meta name="theme-color" content="#2196f3">
+    
+    <!-- Подключаем внешние модули -->
+    <script src="constants.js"></script>
+    <script src="utils.js"></script>
+    <script src="auth.js"></script>
+    <script src="data-service.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    
+    <style>
+        /* ========= ОСНОВНЫЕ СТИЛИ ========= */
+        :root {
+            --sales: #2e7d32;
+            --sales-f: #a5d6a7;
+            --traffic: #1565c0;
+            --traffic-f: #90caf9;
+            --revenue: #ef6c00;
+            --revenue-f: #ffcc80;
+            --contracts: #7b1fa2;
+            --contracts-f: #ce93d8;
+            --trading: #00695c;
+            --trading-f: #80cbc4;
+            --bg: #f2f4f7;
+            --locked: #e9ecef;
+            --card-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+            --form-shadow: 0 4px 14px rgba(0, 0, 0, .08);
+            --danger: #d32f2f;
+            --warning: #ff9800;
+            --success: #388e3c;
+            --info: #2196f3;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { margin: 10px; font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: #333; line-height: 1.4; }
+        
+        /* ========= ШАПКА С ЛОГОТИПОМ ========= */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 10px 0 20px 0;
+            border-bottom: 2px solid #e9ecef;
+            position: relative;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            width: 255px;
+            height: 255px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.02);
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            letter-spacing: -0.3px;
+        }
+        
+        .logo-subtitle {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+        
+        /* Панель пользователя в правом верхнем углу */
+        #userPanel {
+            position: absolute;
+            top: 10px;
+            right: 0;
+            background: white;
+            border-radius: 40px;
+            padding: 8px 20px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+        }
+        
+        #userPanel span:first-child {
+            font-size: 20px;
+        }
+        
+        #userNameDisplay {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        #userRoleDisplay {
+            font-size: 11px;
+            color: #666;
+            margin-left: 8px;
+            padding: 2px 8px;
+            background: #e3f2fd;
+            border-radius: 20px;
+        }
+        
+        #logoutBtn {
+            background: #9e9e9e;
+            padding: 5px 12px;
+            min-width: auto;
+            font-size: 12px;
+            margin: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                padding-bottom: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .logo-area {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .logo {
+                width: 145px;
+                height: 145px;
+            }
+            
+            .logo-text {
+                font-size: 20px;
+            }
+            
+            .logo-subtitle {
+                font-size: 11px;
+            }
+            
+            #userPanel {
+                position: static;
+                margin-top: 15px;
+                justify-content: center;
+                width: auto;
+                border-radius: 30px;
+            }
+        }
+
+        /* Панель выбора диапазона дат */
+        .range-panel {
+            background: #fff;
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+        .range-panel h3 {
+            margin: 0 0 18px 0;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+        .range-selector {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .range-field {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .range-field label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .range-field select, .range-field input {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            background: white;
+            transition: all 0.2s;
+        }
+        .range-field select:focus, .range-field input:focus {
+            border-color: #2196f3;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+        .range-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding: 12px 18px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+        .forecast-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        .forecast-indicator.active {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .forecast-indicator.inactive {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* Панель управления (таблица ввода) - скрыта для наблюдателя */
+        #dataEntryPanel {
+            background: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+        
+        #dataEntryPanel h3 {
+            margin: 15px 0 10px;
+            color: #34495e;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+        .card h2 {
+            margin: 0 0 18px;
+            font-size: 18px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 12px;
+            color: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-header, .button-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .metric-header {
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .button-group {
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .input-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        .input-table th {
+            padding: 10px 5px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 11px;
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            white-space: nowrap;
+        }
+        .input-table td {
+            padding: 8px 5px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .input-table input {
+            width: 100%;
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #bdc3c7;
+            font-size: 13px;
+            text-align: center;
+        }
+        .input-table input:focus {
+            outline: none;
+            border-color: var(--info);
+            box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+        }
+        .locked {
+            background-color: #f5f5f5 !important;
+            cursor: not-allowed;
+            border-color: #ddd !important;
+        }
+
+        button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 10px;
+            background: var(--success);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        #calcBtn {
+            background: var(--success);
+        }
+        #loadDataForRangeBtn {
+            background: var(--info);
+            padding: 8px 16px;
+            min-width: auto;
+        }
+
+        .metric-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .metric-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .metric-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        .fact-percent {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .forecast-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .forecast-badge.low {
+            background: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+        .forecast-badge.medium {
+            background: #fff3e0;
+            color: #ff9800;
+            border: 1px solid #ffe0b2;
+        }
+        .forecast-badge.high {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        .progress-container {
+            margin: 12px 0;
+        }
+        .progress-bar {
+            position: relative;
+            height: 32px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        .progress-fact {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+            z-index: 2;
+            min-width: 50px;
+            transition: width 0.5s ease;
+            white-space: nowrap;
+            text-shadow: 0 0 2px rgba(0,0,0,0.3);
+        }
+        .progress-fact.sales { background: var(--sales); }
+        .progress-fact.traffic { background: var(--traffic); }
+        .progress-fact.revenue { background: var(--revenue); }
+        .progress-fact.contracts { background: var(--contracts); }
+        .progress-fact.trading { background: var(--trading); }
+        .progress-forecast {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 1;
+            transition: width 0.5s ease;
+        }
+        .progress-forecast.sales-forecast { background: var(--sales-f); }
+        .progress-forecast.traffic-forecast { background: var(--traffic-f); }
+        .progress-forecast.revenue-forecast { background: var(--revenue-f); }
+        .progress-forecast.contracts-forecast { background: var(--contracts-f); }
+        .progress-forecast.trading-forecast { background: var(--trading-f); }
+        .forecast-percent-badge {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #2c3e50;
+            z-index: 3;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            min-width: 40px;
+            text-align: center;
+            pointer-events: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .progress-label-left {
+            font-weight: 600;
+        }
+
+        .metric-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+        .detail-label {
+            color: #666;
+        }
+        .detail-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .status-badge.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        .status-badge.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .status-badge.danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info-panel {
+            background: #e3f2fd;
+            border-left: 4px solid var(--info);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .formula-status {
+            background: #f0f7ff;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-size: 12px;
+            color: #1565c0;
+        }
+        .forecast-card {
+            background: #e3f2fd;
+            border-left: 4px solid var(--info);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .summary-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+        }
+
+        .radar-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .radar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        .radar-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+        }
+        .radar-score {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--contracts);
+            background: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stars {
+            display: flex;
+            gap: 2px;
+            margin-top: 5px;
+        }
+        .star {
+            color: #ffc107;
+            font-size: 14px;
+        }
+        .star.empty {
+            color: #e0e0e0;
+        }
+
+        .full-width-section {
+            width: 100%;
+            margin: 20px 0;
+        }
+        .total-gk-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--info);
+            margin: 20px 0;
+        }
+        .summary-table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 800px;
+        }
+        .summary-table th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            color: #2c3e50;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .summary-table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .summary-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .json-section {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin: 20px 0;
+        }
+        .json-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .json-status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .json-status-indicator.loaded {
+            background: #4caf50;
+        }
+        .json-status-indicator.not-loaded {
+            background: #f44336;
+        }
+        .json-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .json-stat {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #ffe0b2;
+        }
+        .json-stat-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .json-stat-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ff9800;
+        }
+
+        .filter-section {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-section select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #bdc3c7;
+            background: white;
+            font-size: 13px;
+            min-width: 150px;
+        }
+
+        .blurred {
+            filter: blur(4px);
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.7;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .modal h3 {
+            margin: 0 0 20px 0;
+            color: #2c3e50;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-buttons button {
+            flex: 1;
+        }
+        .modal-input {
+            margin-bottom: 15px;
+        }
+        .modal-input label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .modal-input input, .modal-input select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .admin-section {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            border-radius: 16px;
+            margin: 20px 0;
+        }
+        .user-management {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .user-table th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .user-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .role-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .role-badge.admin {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        .role-badge.viewer {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        /* Скрытые для наблюдателя блоки */
+        .viewer-hidden {
+            display: none;
+        }
+
+        /* Стили для графика */
+        #dailyChartContainer {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin: 30px 0;
+            border-left: 6px solid #2196f3;
+        }
+        
+        #chartMetricSelector, #chartBrandSelector {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        #chartCanvasContainer {
+            position: relative;
+            width: 100%;
+            height: 450px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            transition: transform 0.2s;
+            border: 1px solid #e9ecef;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 5px;
+        }
+
+        /* ========= АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ ========= */
+        @media (max-width: 768px) {
+            body { margin: 8px; }
+            .range-panel { padding: 18px; }
+            .range-selector { flex-direction: column; align-items: stretch; gap: 12px; }
+            .range-field { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+            .range-field label { width: 45px; font-size: 14px; }
+            .range-field select, .range-field input { flex: 1; padding: 10px 12px; font-size: 14px; min-width: 0; }
+            .range-info { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px; margin-top: 12px; }
+            #loadDataForRangeBtn { width: 100%; margin-top: 5px; }
+            
+            .json-section { padding: 15px; }
+            .button-group { flex-direction: column; gap: 8px; }
+            .button-group button { width: 100%; justify-content: center; }
+            
+            #dataEntryPanel { padding: 15px; overflow-x: auto; }
+            .input-table { min-width: 800px; }
+            
+            .dashboard { grid-template-columns: 1fr; gap: 15px; }
+            .card { padding: 15px; }
+            
+            .progress-bar { height: 28px; }
+            .progress-fact { font-size: 10px; }
+            .forecast-percent-badge { font-size: 10px; padding: 2px 6px; min-width: 32px; right: 4px; }
+            
+            .summary-table-container { padding: 12px; overflow-x: auto; }
+            .summary-table { min-width: 700px; font-size: 11px; }
+            
+            .radar-section { padding: 15px; }
+            .radar-grid { grid-template-columns: 1fr; gap: 15px; }
+            .radar-container { height: 200px; }
+            .radar-score { width: 45px; height: 45px; font-size: 18px; }
+            
+            .modal { width: 95%; padding: 20px; }
+            .admin-section { padding: 15px; }
+            .user-management { padding: 15px; overflow-x: auto; }
+            .user-table { min-width: 500px; }
+            
+            .filter-section { flex-direction: column; align-items: flex-start; width: 100%; }
+            .filter-section select { width: 100%; }
+            
+            .total-gk-card { padding: 15px; }
+            .gk-progress-container { gap: 15px; }
+            
+            .forecast-card { padding: 12px; }
+            .forecast-card > div { grid-template-columns: 1fr; gap: 10px; }
+            
+            #dailyChartContainer { padding: 20px 15px; }
+            #chartCanvasContainer { height: 350px; }
+            .stat-value { font-size: 22px; }
+            
+            button span:first-child { display: none; }
+            button { justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            body { margin: 5px; }
+            .range-field { flex-direction: column; align-items: flex-start; width: 100%; }
+            .range-field label { width: auto; }
+            .range-field select, .range-field input { width: 100%; }
+            .card h2 { font-size: 14px; }
+            .stars { transform: scale(0.8); }
+            .forecast-badge { font-size: 9px; padding: 2px 6px; }
+            .summary-card { padding: 10px; }
+            .summary-card div:first-child { font-size: 11px; }
+            .summary-card div:last-child { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ШАПКА С ЛОГОТИПОМ -->
+    <div class="header">
+        <div class="logo-area">
+            <img src="/images/logo.svg" alt="Логотип компании" class="logo" onerror="this.onerror=null; this.style.display='none'; this.parentElement.insertAdjacentHTML('afterbegin', '<div style=\"width:55px;height:55px;background:linear-gradient(135deg,#2196f3,#1976d2);border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(33,150,243,0.3);\"><span style=\"color:white;font-size:28px;font-weight:bold;\"></span></div>
+            <div>
+                <div class="logo-text"></div>
+                <div class="logo-subtitle"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Панель пользователя -->
+    <div id="userPanel">
+        <span>👤</span>
+        <div>
+            <span id="userNameDisplay"></span>
+            <span id="userRoleDisplay"></span>
+        </div>
+        <button id="logoutBtn">Выйти</button>
+    </div>
+    
+    <!-- Модальное окно авторизации -->
+    <div class="modal-overlay" id="loginModal" style="display: flex;">
+        <div class="modal" style="max-width: 400px;">
+            <h3 style="margin: 0 0 20px 0; text-align: center;">🔐 Вход в дашборд</h3>
+            <div id="loginError" style="background: #ffebee; color: #c62828; padding: 10px; border-radius: 6px; margin-bottom: 15px; display: none;"></div>
+            <div class="modal-input">
+                <label for="loginUsername">Логин:</label>
+                <input type="text" id="loginUsername" placeholder="Введите логин" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">
+            </div>
+            <div class="modal-input">
+                <label for="loginPassword">Пароль:</label>
+                <input type="password" id="loginPassword" placeholder="Введите пароль" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">
+            </div>
+            <div class="modal-buttons">
+                <button type="button" id="loginBtn" style="background: #2196f3; padding: 12px;">Войти</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Уведомление -->
+    <div class="notification" id="notification"></div>
+    
+    <!-- Панель выбора диапазона дат -->
+    <div class="range-panel">
+        <h3>Выбор периода для анализа</h3>
+        <div class="range-selector">
+            <div class="range-field">
+                <label>Месяц:</label>
+                <select id="monthSelector">
+                    <option value="">Загрузка...</option>
+                </select>
+            </div>
+            <div class="range-field">
+                <label>С:</label>
+                <input type="date" id="rangeStart">
+            </div>
+            <div class="range-field">
+                <label>По:</label>
+                <input type="date" id="rangeEnd">
+            </div>
+            <button type="button" id="loadDataForRangeBtn">Загрузить данные</button>
+        </div>
+        <div class="range-info" id="rangeInfo">
+            <span id="rangeDaysInfo">📆 0 дней</span>
+            <span id="rangePlanInfo">📊 План: 0% от месячного</span>
+            <span id="forecastStatus" class="forecast-indicator inactive">Прогноз: недоступен</span>
+        </div>
+    </div>
+    
+    <!-- Панель загрузки JSON данных -->
+    <div class="json-section">
+        <h3>Загрузка данных из JSON</h3>
+        <div class="json-status">
+            <span class="json-status-indicator not-loaded" id="jsonStatusIndicator"></span>
+            <span id="jsonStatusText">Данные из JSON не загружены</span>
+        </div>
+        
+        <div class="button-group">
+            <button type="button" id="loadJsonBtn">Загрузить JSON</button>
+            <button type="button" id="importJsonBtn">Импортировать</button>
+            <button type="button" id="updatePlansBtn">Обновить планы</button>
+            <button type="button" id="clearJsonBtn">Очистить</button>
+            <button type="button" id="refreshDataBtn" style="background: #ff9800;">Обновить данные</button>
+        </div>
+        
+        <div id="jsonUrlInputContainer" style="margin-top: 15px; margin-bottom: 10px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: #f5f5f5; padding: 15px; border-radius: 8px;">
+            <div style="flex: 1; min-width: 250px;">
+                <label for="jsonUrlInput" style="display: block; margin-bottom: 5px; font-size: 12px; font-weight: 600;">Ссылка на JSON файл:</label>
+                <input type="url" id="jsonUrlInput" placeholder="https://example.com/data.json" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: monospace;">
+            </div>
+            <div>
+                <button type="button" id="testJsonUrlBtn" style="background: #2196f3; padding: 10px 20px;">Проверить</button>
+            </div>
+        </div>
+        
+        <div class="json-stats" id="jsonStats" style="display: none;">
+            <div class="json-stat"><div class="json-stat-label">Загружено записей</div><div class="json-stat-value" id="jsonRecordCount">0</div></div>
+            <div class="json-stat"><div class="json-stat-label">Диапазон дат</div><div class="json-stat-value" id="jsonDateRange">-</div></div>
+            <div class="json-stat"><div class="json-stat-label">Бренды</div><div class="json-stat-value" id="jsonBrandsCount">0</div></div>
+            <div class="json-stat"><div class="json-stat-label">Всего дней</div><div class="json-stat-value" id="jsonTotalDays">0</div></div>
+        </div>
+        
+        <div id="jsonDataPreview" class="json-data-preview" style="display: none;"></div>
+    </div>
+    
+    <!-- Информационная панель -->
+    <div class="info-panel">
+        <h4>О работе дашборда:</h4>
+        <ul>
+            <li><strong>Выбор месяца</strong> — выберите месяц для анализа</li>
+            <li><strong>Диапазон дат</strong> — можно сузить до нужного периода в выбранном месяце</li>
+            <li><strong>План корректируется</strong> — пропорционально количеству выбранных дней</li>
+            <li><strong>Прогноз</strong> — отображается только при выборе полного диапазона доступных дат в месяце</li>
+            <li><strong>Конверсия и охват</strong> — рассчитываются на основе выбранного периода</li>
+        </ul>
+    </div>
+    
+    <!-- Панель управления (ТАБЛИЦА ВВОДА) - СКРЫТА ДЛЯ НАБЛЮДАТЕЛЯ -->
+    <div id="dataEntryPanel" class="viewer-hidden">
+        <div class="filter-section">
+            <label for="brandFilter"><strong>Фильтр по бренду:</strong></label>
+            <select id="brandFilter">
+                <option value="all">Все бренды</option>
+            </select>
+        </div>
+        
+        <h3>Факт / План / Банк контрактов / Трейдин (по брендам)</h3>
+        <div style="overflow-x: auto;">
+            <table class="input-table">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; padding-left: 10px;">Бренд</th>
+                        <th>Продажи факт</th>
+                        <th>Продажи план</th>
+                        <th>Трафик факт</th>
+                        <th>Трафик план</th>
+                        <th>Доход факт</th>
+                        <th>Доход план</th>
+                        <th style="background: #f3e5f5;">Банк контрактов факт</th>
+                        <th style="background: #e1bee7;">Банк контрактов план</th>
+                        <th style="background: #e0f2f1;">Кол-во Трейдин факт</th>
+                        <th style="background: #b2dfdb;">Кол-во Трейдин план</th>
+                    </tr>
+                </thead>
+                <tbody id="inputs"></tbody>
+            </table>
+        </div>
+        
+        <div class="button-group">
+            <button type="button" id="calcBtn">Рассчитать</button>
+        </div>
+    </div>
+    
+    <!-- Информация о формуле -->
+    <div class="formula-status">
+        <strong>Формула прогноза:</strong> Факт + (Среднедневные × Коэф. роста × Дней осталось)
+        <div style="font-size: 11px; margin-top: 5px; color: #666;">
+            Покрытие плана = (Банк контрактов / План продаж) × 100% | Конверсия в контракт = (Банк контрактов / Трафик) × 100%
+        </div>
+        <div style="font-size: 11px; margin-top: 5px; color: #1565c0;">
+            🔮 Прогноз отображается только при выборе полного диапазона доступных дат в месяце
+        </div>
+    </div>
+    
+    <!-- Основной дашборд -->
+    <div id="forecastContainer"></div>
+    <div id="summaryContainer" class="summary-cards"></div>
+    <div class="dashboard" id="dashboard"></div>
+    
+    <!-- Карточка "Итого по ГК" -->
+    <div id="totalGKContainer" class="full-width-section"></div>
+    
+    <!-- Сводная таблица по брендам -->
+    <div id="summaryTableContainer" class="full-width-section"></div>
+    
+    <!-- График подневной динамики -->
+    <div id="dailyChartContainer">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+            <h3 style="margin: 0; color: #2c3e50;">📈 Подневная динамика</h3>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <select id="chartMetricSelector">
+                    <option value="sales">Продажи</option>
+                    <option value="contracts">Контракты</option>
+                    <option value="trading">Трейдин</option>
+                    <option value="traffic">Трафик</option>
+                    <option value="revenue">Доход (млн)</option>
+                </select>
+                <select id="chartBrandSelector">
+                    <option value="all">Все бренды</option>
+                </select>
+                <button id="refreshChartBtn" style="background: #2196f3; padding: 10px 20px;">Обновить</button>
+            </div>
+        </div>
+        <div style="display: flex; gap: 30px; margin-bottom: 20px; flex-wrap: wrap; padding: 16px 20px; background: #f8f9fa; border-radius: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-block; width: 14px; height: 14px; background: #2e7d32; border-radius: 4px;"></span><span>Продажи</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-block; width: 14px; height: 14px; background: #7b1fa2; border-radius: 4px;"></span><span>Контракты</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-block; width: 14px; height: 14px; background: #00695c; border-radius: 4px;"></span><span>Трейдин</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-block; width: 14px; height: 14px; background: #1565c0; border-radius: 4px;"></span><span>Трафик</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-block; width: 14px; height: 14px; background: #ef6c00; border-radius: 4px;"></span><span>Доход</span></div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;"><span style="display: inline-block; width: 20px; height: 4px; background: #ff9800; border-radius: 2px;"></span><span>Среднее 7 дней</span></div>
+        </div>
+        <div id="chartCanvasContainer">
+            <canvas id="dailySalesChart"></canvas>
+        </div>
+        <div id="chartDetailedStats" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-top: 25px;"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+            <span style="font-size: 13px; background: #f0f7ff; padding: 6px 16px; border-radius: 20px;">📊 <span id="daysWithDataCount">0</span> дней с данными</span>
+            <span style="font-size: 13px; background: #f3e5f5; padding: 6px 16px; border-radius: 20px;">🎯 <span id="totalSalesAmount">0</span> всего продаж</span>
+            <span id="fullDateRange" style="font-size: 14px; font-weight: 600; color: #2196f3; background: #e3f2fd; padding: 6px 20px; border-radius: 25px;">Весь месяц</span>
+        </div>
+    </div>
+    
+    <!-- Радар графики -->
+    <div id="radarContainer" class="radar-section">
+        <h3>Радар-графики по брендам (5-балльная оценка динамики)</h3>
+        <div id="radarGrid" class="radar-grid"></div>
+        <div id="gkRadarContainer"></div>
+    </div>
+
+    <!-- Админ-панель -->
+    <div id="adminPanel" class="viewer-hidden">
+        <div class="admin-section">
+            <h3 style="margin: 0 0 15px 0; color: #ff9800;">Панель администратора</h3>
+            <div class="user-management">
+                <h4 style="margin: 0 0 15px 0;">Управление пользователями</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 20px;">
+                    <input type="text" id="newUserName" placeholder="Имя" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                    <input type="text" id="newUserLogin" placeholder="Логин" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                    <input type="password" id="newUserPassword" placeholder="Пароль" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                    <select id="newUserRole" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                        <option value="viewer">Наблюдатель</option>
+                        <option value="admin">Администратор</option>
+                    </select>
+                    <button type="button" id="addUserBtn" style="background: #4caf50; padding: 10px;">Добавить</button>
+                </div>
+                <table class="user-table">
+                    <thead>
+                        <tr><th>ID</th><th>Имя</th><th>Логин</th><th>Роль</th><th>Действия</th></tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Подключаем модули -->
+    <script type="module" src="js/utils/formatters.js"></script>
+    <script type="module" src="js/utils/constants.js"></script>
+    <script type="module" src="js/components/progress-bar.js"></script>
+    <script type="module" src="js/components/brand-card.js"></script>
+    <script type="module" src="js/components/radar-chart.js"></script>
+    <script type="module" src="js/managers/auth-manager.js"></script>
+    <script type="module" src="js/managers/data-manager.js"></script>
+    <script type="module" src="js/managers/ui-manager.js"></script>
+    <script type="module" src="js/core/dashboard-calculations.js"></script>
+    <script type="module" src="js/core/dashboard-core.js"></script>
+    
+    <script type="module">
+        import { DashboardCore } from './js/core/dashboard-core.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                console.log('🚀 Загрузка дашборда...');
+                window.dashboardCore = new DashboardCore();
+                window.dashboardManager = window.dashboardCore;
+            } catch (error) {
+                console.error('❌ Ошибка инициализации:', error);
+            }
+        });
+    </script>
+    
+    <!-- Fallback для DataService -->
+    <script>
+    (function ensureDataService() {
+        if (window.dataService && window.DataService) return;
+        console.log('⚠️ DataService не найден, создаем fallback...');
+        class FallbackDataService {
+            constructor() {
+                this.history = [];
+                this.monthlyTotals = [];
+                this.jsonData = null;
+                this.jsonBrands = [];
+                this.jsonBrandMapping = {};
+                this.loadJsonDataFromServer();
+            }
+            async loadJsonDataFromServer() {
+                try {
+                    const res = await fetch('/api/data');
+                    if (res.ok) {
+                        this.jsonData = await res.json();
+                        this.processJsonData(this.jsonData);
+                    }
+                } catch(e) {}
+            }
+            processJsonData(jsonData) {
+                this.jsonData = jsonData;
+                this.jsonBrands = jsonData.metadata?.brandsIncluded || [];
+                const mapping = {'hc':'Хавейл Сити','hp':'Хавейл Про','jt':'Джетур','ch':'Чери','om':'Омода','jk':'Джейку','asp':'АСП'};
+                this.jsonBrandMapping = {};
+                this.jsonBrands.forEach(b => { this.jsonBrandMapping[b] = mapping[b] || b; });
+            }
+            getJsonData() { return this.jsonData; }
+            getJsonBrands() { return this.jsonBrands; }
+            getJsonBrandMapping() { return this.jsonBrandMapping; }
+            getJsonStats() { return { totalRecords: this.jsonData?.dailyFacts?.length || 0 }; }
+            getLastDataDate() { return this.jsonData?.dailyFacts?.[this.jsonData.dailyFacts.length - 1]?.date; }
+            getHistory() { return this.history; }
+            getMonthlyTotals() { return this.monthlyTotals; }
+            addHistorySnapshot(d, data) { this.history.unshift({ date: d, data, timestamp: new Date() }); }
+            addMonthlyTotal(data) { this.monthlyTotals.push(data); }
+        }
+        window.DataService = FallbackDataService;
+        window.dataService = new FallbackDataService();
+    })();
+    </script>
+    
+    <!-- Скрипт для графика подневной динамики -->
+    <script>
+    (function initDailyChart() {
+        console.log('📊 Инициализация графика подневной динамики...');
+        
+        class DailyChartManager {
+            constructor() {
+                this.chart = null;
+                this.currentMetric = 'sales';
+                this.currentBrand = 'all';
+                this.dailyData = [];
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.waitForData();
+            }
+            
+            waitForData() {
+                const checkInterval = setInterval(() => {
+                    if (window.dashboardCore && window.dashboardCore.jsonData) {
+                        clearInterval(checkInterval);
+                        this.updateBrandSelector();
+                        this.loadData();
+                    }
+                }, 500);
+                setTimeout(() => clearInterval(checkInterval), 10000);
+            }
+            
+            setupEventListeners() {
+                const refreshBtn = document.getElementById('refreshChartBtn');
+                if (refreshBtn) refreshBtn.addEventListener('click', () => this.loadData());
+                
+                const metricSelector = document.getElementById('chartMetricSelector');
+                if (metricSelector) {
+                    metricSelector.addEventListener('change', (e) => {
+                        this.currentMetric = e.target.value;
+                        this.renderChart();
+                    });
+                }
+                
+                const brandSelector = document.getElementById('chartBrandSelector');
+                if (brandSelector) {
+                    brandSelector.addEventListener('change', (e) => {
+                        this.currentBrand = e.target.value;
+                        this.loadData();
+                    });
+                }
+                
+                const monthSelector = document.getElementById('monthSelector');
+                if (monthSelector) {
+                    monthSelector.addEventListener('change', () => setTimeout(() => this.loadData(), 300));
+                }
+            }
+            
+            updateBrandSelector() {
+                const brandSelector = document.getElementById('chartBrandSelector');
+                if (!brandSelector || !window.dashboardCore) return;
+                
+                const brands = window.dashboardCore.brands || [];
+                let options = '<option value="all">Все бренды</option>';
+                brands.forEach(brand => {
+                    options += `<option value="${brand.key}">${brand.name}</option>`;
+                });
+                brandSelector.innerHTML = options;
+            }
+            
+            loadData() {
+                const dashboardCore = window.dashboardCore;
+                if (!dashboardCore || !dashboardCore.jsonData) return;
+                
+                const jsonData = dashboardCore.jsonData;
+                const currentMonth = dashboardCore.rangeParams?.month;
+                if (!currentMonth) return;
+                
+                const [year, month] = currentMonth.split('-');
+                const targetYear = parseInt(year);
+                const targetMonth = parseInt(month);
+                const daysInMonth = new Date(targetYear, targetMonth, 0).getDate();
+                
+                const dailyMap = new Map();
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dateStr = `${targetYear}-${targetMonth.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`;
+                    dailyMap.set(dateStr, {
+                        date: dateStr,
+                        day: d,
+                        sales: 0,
+                        traffic: 0,
+                        contracts: 0,
+                        trading: 0,
+                        revenue: 0
+                    });
+                }
+                
+                jsonData.dailyFacts.forEach(record => {
+                    if (!record.date) return;
+                    const recordDate = new Date(record.date);
+                    if (recordDate.getFullYear() === targetYear && recordDate.getMonth() + 1 === targetMonth) {
+                        const dayData = dailyMap.get(record.date);
+                        if (dayData) {
+                            if (this.currentBrand === 'all') {
+                                Object.keys(record).forEach(key => {
+                                    if (key !== 'date' && key !== 'month' && typeof record[key] === 'object') {
+                                        const brandData = record[key];
+                                        dayData.sales += Number(brandData.sales) || 0;
+                                        dayData.traffic += Number(brandData.traffic) || 0;
+                                        dayData.contracts += Number(brandData.contracts) || 0;
+                                        dayData.trading += Number(brandData.trading) || 0;
+                                        dayData.revenue += Number(brandData.revenue) || 0;
+                                    }
+                                });
+                            } else {
+                                const brandData = record[this.currentBrand];
+                                if (brandData) {
+                                    dayData.sales += Number(brandData.sales) || 0;
+                                    dayData.traffic += Number(brandData.traffic) || 0;
+                                    dayData.contracts += Number(brandData.contracts) || 0;
+                                    dayData.trading += Number(brandData.trading) || 0;
+                                    dayData.revenue += Number(brandData.revenue) || 0;
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                this.dailyData = Array.from(dailyMap.values()).sort((a, b) => a.day - b.day);
+                this.renderChart();
+                this.updateStats();
+            }
+            
+            renderChart() {
+                const canvas = document.getElementById('dailySalesChart');
+                if (!canvas || this.dailyData.length === 0) return;
+                
+                const ctx = canvas.getContext('2d');
+                if (this.chart) this.chart.destroy();
+                
+                const labels = this.dailyData.map(d => d.day);
+                const isRevenue = this.currentMetric === 'revenue';
+                const mainData = this.dailyData.map(d => {
+                    let value = d[this.currentMetric] || 0;
+                    return isRevenue ? value / 1000000 : value;
+                });
+                
+                const movingAvg = [];
+                for (let i = 0; i < this.dailyData.length; i++) {
+                    let sum = 0, count = 0;
+                    for (let j = Math.max(0, i - 3); j <= Math.min(this.dailyData.length - 1, i + 3); j++) {
+                        let val = this.dailyData[j][this.currentMetric] || 0;
+                        sum += isRevenue ? val / 1000000 : val;
+                        count++;
+                    }
+                    movingAvg.push(count > 0 ? sum / count : 0);
+                }
+                
+                const colors = {
+                    sales: { border: '#2e7d32', bg: 'rgba(46,125,50,0.1)' },
+                    contracts: { border: '#7b1fa2', bg: 'rgba(123,31,162,0.1)' },
+                    trading: { border: '#00695c', bg: 'rgba(0,105,92,0.1)' },
+                    traffic: { border: '#1565c0', bg: 'rgba(21,101,192,0.1)' },
+                    revenue: { border: '#ef6c00', bg: 'rgba(239,108,0,0.1)' }
+                };
+                
+                const color = colors[this.currentMetric] || colors.sales;
+                const metricNames = { sales: 'Продажи', contracts: 'Контракты', trading: 'Трейдин', traffic: 'Трафик', revenue: 'Доход' };
+                
+                this.chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: isRevenue ? 'Доход (млн)' : metricNames[this.currentMetric],
+                                data: mainData,
+                                borderColor: color.border,
+                                backgroundColor: color.bg,
+                                borderWidth: 2,
+                                pointRadius: 3,
+                                pointHoverRadius: 6,
+                                pointBackgroundColor: 'white',
+                                pointBorderColor: color.border,
+                                pointBorderWidth: 2,
+                                tension: 0.2,
+                                fill: true
+                            },
+                            {
+                                label: 'Среднее за 7 дней',
+                                data: movingAvg,
+                                borderColor: '#ff9800',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                tension: 0.3,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => {
+                                        let value = ctx.raw;
+                                        if (isRevenue) return `Доход: ${value.toFixed(1)} млн`;
+                                        return `${ctx.dataset.label}: ${Math.round(value).toLocaleString('ru-RU')}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: isRevenue ? 'Сумма (млн ₽)' : 'Количество'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            updateStats() {
+                const daysWithData = this.dailyData.filter(d => d.sales > 0 || d.traffic > 0 || d.contracts > 0);
+                const totalSales = daysWithData.reduce((sum, d) => sum + d.sales, 0);
+                const daysCountSpan = document.getElementById('daysWithDataCount');
+                const totalSalesSpan = document.getElementById('totalSalesAmount');
+                const dateRangeSpan = document.getElementById('fullDateRange');
+                
+                if (daysCountSpan) daysCountSpan.textContent = daysWithData.length;
+                if (totalSalesSpan) totalSalesSpan.textContent = totalSales.toLocaleString('ru-RU');
+                if (dateRangeSpan && this.dailyData.length > 0) {
+                    const firstDay = this.dailyData[0].day;
+                    const lastDay = this.dailyData[this.dailyData.length - 1].day;
+                    const monthNames = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+                    const month = window.dashboardCore?.rangeParams?.month;
+                    const monthNum = month ? parseInt(month.split('-')[1]) : 3;
+                    dateRangeSpan.textContent = `${firstDay}-${lastDay} ${monthNames[monthNum - 1]}`;
+                }
+            }
+        }
+        
+        window.dailyChartManager = new DailyChartManager();
+    })();
+    </script>
+</body>
+</html>
