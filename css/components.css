@@ -1,0 +1,602 @@
+/* css/components.css */
+
+/* ===== ТАБЛИЦЫ ВВОДА ===== */
+.input-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin: 10px 0; 
+}
+
+.input-table th { 
+    padding: 10px 5px; 
+    text-align: center; 
+    font-weight: 600; 
+    font-size: 11px; 
+    background-color: #f8f9fa; 
+    border-bottom: 2px solid #dee2e6; 
+    white-space: nowrap; 
+}
+
+.input-table td { 
+    padding: 8px 5px; 
+    border-bottom: 1px solid #e9ecef; 
+}
+
+.input-table input { 
+    width: 100%; 
+    padding: 6px 8px; 
+    border-radius: 6px; 
+    border: 1px solid #bdc3c7; 
+    font-size: 13px; 
+    text-align: center; 
+    transition: all var(--transition-speed); 
+}
+
+.input-table input:focus { 
+    outline: none; 
+    border-color: var(--info); 
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2); 
+}
+
+/* Заблокированные поля */
+.locked { 
+    background-color: #f5f5f5 !important; 
+    cursor: not-allowed; 
+    border-color: #ddd !important; 
+}
+
+/* ===== КНОПКИ ===== */
+button { 
+    padding: 10px 15px; 
+    border: none; 
+    border-radius: 8px; 
+    background: var(--success); 
+    color: #fff; 
+    font-size: 13px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: all var(--transition-speed); 
+    flex: 1; 
+    min-width: 120px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 8px; 
+}
+
+button:hover { 
+    opacity: 0.9; 
+    transform: translateY(-1px); 
+}
+
+#calcBtn { background: var(--success); } 
+#saveBtn { background: var(--info); }
+#lockBtn { background: #7b1fa2; } 
+#unlockBtn { background: var(--warning); } 
+#clearHistoryBtn { background: var(--danger); } 
+#saveMonthlyBtn { background: var(--monthly); }
+#planningBtn { background: var(--planning); } 
+#updatePlansBtn { background: #9c27b0; }
+#loadDataForDateBtn { background: var(--info); padding: 8px 16px; min-width: auto; }
+
+/* ===== ПРОГРЕСС-БАРЫ ===== */
+.progress-container { 
+    margin: 12px 0; 
+}
+
+.progress-bar { 
+    position: relative; 
+    height: 32px; 
+    background: #ecf0f1; 
+    border-radius: 10px; 
+    overflow: hidden; 
+    margin-bottom: 5px; 
+}
+
+.progress-fact { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    height: 100%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-end; 
+    padding-right: 12px; 
+    color: white; 
+    font-weight: 600; 
+    font-size: 12px; 
+    z-index: 2; 
+    min-width: 50px; 
+    transition: width 0.5s ease; 
+}
+
+.progress-fact.sales { background: var(--sales); } 
+.progress-fact.traffic { background: var(--traffic); }
+.progress-fact.revenue { background: var(--revenue); } 
+.progress-fact.contracts { background: var(--contracts); }
+.progress-fact.trading { background: var(--trading); }
+
+.progress-forecast { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    height: 100%; 
+    z-index: 1; 
+    transition: width 0.5s ease; 
+}
+
+.progress-forecast.sales-forecast { background: var(--sales-f); } 
+.progress-forecast.traffic-forecast { background: var(--traffic-f); }
+.progress-forecast.revenue-forecast { background: var(--revenue-f); } 
+.progress-forecast.contracts-forecast { background: var(--contracts-f); }
+.progress-forecast.trading-forecast { background: var(--trading-f); }
+.progress-forecast.planning-forecast { background: var(--planning-f); } 
+.progress-forecast.monthly-forecast { background: var(--monthly-f); }
+
+.forecast-percent-badge { 
+    position: absolute; 
+    right: 8px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    background: rgba(255, 255, 255, 0.95); 
+    padding: 2px 8px; 
+    border-radius: 6px; 
+    font-size: 12px; 
+    font-weight: 700; 
+    color: #2c3e50; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15); 
+    z-index: 3; 
+    border: 1px solid rgba(0, 0, 0, 0.1); 
+    min-width: 40px; 
+    text-align: center; 
+    pointer-events: none; 
+}
+
+.progress-labels { 
+    display: flex; 
+    justify-content: space-between; 
+    font-size: 11px; 
+    color: #666; 
+    margin-top: 5px; 
+}
+
+.progress-label-left { 
+    font-weight: 600; 
+}
+
+.progress-label-right { 
+    color: #666; 
+}
+
+/* ===== БЕЙДЖИ ===== */
+.forecast-badge { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 4px; 
+    padding: 2px 8px; 
+    border-radius: 8px; 
+    font-size: 11px; 
+    font-weight: 600; 
+    margin-left: 8px; 
+}
+
+.forecast-badge.low { 
+    background: #ffebee; 
+    color: var(--danger); 
+    border: 1px solid #ffcdd2; 
+}
+
+.forecast-badge.medium { 
+    background: #fff3e0; 
+    color: var(--warning); 
+    border: 1px solid #ffe0b2; 
+}
+
+.forecast-badge.high { 
+    background: #e8f5e9; 
+    color: var(--success); 
+    border: 1px solid #c8e6c9; 
+}
+
+.status-badge { 
+    display: inline-block; 
+    padding: 2px 8px; 
+    border-radius: 10px; 
+    font-size: 10px; 
+    font-weight: 600; 
+    margin-left: 8px; 
+}
+
+.status-badge.success { 
+    background: #e8f5e9; 
+    color: var(--success); 
+    border: 1px solid #c8e6c9; 
+}
+
+.status-badge.warning { 
+    background: #fff3cd; 
+    color: #856404; 
+    border: 1px solid #ffeaa7; 
+}
+
+.status-badge.danger { 
+    background: #f8d7da; 
+    color: #721c24; 
+    border: 1px solid #f5c6cb; 
+}
+
+.period-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.period-badge.jan { background: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; }
+.period-badge.feb { background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
+.period-badge.mar { background: #e8f5e9; color: #1b5e20; border: 1px solid #c8e6c9; }
+.period-badge.apr { background: #ffebee; color: #b71c1c; border: 1px solid #ffcdd2; }
+.period-badge.may { background: #f3e5f5; color: #4a148c; border: 1px solid #e1bee7; }
+.period-badge.jun { background: #e0f2f1; color: #004d40; border: 1px solid #b2dfdb; }
+.period-badge.jul { background: #fff8e1; color: #ff6f00; border: 1px solid #ffe082; }
+.period-badge.aug { background: #e1f5fe; color: #01579b; border: 1px solid #b3e5fc; }
+.period-badge.sep { background: #fbe9e7; color: #bf360c; border: 1px solid #ffccbc; }
+.period-badge.oct { background: #ede7f6; color: #311b92; border: 1px solid #d1c4e9; }
+.period-badge.nov { background: #e8eaf6; color: #1a237e; border: 1px solid #c5cae9; }
+.period-badge.dec { background: #ffebee; color: #b71c1c; border: 1px solid #ffcdd2; }
+
+/* ===== ЗВЕЗДЫ ===== */
+.stars { 
+    display: flex; 
+    gap: 2px; 
+    margin-top: 5px; 
+}
+
+.star { 
+    color: #ffc107; 
+    font-size: 14px; 
+}
+
+.star.empty { 
+    color: #e0e0e0; 
+}
+
+/* ===== ПЕРИОД ИНДИКАТОРЫ ===== */
+.period-indicator {
+    background: #fff3cd;
+    border-left: 4px solid var(--warning);
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ===== МЕСЯЧНЫЕ КАРТОЧКИ ===== */
+.monthly-card { 
+    background: white; 
+    padding: 15px; 
+    border-radius: 8px; 
+    box-shadow: var(--card-shadow); 
+    border-left: 4px solid var(--monthly); 
+}
+
+.monthly-cards { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 15px; 
+    margin-top: 15px; 
+}
+
+.totals-section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--form-shadow);
+    margin: 20px 0;
+    border-left: 4px solid var(--monthly);
+}
+
+.totals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.total-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.total-item-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.total-item-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--monthly);
+}
+
+/* ===== ПЛАНИРОВАНИЕ ===== */
+.planning-form { 
+    margin-top: 15px; 
+}
+
+.planning-inputs { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 10px; 
+    margin-bottom: 15px; 
+}
+
+.planning-input-group { 
+    margin-bottom: 10px; 
+}
+
+.planning-input-group label { 
+    display: block; 
+    margin-bottom: 5px; 
+    font-size: 13px; 
+    color: #666; 
+}
+
+.planning-input-group input, 
+.planning-input-group select { 
+    width: 100%; 
+    padding: 8px; 
+    border: 1px solid #ddd; 
+    border-radius: 6px; 
+}
+
+.planning-result { 
+    background: #e8f5e9; 
+    padding: 15px; 
+    border-radius: 8px; 
+    margin-top: 15px; 
+}
+
+/* ===== JSON СЕКЦИЯ ===== */
+.json-section {
+    background: #fff3e0;
+    border-left: 4px solid var(--warning);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--form-shadow);
+    margin: 20px 0;
+}
+
+.json-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.json-status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.json-status-indicator.loaded {
+    background: var(--success);
+}
+
+.json-status-indicator.not-loaded {
+    background: var(--danger);
+}
+
+.json-data-preview {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ffe0b2;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+}
+
+.json-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.json-stat {
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    border: 1px solid #ffe0b2;
+}
+
+.json-stat-label {
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.json-stat-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--warning);
+}
+
+/* ===== DATE SELECTOR ===== */
+.date-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.date-selector input[type="date"] {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #bdc3c7;
+    font-size: 14px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.filter-section select {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #bdc3c7;
+    background: white;
+    font-size: 13px;
+}
+
+/* ===== МОДАЛЬНОЕ ОКНО ===== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal h3 {
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    flex: 1;
+}
+
+.modal-input {
+    margin-bottom: 15px;
+}
+
+.modal-input label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.modal-input select,
+.modal-input input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* ===== URL ЗАГРУЗЧИК ===== */
+#jsonUrlInputContainer {
+    background: linear-gradient(145deg, #ffffff, #f5f5f5);
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+#jsonUrlInputContainer:hover {
+    border-color: #9c27b0;
+    box-shadow: 0 2px 8px rgba(156, 39, 176, 0.1);
+}
+
+#jsonUrlInput {
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s ease;
+}
+
+#jsonUrlInput:focus {
+    border-color: #9c27b0 !important;
+    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+    outline: none;
+}
+
+#jsonUrlHistory {
+    transition: all 0.3s ease;
+}
+
+#jsonUrlHistory .url-item {
+    transition: all 0.2s ease;
+}
+
+#jsonUrlHistory .url-item:hover {
+    background: #fff3e0;
+    transform: translateX(2px);
+}
+
+#loadJsonUrlBtn {
+    background: linear-gradient(145deg, #9c27b0, #7b1fa2);
+    transition: all 0.3s ease;
+}
+
+#loadJsonUrlBtn:hover {
+    background: linear-gradient(145deg, #7b1fa2, #6a1b9a);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
+}
+
+#saveJsonUrlBtn {
+    background: linear-gradient(145deg, #00796b, #00695c);
+    transition: all 0.3s ease;
+}
+
+#saveJsonUrlBtn:hover {
+    background: linear-gradient(145deg, #00695c, #004d40);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 121, 107, 0.3);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.loading-indicator {
+    animation: pulse 1.5s ease-in-out infinite;
+}

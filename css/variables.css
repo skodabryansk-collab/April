@@ -1,0 +1,33 @@
+/* css/variables.css */
+:root {
+    /* Основные цвета */
+    --sales: #2e7d32;
+    --sales-f: #a5d6a7;
+    --traffic: #1565c0;
+    --traffic-f: #90caf9;
+    --revenue: #ef6c00;
+    --revenue-f: #ffcc80;
+    --contracts: #7b1fa2;
+    --contracts-f: #ce93d8;
+    --trading: #00695c;
+    --trading-f: #80cbc4;
+    --bg: #f2f4f7;
+    --locked: #e9ecef;
+    
+    /* Состояния */
+    --danger: #d32f2f;
+    --warning: #ff9800;
+    --success: #388e3c;
+    --info: #2196f3;
+    --planning: #9c27b0;
+    --planning-f: #e1bee7;
+    --monthly: #00796b;
+    --monthly-f: #b2dfdb;
+    
+    /* Тени */
+    --card-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+    --form-shadow: 0 4px 14px rgba(0, 0, 0, .08);
+    
+    /* Анимации */
+    --transition-speed: 0.2s;
+}

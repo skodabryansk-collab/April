@@ -1,0 +1,9723 @@
+{
+
+	"version": "1.0",
+
+	"dataType": "daily_facts",
+
+	"exportDate": "2026-04-01T09:38:37",
+
+	"sourceSystem": "1C",
+
+	"dailyFacts": [
+
+		{
+
+			"date": "2026-01-01",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 49862.67,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-02",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-03",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 21,
+
+				"contracts": 1,
+
+				"revenue": -274229.06,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 10,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 1,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 26,
+
+				"contracts": 4,
+
+				"revenue": 410754.02,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 4,
+
+				"traffic": 16,
+
+				"contracts": 5,
+
+				"revenue": 639581.59,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-04",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 18,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 16,
+
+				"contracts": 5,
+
+				"revenue": 659336.77,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-05",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 20,
+
+				"contracts": 0,
+
+				"revenue": 47873.65,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 31,
+
+				"contracts": 3,
+
+				"revenue": 816210.32,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 22,
+
+				"contracts": 2,
+
+				"revenue": 584652.51,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-06",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 26,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": -6292.46,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 105566.42,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 26,
+
+				"contracts": 2,
+
+				"revenue": 574233.38,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 22,
+
+				"contracts": 8,
+
+				"revenue": 635895.4,
+
+				"trading": 3
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-07",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 60031.37,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 191399.15,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 17,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 4,
+
+				"traffic": 13,
+
+				"contracts": 2,
+
+				"revenue": 650703.58,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-08",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 19,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 287937.22,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 24,
+
+				"contracts": 2,
+
+				"revenue": 442852.67,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 13,
+
+				"contracts": 5,
+
+				"revenue": 542035.32,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-09",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 11,
+
+				"contracts": 3,
+
+				"revenue": 70839.42,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 2,
+
+				"revenue": 131961.2,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 2,
+
+				"contracts": 1,
+
+				"revenue": 20970.12,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 29,
+
+				"contracts": 6,
+
+				"revenue": 421352.5,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 15,
+
+				"contracts": 4,
+
+				"revenue": 597827.6,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-10",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 11,
+
+				"contracts": 1,
+
+				"revenue": 72801.97,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 15,
+
+				"contracts": 0,
+
+				"revenue": 197757.78,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 62321.98,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 25,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 18,
+
+				"contracts": 5,
+
+				"revenue": 945392.2,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-11",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 17,
+
+				"contracts": 3,
+
+				"revenue": 183346.4,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 120555.2,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 25,
+
+				"contracts": 1,
+
+				"revenue": 1041959.95,
+
+				"trading": 4
+
+			},
+
+			"asp": {
+
+				"sales": 6,
+
+				"traffic": 21,
+
+				"contracts": 5,
+
+				"revenue": 1121877.47,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-12",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 13,
+
+				"contracts": 2,
+
+				"revenue": 257972.47,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 20,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 11,
+
+				"contracts": 3,
+
+				"revenue": 415510.55,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-13",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 15,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": -41563.98,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 19,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 11,
+
+				"contracts": 6,
+
+				"revenue": 740312.19,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-14",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 18,
+
+				"contracts": 0,
+
+				"revenue": -61950.12,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 0,
+
+				"revenue": 920000,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 2,
+
+				"contracts": 1,
+
+				"revenue": -149853.16,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 25,
+
+				"contracts": 2,
+
+				"revenue": 52079.36,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 2,
+
+				"traffic": 19,
+
+				"contracts": 3,
+
+				"revenue": 285626.81,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-15",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 14,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 340000,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 29,
+
+				"contracts": 3,
+
+				"revenue": 395392.69,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 28,
+
+				"contracts": 9,
+
+				"revenue": 1318863.36,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-16",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 14,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 14,
+
+				"contracts": 1,
+
+				"revenue": 1845000,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 2,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 244686.56,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 31,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 20,
+
+				"contracts": 6,
+
+				"revenue": 822468.95,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-17",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 16,
+
+				"contracts": 6,
+
+				"revenue": 122763.57,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": -26258.23,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 179882.82,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 205553.29,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 34,
+
+				"contracts": 1,
+
+				"revenue": 165857.69,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 7,
+
+				"traffic": 24,
+
+				"contracts": 5,
+
+				"revenue": 943757.51,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-18",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 13,
+
+				"contracts": 3,
+
+				"revenue": 138354.69,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 28,
+
+				"contracts": 5,
+
+				"revenue": 198006.35,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 4,
+
+				"traffic": 20,
+
+				"contracts": 4,
+
+				"revenue": 720797.44,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-19",
+
+			"ch": {
+
+				"sales": 5,
+
+				"traffic": 13,
+
+				"contracts": 3,
+
+				"revenue": -415290.55,
+
+				"trading": 4
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": 27119.95,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 200000,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 58399.87,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 25,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 16,
+
+				"contracts": 5,
+
+				"revenue": 617607.66,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-20",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 20,
+
+				"contracts": 2,
+
+				"revenue": -187645.01,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 4,
+
+				"contracts": 2,
+
+				"revenue": 87534.99,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 6,
+
+				"contracts": 1,
+
+				"revenue": 422367.73,
+
+				"trading": 2
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": -37747.99,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 23,
+
+				"contracts": 2,
+
+				"revenue": 155908.55,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 22,
+
+				"contracts": 3,
+
+				"revenue": 397680.82,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-21",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 14,
+
+				"contracts": 2,
+
+				"revenue": 164864.17,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 0,
+
+				"revenue": -91487.19,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 400000,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 29,
+
+				"contracts": 3,
+
+				"revenue": 449482.75,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 4,
+
+				"traffic": 20,
+
+				"contracts": 4,
+
+				"revenue": 767218.19,
+
+				"trading": 3
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-22",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 23,
+
+				"contracts": 5,
+
+				"revenue": 38552.47,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 301337.29,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 1,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 30,
+
+				"contracts": 4,
+
+				"revenue": 259879.36,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 7,
+
+				"traffic": 18,
+
+				"contracts": 7,
+
+				"revenue": 419639.2,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-23",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 15,
+
+				"contracts": 3,
+
+				"revenue": 210247.39,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 7,
+
+				"contracts": 1,
+
+				"revenue": 92608.4,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 6,
+
+				"traffic": 30,
+
+				"contracts": 7,
+
+				"revenue": 1004233.66,
+
+				"trading": 3
+
+			},
+
+			"asp": {
+
+				"sales": 2,
+
+				"traffic": 22,
+
+				"contracts": 4,
+
+				"revenue": 267145,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-24",
+
+			"ch": {
+
+				"sales": 6,
+
+				"traffic": 17,
+
+				"contracts": 5,
+
+				"revenue": -367179.2,
+
+				"trading": 5
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 17,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 15,
+
+				"contracts": 1,
+
+				"revenue": 123613.15,
+
+				"trading": 2
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 9,
+
+				"traffic": 38,
+
+				"contracts": 7,
+
+				"revenue": 1500109.46,
+
+				"trading": 7
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 16,
+
+				"contracts": 7,
+
+				"revenue": 2086700.46,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-25",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 23,
+
+				"contracts": 3,
+
+				"revenue": -101590.81,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 14,
+
+				"contracts": 2,
+
+				"revenue": 1460741.07,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 14,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 1,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 6,
+
+				"traffic": 41,
+
+				"contracts": 7,
+
+				"revenue": 823598.72,
+
+				"trading": 5
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 20,
+
+				"contracts": 9,
+
+				"revenue": 1925700.01,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-26",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 18,
+
+				"contracts": 1,
+
+				"revenue": 117875.23,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 13,
+
+				"contracts": 0,
+
+				"revenue": 244093.03,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 90958.4,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 132925,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 1096125,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 33,
+
+				"contracts": 4,
+
+				"revenue": 1098208.65,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 10,
+
+				"traffic": 20,
+
+				"contracts": 5,
+
+				"revenue": 1631602.79,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-27",
+
+			"ch": {
+
+				"sales": 4,
+
+				"traffic": 11,
+
+				"contracts": 2,
+
+				"revenue": 113074.5,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 2,
+
+				"revenue": 144525.59,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 515381,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 26,
+
+				"contracts": 3,
+
+				"revenue": 486696.56,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 2,
+
+				"traffic": 14,
+
+				"contracts": 2,
+
+				"revenue": 438662.2,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-28",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 2,
+
+				"revenue": 56621.74,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 255660.34,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 5,
+
+				"traffic": 29,
+
+				"contracts": 2,
+
+				"revenue": 872199.69,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 13,
+
+				"contracts": 8,
+
+				"revenue": 900136.3,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-29",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 16,
+
+				"contracts": 2,
+
+				"revenue": 89767.99,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": -71505.64,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 2,
+
+				"revenue": 85720.06,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 44039.48,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 20,
+
+				"contracts": 6,
+
+				"revenue": 527021.7,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 14,
+
+				"contracts": 6,
+
+				"revenue": 1022057.39,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-30",
+
+			"ch": {
+
+				"sales": 5,
+
+				"traffic": 7,
+
+				"contracts": 4,
+
+				"revenue": 317231.53,
+
+				"trading": 4
+
+			},
+
+			"jt": {
+
+				"sales": 2,
+
+				"traffic": 14,
+
+				"contracts": 1,
+
+				"revenue": 86474.49,
+
+				"trading": 2
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": -164194.29,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 7,
+
+				"traffic": 19,
+
+				"contracts": 1,
+
+				"revenue": 1010197.65,
+
+				"trading": 4
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 13,
+
+				"contracts": 3,
+
+				"revenue": 192762.5,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-01-31",
+
+			"ch": {
+
+				"sales": 6,
+
+				"traffic": 11,
+
+				"contracts": 3,
+
+				"revenue": -156192.38,
+
+				"trading": 5
+
+			},
+
+			"jt": {
+
+				"sales": 3,
+
+				"traffic": 11,
+
+				"contracts": 2,
+
+				"revenue": 257319.38,
+
+				"trading": 3
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 15,
+
+				"contracts": 0,
+
+				"revenue": 104732.21,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 12,
+
+				"traffic": 40,
+
+				"contracts": 5,
+
+				"revenue": 2058874.74,
+
+				"trading": 7
+
+			},
+
+			"asp": {
+
+				"sales": 10,
+
+				"traffic": 18,
+
+				"contracts": 10,
+
+				"revenue": 1661169.67,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-01",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 15,
+
+				"contracts": 2,
+
+				"revenue": 93380.81,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 16,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 26,
+
+				"contracts": 5,
+
+				"revenue": 332816.22,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 1,
+
+				"traffic": 20,
+
+				"contracts": 1,
+
+				"revenue": 292078.75,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-02",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 10,
+
+				"contracts": 0,
+
+				"revenue": 604690.63,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 300000,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 17,
+
+				"contracts": 3,
+
+				"revenue": 263338.21,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 1,
+
+				"traffic": 20,
+
+				"contracts": 3,
+
+				"revenue": 413352,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-03",
+
+			"ch": {
+
+				"sales": 4,
+
+				"traffic": 15,
+
+				"contracts": 3,
+
+				"revenue": 106440.3,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 1059730.11,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 21,
+
+				"contracts": 3,
+
+				"revenue": 303518.27,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 4,
+
+				"traffic": 17,
+
+				"contracts": 5,
+
+				"revenue": 296848.02,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-04",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 16,
+
+				"contracts": 2,
+
+				"revenue": 55304.73,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 13,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 3,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 978515.69,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 40,
+
+				"contracts": 3,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 11,
+
+				"traffic": 30,
+
+				"contracts": 8,
+
+				"revenue": 1581692,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-05",
+
+			"ch": {
+
+				"sales": 4,
+
+				"traffic": 7,
+
+				"contracts": 6,
+
+				"revenue": 69680.38,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": 78414.95,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 22,
+
+				"contracts": 4,
+
+				"revenue": 335644.78,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 9,
+
+				"traffic": 26,
+
+				"contracts": 8,
+
+				"revenue": 1880987.58,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-06",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": 840000,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 1,
+
+				"revenue": -11979.35,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 20,
+
+				"contracts": 1,
+
+				"revenue": 724664.76,
+
+				"trading": 3
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 22,
+
+				"contracts": 4,
+
+				"revenue": 1352549.61,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-07",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 21,
+
+				"contracts": 3,
+
+				"revenue": -326430.59,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 144265.13,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 14,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 30,
+
+				"contracts": 2,
+
+				"revenue": 92205.08,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 7,
+
+				"traffic": 26,
+
+				"contracts": 10,
+
+				"revenue": 1343689.52,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-08",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 83757.94,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": -7153.3,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": 101199.83,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 11,
+
+				"contracts": 1,
+
+				"revenue": 1139716.14,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-09",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 18,
+
+				"contracts": 1,
+
+				"revenue": -163849.79,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": -1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 1,
+
+				"contracts": 2,
+
+				"revenue": -69626.37,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 34,
+
+				"contracts": 2,
+
+				"revenue": 532431.38,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 7,
+
+				"traffic": 20,
+
+				"contracts": 8,
+
+				"revenue": 1648356.43,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-10",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 18,
+
+				"contracts": 2,
+
+				"revenue": -23201.07,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 15,
+
+				"contracts": 0,
+
+				"revenue": 600000,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": -265496.3,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 23,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 2,
+
+				"traffic": 17,
+
+				"contracts": 1,
+
+				"revenue": 137332,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-11",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 17,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 0,
+
+				"revenue": 42445.8,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 165882.03,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 22,
+
+				"contracts": 1,
+
+				"revenue": 115979.49,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 16,
+
+				"contracts": 4,
+
+				"revenue": 422118.04,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-12",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 22,
+
+				"contracts": 0,
+
+				"revenue": 84831.6,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 139392.03,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 1,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 1,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 17,
+
+				"contracts": 3,
+
+				"revenue": 531986.48,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 19,
+
+				"contracts": 5,
+
+				"revenue": 727115.34,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-13",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 8,
+
+				"contracts": 1,
+
+				"revenue": -483814.13,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 1,
+
+				"revenue": 192991.95,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 18,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 24,
+
+				"contracts": 5,
+
+				"revenue": 1165250.66,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-14",
+
+			"ch": {
+
+				"sales": 4,
+
+				"traffic": 15,
+
+				"contracts": 2,
+
+				"revenue": 203579.03,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 10,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 32,
+
+				"contracts": 2,
+
+				"revenue": 661132.19,
+
+				"trading": 3
+
+			},
+
+			"asp": {
+
+				"sales": 6,
+
+				"traffic": 30,
+
+				"contracts": 7,
+
+				"revenue": 1016211.89,
+
+				"trading": 3
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-15",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 16,
+
+				"contracts": 5,
+
+				"revenue": 69164.21,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 14,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 12,
+
+				"contracts": 2,
+
+				"revenue": 507567.93,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 8659.37,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 25,
+
+				"contracts": 4,
+
+				"revenue": 213382.93,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 6,
+
+				"traffic": 18,
+
+				"contracts": 7,
+
+				"revenue": 1191699.1,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-16",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 77622.4,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 469781.92,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 132324.94,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 10,
+
+				"contracts": -1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 4,
+
+				"traffic": 23,
+
+				"contracts": 4,
+
+				"revenue": 561817.94,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-17",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 18,
+
+				"contracts": 0,
+
+				"revenue": 110910.51,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 377016.49,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 20,
+
+				"contracts": 5,
+
+				"revenue": 205171.77,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 23,
+
+				"contracts": 1,
+
+				"revenue": 710174.02,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-18",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 13,
+
+				"contracts": 1,
+
+				"revenue": 804529.28,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": 33565.41,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 14,
+
+				"contracts": 0,
+
+				"revenue": 131192.39,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 1,
+
+				"contracts": -1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 62910.98,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 22,
+
+				"contracts": 4,
+
+				"revenue": 738047.71,
+
+				"trading": 3
+
+			},
+
+			"asp": {
+
+				"sales": 6,
+
+				"traffic": 23,
+
+				"contracts": 5,
+
+				"revenue": 1086768.74,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-19",
+
+			"ch": {
+
+				"sales": 4,
+
+				"traffic": 15,
+
+				"contracts": 2,
+
+				"revenue": 2782626.3,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 114699.36,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 88516.6,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 3,
+
+				"contracts": 2,
+
+				"revenue": -168745.52,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 3,
+
+				"contracts": 1,
+
+				"revenue": 8642.07,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 14,
+
+				"contracts": -2,
+
+				"revenue": 325589.64,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 21,
+
+				"contracts": 4,
+
+				"revenue": 749305.59,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-20",
+
+			"ch": {
+
+				"sales": 4,
+
+				"traffic": 13,
+
+				"contracts": 4,
+
+				"revenue": 1619364.67,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 13,
+
+				"contracts": 0,
+
+				"revenue": -4316.55,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 64373.44,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 15,
+
+				"contracts": 3,
+
+				"revenue": 588180.02,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 4,
+
+				"traffic": 18,
+
+				"contracts": 5,
+
+				"revenue": 1228349.19,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-21",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 22,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": -42787.35,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 13,
+
+				"contracts": 0,
+
+				"revenue": 28454.9,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 3,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": -88369.14,
+
+				"trading": 2
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 5,
+
+				"traffic": 36,
+
+				"contracts": 2,
+
+				"revenue": 932985.06,
+
+				"trading": 4
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 24,
+
+				"contracts": 5,
+
+				"revenue": 771049.78,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-22",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 14,
+
+				"contracts": 0,
+
+				"revenue": 551.79,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 17,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 18,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 30,
+
+				"contracts": 3,
+
+				"revenue": 217845.41,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 6,
+
+				"traffic": 25,
+
+				"contracts": 5,
+
+				"revenue": 1245663.16,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-23",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 16,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 11,
+
+				"contracts": 1,
+
+				"revenue": -172958.11,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 11,
+
+				"contracts": 3,
+
+				"revenue": 10898.04,
+
+				"trading": 2
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 2,
+
+				"traffic": 8,
+
+				"contracts": 1,
+
+				"revenue": -1907.49,
+
+				"trading": 2
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 24,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 7,
+
+				"traffic": 23,
+
+				"contracts": 6,
+
+				"revenue": 1195685.67,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-24",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 13,
+
+				"contracts": 0,
+
+				"revenue": 1367218.53,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 200000,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 27,
+
+				"contracts": 2,
+
+				"revenue": 195961.16,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 19,
+
+				"contracts": 5,
+
+				"revenue": 854620.55,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-25",
+
+			"ch": {
+
+				"sales": 4,
+
+				"traffic": 15,
+
+				"contracts": 3,
+
+				"revenue": -205859.99,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 55197.95,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 1,
+
+				"contracts": 0,
+
+				"revenue": -222053.83,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 16,
+
+				"contracts": 5,
+
+				"revenue": 688635.56,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 1,
+
+				"traffic": 14,
+
+				"contracts": 1,
+
+				"revenue": 309428.45,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-26",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 13,
+
+				"contracts": 4,
+
+				"revenue": 5012939.7,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": -189049.4,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 2,
+
+				"traffic": 7,
+
+				"contracts": 2,
+
+				"revenue": -332550.51,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 29,
+
+				"contracts": 1,
+
+				"revenue": 429641.6,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 17,
+
+				"contracts": 5,
+
+				"revenue": 1099896.21,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-27",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 14,
+
+				"contracts": 2,
+
+				"revenue": -324798.3,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 2,
+
+				"traffic": 9,
+
+				"contracts": 0,
+
+				"revenue": 36745.42,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 0,
+
+				"revenue": 198481.87,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": -405638.94,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 2,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": -141495.69,
+
+				"trading": 2
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 19,
+
+				"contracts": 1,
+
+				"revenue": 632547.23,
+
+				"trading": 4
+
+			},
+
+			"asp": {
+
+				"sales": 7,
+
+				"traffic": 26,
+
+				"contracts": 8,
+
+				"revenue": 781879.41,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-02-28",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 18,
+
+				"contracts": 1,
+
+				"revenue": 32938.19,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 13,
+
+				"contracts": 0,
+
+				"revenue": 130872.62,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 15,
+
+				"traffic": 33,
+
+				"contracts": 3,
+
+				"revenue": 2452049.52,
+
+				"trading": 8
+
+			},
+
+			"asp": {
+
+				"sales": 15,
+
+				"traffic": 40,
+
+				"contracts": 14,
+
+				"revenue": 2703343.72,
+
+				"trading": 4
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-01",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 18,
+
+				"contracts": 1,
+
+				"revenue": 115447.33,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 18,
+
+				"contracts": 2,
+
+				"revenue": 1506797.7,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 33,
+
+				"contracts": 2,
+
+				"revenue": 578124.91,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 6,
+
+				"traffic": 21,
+
+				"contracts": 5,
+
+				"revenue": 679416.91,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-02",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 9,
+
+				"contracts": 3,
+
+				"revenue": -143393.65,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 2,
+
+				"revenue": 2197845.05,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 450000,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 26,
+
+				"contracts": 2,
+
+				"revenue": 5224440.49,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 21,
+
+				"contracts": 6,
+
+				"revenue": 772534.49,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-03",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 15,
+
+				"contracts": 2,
+
+				"revenue": -99720.81,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": -230596.38,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 15,
+
+				"contracts": 1,
+
+				"revenue": 448508.55,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 500000,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 29,
+
+				"contracts": 3,
+
+				"revenue": 1230989.25,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 15,
+
+				"contracts": 4,
+
+				"revenue": 1298986.34,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-04",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 13,
+
+				"contracts": 2,
+
+				"revenue": 8732.5,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 8,
+
+				"contracts": 1,
+
+				"revenue": 234126.99,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 110961.64,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": -278793.57,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 17,
+
+				"contracts": 3,
+
+				"revenue": 317740.69,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 30,
+
+				"contracts": 5,
+
+				"revenue": 997606.74,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-05",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 12,
+
+				"contracts": 1,
+
+				"revenue": -62866.43,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 3,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 23,
+
+				"contracts": 1,
+
+				"revenue": 486472.08,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 27,
+
+				"contracts": 6,
+
+				"revenue": 688823.26,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-06",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 19,
+
+				"contracts": 3,
+
+				"revenue": -178199.15,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 180089.69,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 131927.66,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 14,
+
+				"contracts": 5,
+
+				"revenue": 593132.24,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 5,
+
+				"traffic": 30,
+
+				"contracts": 7,
+
+				"revenue": 523786.44,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-07",
+
+			"ch": {
+
+				"sales": 7,
+
+				"traffic": 13,
+
+				"contracts": 5,
+
+				"revenue": -699995.89,
+
+				"trading": 5
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 17,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 2,
+
+				"contracts": 1,
+
+				"revenue": -253604.28,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 3,
+
+				"traffic": 9,
+
+				"contracts": 3,
+
+				"revenue": -121579.3,
+
+				"trading": 3
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 32,
+
+				"contracts": 7,
+
+				"revenue": 711820.03,
+
+				"trading": 3
+
+			},
+
+			"asp": {
+
+				"sales": 14,
+
+				"traffic": 36,
+
+				"contracts": 13,
+
+				"revenue": 2053229.1,
+
+				"trading": 6
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-08",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 21427.06,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 14,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 0,
+
+				"revenue": 87236.91,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 23,
+
+				"contracts": 3,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 21,
+
+				"contracts": 6,
+
+				"revenue": 983554.41,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-09",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 14,
+
+				"contracts": 1,
+
+				"revenue": 267787.32,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 16,
+
+				"contracts": 2,
+
+				"revenue": -171456.48,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 16,
+
+				"contracts": 3,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 26,
+
+				"contracts": 3,
+
+				"revenue": 345737.18,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 39,
+
+				"contracts": 12,
+
+				"revenue": 1112838.84,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-10",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 14,
+
+				"contracts": 0,
+
+				"revenue": -446211.91,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 2,
+
+				"revenue": 352952.21,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 668387.04,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 26,
+
+				"contracts": 1,
+
+				"revenue": 356212.36,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 11,
+
+				"traffic": 24,
+
+				"contracts": 10,
+
+				"revenue": 2446004.52,
+
+				"trading": 3
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-11",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 18,
+
+				"contracts": 4,
+
+				"revenue": 49741.78,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 2,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": -312485.5,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 10,
+
+				"contracts": 2,
+
+				"revenue": 77967.9,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 1,
+
+				"contracts": 0,
+
+				"revenue": 507110.66,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 26,
+
+				"contracts": 3,
+
+				"revenue": 362253.21,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 10,
+
+				"traffic": 22,
+
+				"contracts": 7,
+
+				"revenue": 1745718.79,
+
+				"trading": 4
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-12",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 7,
+
+				"contracts": 4,
+
+				"revenue": 137876.86,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 580000,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 7,
+
+				"contracts": 1,
+
+				"revenue": 224705.85,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 139883.22,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 20,
+
+				"contracts": 1,
+
+				"revenue": 350169.79,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 6,
+
+				"traffic": 26,
+
+				"contracts": 5,
+
+				"revenue": 876420.27,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-13",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 23,
+
+				"contracts": 0,
+
+				"revenue": 27038.58,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": -620035.49,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 9,
+
+				"contracts": -1,
+
+				"revenue": 154519.52,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 38739.73,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 13,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 26,
+
+				"contracts": 6,
+
+				"revenue": 153663.22,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 4,
+
+				"traffic": 16,
+
+				"contracts": 2,
+
+				"revenue": 641801.98,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-14",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 18,
+
+				"contracts": 4,
+
+				"revenue": 36058.44,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 16,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 16,
+
+				"contracts": 3,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 9,
+
+				"contracts": 0,
+
+				"revenue": 156920.79,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 7,
+
+				"traffic": 30,
+
+				"contracts": 11,
+
+				"revenue": 1023991.63,
+
+				"trading": 6
+
+			},
+
+			"asp": {
+
+				"sales": 10,
+
+				"traffic": 28,
+
+				"contracts": 10,
+
+				"revenue": 2612707.04,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-15",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 12,
+
+				"contracts": 3,
+
+				"revenue": -230531.53,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 242695.84,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 16,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 25,
+
+				"contracts": 4,
+
+				"revenue": 795511.13,
+
+				"trading": 4
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 27,
+
+				"contracts": 7,
+
+				"revenue": 1323652.18,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-16",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 12,
+
+				"contracts": 2,
+
+				"revenue": 220398.84,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 12,
+
+				"contracts": 1,
+
+				"revenue": 94932.61,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 3,
+
+				"traffic": 4,
+
+				"contracts": 2,
+
+				"revenue": -322807.07,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 2,
+
+				"traffic": 6,
+
+				"contracts": 2,
+
+				"revenue": -24008.1,
+
+				"trading": 2
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 22,
+
+				"contracts": -1,
+
+				"revenue": 758200.28,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 23,
+
+				"contracts": 4,
+
+				"revenue": 206768.94,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-17",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 13,
+
+				"contracts": 3,
+
+				"revenue": -250711.63,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 158723.59,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 18,
+
+				"contracts": 2,
+
+				"revenue": 347517.12,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 9,
+
+				"traffic": 23,
+
+				"contracts": 9,
+
+				"revenue": 1270118.43,
+
+				"trading": 4
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-18",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 15,
+
+				"contracts": 0,
+
+				"revenue": 1439399.84,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 1,
+
+				"revenue": 1000000,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 2,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 100708.04,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 24,
+
+				"contracts": 6,
+
+				"revenue": 326148.24,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 28,
+
+				"contracts": 9,
+
+				"revenue": 902360.85,
+
+				"trading": 3
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-19",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 20,
+
+				"contracts": 2,
+
+				"revenue": -505733.06,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 18,
+
+				"contracts": 0,
+
+				"revenue": -200380.94,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 11,
+
+				"contracts": 1,
+
+				"revenue": 143450.1,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 1,
+
+				"revenue": 147362,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 26,
+
+				"contracts": 0,
+
+				"revenue": 4265804.93,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 6,
+
+				"traffic": 25,
+
+				"contracts": 5,
+
+				"revenue": 1099406.78,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-20",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 19,
+
+				"contracts": 2,
+
+				"revenue": -260538.98,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 10,
+
+				"contracts": 2,
+
+				"revenue": 1178981.47,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 2,
+
+				"traffic": 10,
+
+				"contracts": 4,
+
+				"revenue": 794818.1,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 7,
+
+				"traffic": 27,
+
+				"contracts": 6,
+
+				"revenue": 1271902.73,
+
+				"trading": 5
+
+			},
+
+			"asp": {
+
+				"sales": 10,
+
+				"traffic": 31,
+
+				"contracts": 9,
+
+				"revenue": 1555257.65,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-21",
+
+			"ch": {
+
+				"sales": 5,
+
+				"traffic": 20,
+
+				"contracts": 5,
+
+				"revenue": -47858.41,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 15,
+
+				"contracts": 1,
+
+				"revenue": -60102.06,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 3,
+
+				"traffic": 20,
+
+				"contracts": 2,
+
+				"revenue": 404751.42,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 1,
+
+				"revenue": 209849.26,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 7,
+
+				"traffic": 32,
+
+				"contracts": 6,
+
+				"revenue": 1207321.75,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 37,
+
+				"contracts": 12,
+
+				"revenue": 1231829.03,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-22",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 17,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 16,
+
+				"contracts": 3,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 16,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 11,
+
+				"contracts": 1,
+
+				"revenue": 159821.67,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 34,
+
+				"contracts": 5,
+
+				"revenue": 537503.17,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 29,
+
+				"contracts": 9,
+
+				"revenue": 1069692.81,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-23",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 18,
+
+				"contracts": 4,
+
+				"revenue": 1435684.22,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 3,
+
+				"traffic": 13,
+
+				"contracts": 0,
+
+				"revenue": -247222.47,
+
+				"trading": 2
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 12,
+
+				"contracts": 4,
+
+				"revenue": 849078.59,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 5,
+
+				"traffic": 21,
+
+				"contracts": 3,
+
+				"revenue": 786252.34,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 6,
+
+				"traffic": 24,
+
+				"contracts": 5,
+
+				"revenue": 1307829.41,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-24",
+
+			"ch": {
+
+				"sales": 4,
+
+				"traffic": 22,
+
+				"contracts": 3,
+
+				"revenue": 3743946.79,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 58297.15,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 3,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": -587396.29,
+
+				"trading": 2
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 33,
+
+				"contracts": 6,
+
+				"revenue": 552745.74,
+
+				"trading": 3
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 19,
+
+				"contracts": 5,
+
+				"revenue": 512908.42,
+
+				"trading": 0
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-25",
+
+			"ch": {
+
+				"sales": 4,
+
+				"traffic": 15,
+
+				"contracts": 3,
+
+				"revenue": 2502095.73,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 15,
+
+				"contracts": 2,
+
+				"revenue": 152240.95,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 1,
+
+				"revenue": 77682.24,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 28,
+
+				"contracts": 2,
+
+				"revenue": 409355.63,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 7,
+
+				"traffic": 31,
+
+				"contracts": 6,
+
+				"revenue": 767371.8,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-26",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 12,
+
+				"contracts": 2,
+
+				"revenue": 500638.43,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 4,
+
+				"contracts": -1,
+
+				"revenue": 166281.49,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 1,
+
+				"contracts": 1,
+
+				"revenue": 175404.92,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 1,
+
+				"revenue": 267786.26,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 24,
+
+				"contracts": 2,
+
+				"revenue": 322905.16,
+
+				"trading": 1
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 20,
+
+				"contracts": 8,
+
+				"revenue": 838682.72,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-27",
+
+			"ch": {
+
+				"sales": 2,
+
+				"traffic": 15,
+
+				"contracts": 1,
+
+				"revenue": 107860.49,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 15,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 6,
+
+				"contracts": 1,
+
+				"revenue": 181603.57,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 4,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 4,
+
+				"traffic": 12,
+
+				"contracts": 2,
+
+				"revenue": -341221.58,
+
+				"trading": 2
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 28,
+
+				"contracts": 2,
+
+				"revenue": 187318.33,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 7,
+
+				"traffic": 20,
+
+				"contracts": 5,
+
+				"revenue": 450100.67,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-28",
+
+			"ch": {
+
+				"sales": 10,
+
+				"traffic": 28,
+
+				"contracts": 7,
+
+				"revenue": -262663.91,
+
+				"trading": 5
+
+			},
+
+			"jt": {
+
+				"sales": 2,
+
+				"traffic": 13,
+
+				"contracts": 0,
+
+				"revenue": 191126.57,
+
+				"trading": 2
+
+			},
+
+			"hp": {
+
+				"sales": 3,
+
+				"traffic": 18,
+
+				"contracts": 2,
+
+				"revenue": 559524.13,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 3,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 126379.46,
+
+				"trading": 2
+
+			},
+
+			"hc": {
+
+				"sales": 8,
+
+				"traffic": 31,
+
+				"contracts": 2,
+
+				"revenue": 1775677.11,
+
+				"trading": 3
+
+			},
+
+			"asp": {
+
+				"sales": 15,
+
+				"traffic": 31,
+
+				"contracts": 15,
+
+				"revenue": 2518295.3,
+
+				"trading": 3
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-29",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 25,
+
+				"contracts": 2,
+
+				"revenue": 60681.1,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 12,
+
+				"contracts": 1,
+
+				"revenue": 31027.65,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 1,
+
+				"traffic": 6,
+
+				"contracts": 1,
+
+				"revenue": 190002.89,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 2,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": 241275.07,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 6,
+
+				"traffic": 45,
+
+				"contracts": 6,
+
+				"revenue": 1014672.76,
+
+				"trading": 6
+
+			},
+
+			"asp": {
+
+				"sales": 10,
+
+				"traffic": 36,
+
+				"contracts": 10,
+
+				"revenue": 1334564.03,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-30",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 11,
+
+				"contracts": 3,
+
+				"revenue": -398669.24,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 12,
+
+				"contracts": 1,
+
+				"revenue": -394617.89,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 3,
+
+				"traffic": 5,
+
+				"contracts": 1,
+
+				"revenue": 370721.79,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 11,
+
+				"contracts": 2,
+
+				"revenue": 99724.15,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 21,
+
+				"contracts": 1,
+
+				"revenue": 751726.17,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 2,
+
+				"traffic": 22,
+
+				"contracts": 3,
+
+				"revenue": 609615.71,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-03-31",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 15,
+
+				"contracts": 2,
+
+				"revenue": 48008.96,
+
+				"trading": 2
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 7,
+
+				"contracts": 2,
+
+				"revenue": 360657.92,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 2,
+
+				"traffic": 10,
+
+				"contracts": 0,
+
+				"revenue": -454095.46,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 3,
+
+				"traffic": 21,
+
+				"contracts": 4,
+
+				"revenue": 628015.76,
+
+				"trading": 3
+
+			},
+
+			"asp": {
+
+				"sales": 10,
+
+				"traffic": 29,
+
+				"contracts": 7,
+
+				"revenue": 1510467.93,
+
+				"trading": 4
+
+			}
+
+		}
+
+	],
+
+	"monthlyPlans": [
+
+		{
+
+			"month": "2026-01",
+
+			"ch": {
+
+				"sales": 55,
+
+				"traffic": 350,
+
+				"contracts": 55,
+
+				"revenue": 11389000,
+
+				"trading": 39
+
+			},
+
+			"jt": {
+
+				"sales": 25,
+
+				"traffic": 300,
+
+				"contracts": 30,
+
+				"revenue": 6416062,
+
+				"trading": 18
+
+			},
+
+			"hp": {
+
+				"sales": 35,
+
+				"traffic": 300,
+
+				"contracts": 35,
+
+				"revenue": 7978817,
+
+				"trading": 21
+
+			},
+
+			"om": {
+
+				"sales": 11,
+
+				"traffic": 110,
+
+				"contracts": 11,
+
+				"revenue": 1970715,
+
+				"trading": 8
+
+			},
+
+			"jk": {
+
+				"sales": 14,
+
+				"traffic": 140,
+
+				"contracts": 14,
+
+				"revenue": 2333482,
+
+				"trading": 10
+
+			},
+
+			"hc": {
+
+				"sales": 85,
+
+				"traffic": 500,
+
+				"contracts": 85,
+
+				"revenue": 21573819,
+
+				"trading": 51
+
+			},
+
+			"asp": {
+
+				"sales": 180,
+
+				"traffic": 600,
+
+				"contracts": 180,
+
+				"revenue": 30600000,
+
+				"trading": 54
+
+			}
+
+		},
+
+		{
+
+			"month": "2026-02",
+
+			"ch": {
+
+				"sales": 65,
+
+				"traffic": 450,
+
+				"contracts": 68,
+
+				"revenue": 15565916,
+
+				"trading": 46
+
+			},
+
+			"jt": {
+
+				"sales": 20,
+
+				"traffic": 250,
+
+				"contracts": 25,
+
+				"revenue": 2734782,
+
+				"trading": 14
+
+			},
+
+			"hp": {
+
+				"sales": 25,
+
+				"traffic": 250,
+
+				"contracts": 25,
+
+				"revenue": 8945849,
+
+				"trading": 15
+
+			},
+
+			"om": {
+
+				"sales": 14,
+
+				"traffic": 140,
+
+				"contracts": 14,
+
+				"revenue": 2811965,
+
+				"trading": 10
+
+			},
+
+			"jk": {
+
+				"sales": 11,
+
+				"traffic": 110,
+
+				"contracts": 11,
+
+				"revenue": 2304736,
+
+				"trading": 8
+
+			},
+
+			"hc": {
+
+				"sales": 95,
+
+				"traffic": 750,
+
+				"contracts": 100,
+
+				"revenue": 24420000,
+
+				"trading": 57
+
+			},
+
+			"asp": {
+
+				"sales": 180,
+
+				"traffic": 600,
+
+				"contracts": 180,
+
+				"revenue": 30600000,
+
+				"trading": 54
+
+			}
+
+		},
+
+		{
+
+			"month": "2026-03",
+
+			"ch": {
+
+				"sales": 65,
+
+				"traffic": 450,
+
+				"contracts": 68,
+
+				"revenue": 8775700,
+
+				"trading": 46
+
+			},
+
+			"jt": {
+
+				"sales": 20,
+
+				"traffic": 250,
+
+				"contracts": 25,
+
+				"revenue": 1834891,
+
+				"trading": 14
+
+			},
+
+			"hp": {
+
+				"sales": 30,
+
+				"traffic": 300,
+
+				"contracts": 30,
+
+				"revenue": 10910883,
+
+				"trading": 18
+
+			},
+
+			"om": {
+
+				"sales": 13,
+
+				"traffic": 130,
+
+				"contracts": 13,
+
+				"revenue": 1966700,
+
+				"trading": 9
+
+			},
+
+			"jk": {
+
+				"sales": 17,
+
+				"traffic": 170,
+
+				"contracts": 17,
+
+				"revenue": 3051648,
+
+				"trading": 12
+
+			},
+
+			"hc": {
+
+				"sales": 100,
+
+				"traffic": 800,
+
+				"contracts": 120,
+
+				"revenue": 29415000,
+
+				"trading": 60
+
+			},
+
+			"asp": {
+
+				"sales": 170,
+
+				"traffic": 700,
+
+				"contracts": 170,
+
+				"revenue": 30600000,
+
+				"trading": 43
+
+			}
+
+		}
+
+	],
+
+	"metadata": {
+
+		"totalDays": 90,
+
+		"dateRange": "2026-01-01 - 2026-03-31",
+
+		"brandsIncluded": [
+
+			"ch",
+
+			"jt",
+
+			"hp",
+
+			"om",
+
+			"jk",
+
+			"hc",
+
+			"asp"
+
+		],
+
+		"workDays": 64,
+
+		"weekends": 26,
+
+		"defaultCurrency": "руб"
+
+	}
+
+}

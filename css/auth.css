@@ -1,0 +1,95 @@
+/* css/auth.css */
+
+/* ===== АВТОРИЗАЦИЯ ===== */
+.blurred {
+    filter: blur(4px);
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.7;
+    position: relative;
+}
+
+.blurred::after {
+    content: "🔒 Требуется авторизация";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 1000;
+    white-space: nowrap;
+}
+
+#loginModal .modal {
+    border-top: 4px solid var(--info);
+}
+
+#userPanel {
+    background: white;
+    border-radius: 12px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--form-shadow);
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    border-left: 4px solid var(--success);
+}
+
+/* ===== АДМИН-ПАНЕЛЬ ===== */
+.admin-section {
+    background: #fff3e0;
+    border-left: 4px solid var(--warning);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.user-management {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 15px;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.user-table th {
+    background: #f8f9fa;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.user-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.role-badge.admin {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+.role-badge.viewer {
+    background: #e8f5e9;
+    color: var(--success);
+    border: 1px solid #c8e6c9;
+}
