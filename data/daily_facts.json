@@ -4,7 +4,7 @@
 
 	"dataType": "daily_facts",
 
-	"exportDate": "2026-04-13T21:02:57",
+	"exportDate": "2026-04-14T10:46:40",
 
 	"sourceSystem": "1C",
 
@@ -10360,7 +10360,7 @@
 
 				"contracts": 1,
 
-				"revenue": 87196.11,
+				"revenue": 87144.77,
 
 				"trading": 0
 
@@ -10370,11 +10370,11 @@
 
 				"sales": 2,
 
-				"traffic": 7,
+				"traffic": 6,
 
 				"contracts": 1,
 
-				"revenue": 194343.97,
+				"revenue": 194292.63,
 
 				"trading": 2
 
@@ -10668,7 +10668,7 @@
 
 				"sales": 0,
 
-				"traffic": 3,
+				"traffic": 4,
 
 				"contracts": 0,
 
@@ -10682,7 +10682,7 @@
 
 				"sales": 1,
 
-				"traffic": 10,
+				"traffic": 11,
 
 				"contracts": 1,
 
@@ -10708,15 +10708,15 @@
 
 			"asp": {
 
-				"sales": 6,
+				"sales": 8,
 
-				"traffic": 19,
+				"traffic": 24,
 
-				"contracts": 9,
+				"contracts": 11,
 
-				"revenue": 1627579.93,
+				"revenue": 1831838.93,
 
-				"trading": 3
+				"trading": 4
 
 			}
 
