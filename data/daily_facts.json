@@ -11354,9 +11354,9 @@
 
 	"metadata": {
 
-		"totalDays": 103,
+		"totalDays": 105,
 
-		"dateRange": "2026-01-01 - 2026-04-13",
+		"dateRange": "2026-01-01 - 2026-04-15",
 
 		"brandsIncluded": [
 
@@ -11376,7 +11376,7 @@
 
 		],
 
-		"workDays": 73,
+		"workDays": 75,
 
 		"weekends": 30,
 
