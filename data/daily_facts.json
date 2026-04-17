@@ -11033,21 +11033,22 @@
 			}
 
 		},
+		
 		{
 
 			"date": "2026-04-17",
 
 			"ch": {
 
-				"sales": 0,
+				"sales": 1,
 
-				"traffic": 12,
+				"traffic": 13,
 
 				"contracts": 0,
 
-				"revenue": 0,
+				"revenue": 190082.93,
 
-				"trading": 0
+				"trading": 1
 
 			},
 
@@ -11055,7 +11056,7 @@
 
 				"sales": 1,
 
-				"traffic": 7,
+				"traffic": 9,
 
 				"contracts": 0,
 
@@ -11067,15 +11068,15 @@
 
 			"hp": {
 
-				"sales": 4,
+				"sales": 5,
 
 				"traffic": 4,
 
 				"contracts": 1,
 
-				"revenue": 1665765.56,
+				"revenue": 2074973.17,
 
-				"trading": 0
+				"trading": 1
 
 			},
 
@@ -11097,7 +11098,7 @@
 
 				"sales": 0,
 
-				"traffic": 7,
+				"traffic": 8,
 
 				"contracts": 0,
 
@@ -11111,7 +11112,7 @@
 
 				"sales": 0,
 
-				"traffic": 35,
+				"traffic": 41,
 
 				"contracts": 2,
 
@@ -11123,13 +11124,13 @@
 
 			"asp": {
 
-				"sales": 7,
+				"sales": 8,
 
-				"traffic": 29,
+				"traffic": 32,
 
-				"contracts": 7,
+				"contracts": 10,
 
-				"revenue": 1088439.94,
+				"revenue": 1306341.16,
 
 				"trading": 2
 
