@@ -4,7 +4,7 @@
 
 	"dataType": "daily_facts",
 
-	"exportDate": "2026-04-18T21:00:35",
+	"exportDate": "2026-04-19T21:00:39",
 
 	"sourceSystem": "1C",
 
@@ -7472,7 +7472,7 @@
 
 				"sales": 1,
 
-				"traffic": 26,
+				"traffic": 25,
 
 				"contracts": 6,
 
@@ -10818,7 +10818,7 @@
 
 				"contracts": 11,
 
-				"revenue": 1115406.44,
+				"revenue": 1111406.44,
 
 				"trading": 0
 
@@ -11012,7 +11012,7 @@
 
 				"contracts": 2,
 
-				"revenue": 1282497.77,
+				"revenue": 1283810.27,
 
 				"trading": 4
 
@@ -11116,7 +11116,7 @@
 
 				"contracts": 2,
 
-				"revenue": 35581,
+				"revenue": 0,
 
 				"trading": 0
 
@@ -11130,7 +11130,7 @@
 
 				"contracts": 10,
 
-				"revenue": 1185829.16,
+				"revenue": 1185629.16,
 
 				"trading": 2
 
@@ -11178,9 +11178,9 @@
 
 				"contracts": 3,
 
-				"revenue": 399928.96,
+				"revenue": 476895.26,
 
-				"trading": 1
+				"trading": 2
 
 			},
 
@@ -11206,7 +11206,7 @@
 
 				"contracts": 7,
 
-				"revenue": 130319.18,
+				"revenue": 129868.53,
 
 				"trading": 5
 
@@ -11214,13 +11214,13 @@
 
 			"hc": {
 
-				"sales": 14,
+				"sales": 13,
 
 				"traffic": 36,
 
 				"contracts": 11,
 
-				"revenue": 2534439.57,
+				"revenue": 2471969.2,
 
 				"trading": 10
 
@@ -11234,9 +11234,113 @@
 
 				"contracts": 9,
 
-				"revenue": 1070653.11,
+				"revenue": 949945.11,
 
 				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-04-19",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 24,
+
+				"contracts": 4,
+
+				"revenue": 354692.7,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 16,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 5,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 5,
+
+				"traffic": 45,
+
+				"contracts": 4,
+
+				"revenue": 871914.73,
+
+				"trading": 4
+
+			},
+
+			"asp": {
+
+				"sales": 15,
+
+				"traffic": 37,
+
+				"contracts": 12,
+
+				"revenue": 3594565.89,
+
+				"trading": 3
 
 			}
 
@@ -11666,9 +11770,9 @@
 
 	"metadata": {
 
-		"totalDays": 108,
+		"totalDays": 109,
 
-		"dateRange": "2026-01-01 - 2026-04-18",
+		"dateRange": "2026-01-01 - 2026-04-19",
 
 		"brandsIncluded": [
 
@@ -11690,7 +11794,7 @@
 
 		"workDays": 77,
 
-		"weekends": 31,
+		"weekends": 32,
 
 		"defaultCurrency": "руб"
 
