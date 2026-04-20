@@ -11344,9 +11344,114 @@
 
 			}
 
+		},
+			{
+
+			"date": "2026-04-20",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 20,
+
+				"contracts": 2,
+
+				"revenue": 15225.13,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 9,
+
+				"contracts": 0,
+
+				"revenue": -588870.31,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 4,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 2,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 10,
+
+				"contracts": -1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 2,
+
+				"traffic": 34,
+
+				"contracts": 2,
+
+				"revenue": 547394.18,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 9,
+
+				"traffic": 19,
+
+				"contracts": 7,
+
+				"revenue": 1196481.83,
+
+				"trading": 1
+
+			}
+
 		}
 
 	],
+
+
 
 	"monthlyPlans": [
 
@@ -11772,7 +11877,7 @@
 
 		"totalDays": 109,
 
-		"dateRange": "2026-01-01 - 2026-04-19",
+		"dateRange": "2026-01-01 - 2026-04-20",
 
 		"brandsIncluded": [
 
