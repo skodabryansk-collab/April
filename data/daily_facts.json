@@ -11914,29 +11914,29 @@
 
 			"om": {
 
-				"sales": 0,
+				"sales": 1,
 
-				"traffic": 0,
+				"traffic": 9,
 
-				"contracts": 0,
+				"contracts": 1,
 
-				"revenue": 0,
+				"revenue": -19300,
 
-				"trading": 0
+				"trading": 1
 
 			},
 
 			"jk": {
 
-				"sales": 0,
+				"sales": 2,
 
-				"traffic": 0,
+				"traffic": 9,
 
-				"contracts": 0,
+				"contracts": 1,
 
-				"revenue": 0,
+				"revenue": 312000,
 
-				"trading": 0
+				"trading": 1
 
 			},
 
