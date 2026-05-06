@@ -12904,9 +12904,112 @@
 
 			}
 
+		},
+{
+
+			"date": "2026-05-05",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 17,
+
+				"contracts": 1,
+
+				"revenue": 329859.63,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 11,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 400000,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 2,
+
+				"revenue": 229143.87,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 1,
+
+				"traffic": 27,
+
+				"contracts": 8,
+
+				"revenue": 229868.47,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 3,
+
+				"traffic": 23,
+
+				"contracts": 4,
+
+				"revenue": 1063872.08,
+
+				"trading": 1
+
+			}
+
 		}
 
-	],
+	]
 
 	"monthlyPlans": [
 
