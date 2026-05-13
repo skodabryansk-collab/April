@@ -13018,7 +13018,7 @@
 
 				"sales": 3,
 
-				"traffic": 20,
+				"traffic": 19,
 
 				"contracts": 4,
 
@@ -13136,7 +13136,7 @@
 
 				"sales": 1,
 
-				"traffic": 12,
+				"traffic": 11,
 
 				"contracts": 0,
 
@@ -13192,7 +13192,7 @@
 
 				"sales": 2,
 
-				"traffic": 32,
+				"traffic": 31,
 
 				"contracts": 4,
 
@@ -13310,7 +13310,7 @@
 
 				"sales": 12,
 
-				"traffic": 27,
+				"traffic": 26,
 
 				"contracts": 10,
 
@@ -13390,7 +13390,7 @@
 
 				"contracts": 2,
 
-				"revenue": 293040.59,
+				"revenue": 291950.59,
 
 				"trading": 1
 
@@ -13400,11 +13400,11 @@
 
 				"sales": 1,
 
-				"traffic": 2,
+				"traffic": 18,
 
 				"contracts": 0,
 
-				"revenue": 89589.92,
+				"revenue": 235296.92,
 
 				"trading": 0
 
@@ -13414,11 +13414,11 @@
 
 				"sales": 4,
 
-				"traffic": 19,
+				"traffic": 18,
 
 				"contracts": 5,
 
-				"revenue": 200131.29,
+				"revenue": 159613.29,
 
 				"trading": 2
 
@@ -13434,7 +13434,7 @@
 
 				"sales": 1,
 
-				"traffic": 10,
+				"traffic": 9,
 
 				"contracts": 1,
 
@@ -13502,15 +13502,15 @@
 
 			"hc": {
 
-				"sales": 0,
+				"sales": 4,
 
-				"traffic": 0,
+				"traffic": 25,
 
-				"contracts": 0,
+				"contracts": 3,
 
-				"revenue": 0,
+				"revenue": 827296.79,
 
-				"trading": 0
+				"trading": 3
 
 			},
 
@@ -13522,16 +13522,119 @@
 
 				"contracts": 4,
 
-				"revenue": 1054559.97,
+				"revenue": 996633.97,
 
 				"trading": 1
 
 			}
 
 		},
-		
-		
-			{
+
+		{
+
+			"date": "2026-05-11",
+
+			"ch": {
+
+				"sales": 0,
+
+				"traffic": 16,
+
+				"contracts": 2,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 8,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 13,
+
+				"contracts": 0,
+
+				"revenue": 109546.01,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 6,
+
+				"traffic": 34,
+
+				"contracts": 7,
+
+				"revenue": 1170952.2,
+
+				"trading": 3
+
+			},
+
+			"asp": {
+
+				"sales": 7,
+
+				"traffic": 32,
+
+				"contracts": 11,
+
+				"revenue": 1577213.57,
+
+				"trading": 4
+
+			}
+
+		},
+
+		{
 
 			"date": "2026-05-12",
 
@@ -13553,7 +13656,7 @@
 
 				"sales": 0,
 
-				"traffic": 12,
+				"traffic": 11,
 
 				"contracts": 0,
 
@@ -13607,7 +13710,7 @@
 
 			"hc": {
 
-				"sales": 6,
+				"sales": 1,
 
 				"traffic": 34,
 
@@ -13627,7 +13730,7 @@
 
 				"contracts": 7,
 
-				"revenue": 2468112.06,
+				"revenue": 2409080.06,
 
 				"trading": 2
 
@@ -13638,422 +13741,6 @@
 	],
 
 	"monthlyPlans": [
-
-		{
-
-			"month": "2026-01",
-
-			"ch": {
-
-				"sales": 55,
-
-				"traffic": 350,
-
-				"contracts": 55,
-
-				"revenue": 11389000,
-
-				"trading": 39
-
-			},
-
-			"jt": {
-
-				"sales": 25,
-
-				"traffic": 300,
-
-				"contracts": 30,
-
-				"revenue": 6416062,
-
-				"trading": 18
-
-			},
-
-			"hp": {
-
-				"sales": 35,
-
-				"traffic": 300,
-
-				"contracts": 35,
-
-				"revenue": 7978817,
-
-				"trading": 21
-
-			},
-
-			"om": {
-
-				"sales": 11,
-
-				"traffic": 110,
-
-				"contracts": 11,
-
-				"revenue": 1970715,
-
-				"trading": 8
-
-			},
-
-			"jk": {
-
-				"sales": 14,
-
-				"traffic": 140,
-
-				"contracts": 14,
-
-				"revenue": 2333482,
-
-				"trading": 10
-
-			},
-
-			"hc": {
-
-				"sales": 85,
-
-				"traffic": 500,
-
-				"contracts": 85,
-
-				"revenue": 21573819,
-
-				"trading": 51
-
-			},
-
-			"asp": {
-
-				"sales": 180,
-
-				"traffic": 600,
-
-				"contracts": 180,
-
-				"revenue": 30600000,
-
-				"trading": 54
-
-			}
-
-		},
-
-		{
-
-			"month": "2026-02",
-
-			"ch": {
-
-				"sales": 65,
-
-				"traffic": 450,
-
-				"contracts": 68,
-
-				"revenue": 15565916,
-
-				"trading": 46
-
-			},
-
-			"jt": {
-
-				"sales": 20,
-
-				"traffic": 250,
-
-				"contracts": 25,
-
-				"revenue": 2734782,
-
-				"trading": 14
-
-			},
-
-			"hp": {
-
-				"sales": 25,
-
-				"traffic": 250,
-
-				"contracts": 25,
-
-				"revenue": 8945849,
-
-				"trading": 15
-
-			},
-
-			"om": {
-
-				"sales": 14,
-
-				"traffic": 140,
-
-				"contracts": 14,
-
-				"revenue": 2811965,
-
-				"trading": 10
-
-			},
-
-			"jk": {
-
-				"sales": 11,
-
-				"traffic": 110,
-
-				"contracts": 11,
-
-				"revenue": 2304736,
-
-				"trading": 8
-
-			},
-
-			"hc": {
-
-				"sales": 95,
-
-				"traffic": 750,
-
-				"contracts": 100,
-
-				"revenue": 24420000,
-
-				"trading": 57
-
-			},
-
-			"asp": {
-
-				"sales": 180,
-
-				"traffic": 600,
-
-				"contracts": 180,
-
-				"revenue": 30600000,
-
-				"trading": 54
-
-			}
-
-		},
-
-		{
-
-			"month": "2026-03",
-
-			"ch": {
-
-				"sales": 65,
-
-				"traffic": 450,
-
-				"contracts": 68,
-
-				"revenue": 8775700,
-
-				"trading": 46
-
-			},
-
-			"jt": {
-
-				"sales": 20,
-
-				"traffic": 250,
-
-				"contracts": 25,
-
-				"revenue": 1834891,
-
-				"trading": 14
-
-			},
-
-			"hp": {
-
-				"sales": 30,
-
-				"traffic": 300,
-
-				"contracts": 30,
-
-				"revenue": 10910883,
-
-				"trading": 18
-
-			},
-
-			"om": {
-
-				"sales": 13,
-
-				"traffic": 130,
-
-				"contracts": 13,
-
-				"revenue": 1966700,
-
-				"trading": 9
-
-			},
-
-			"jk": {
-
-				"sales": 17,
-
-				"traffic": 170,
-
-				"contracts": 17,
-
-				"revenue": 3051648,
-
-				"trading": 12
-
-			},
-
-			"hc": {
-
-				"sales": 100,
-
-				"traffic": 800,
-
-				"contracts": 120,
-
-				"revenue": 29415000,
-
-				"trading": 60
-
-			},
-
-			"asp": {
-
-				"sales": 170,
-
-				"traffic": 700,
-
-				"contracts": 170,
-
-				"revenue": 30600000,
-
-				"trading": 43
-
-			}
-
-		},
-
-		{
-
-			"month": "2026-04",
-
-			"ch": {
-
-				"sales": 80,
-
-				"traffic": 500,
-
-				"contracts": 75,
-
-				"revenue": 10525572,
-
-				"trading": 56
-
-			},
-
-			"jt": {
-
-				"sales": 20,
-
-				"traffic": 250,
-
-				"contracts": 25,
-
-				"revenue": 3880864,
-
-				"trading": 14
-
-			},
-
-			"hp": {
-
-				"sales": 35,
-
-				"traffic": 350,
-
-				"contracts": 35,
-
-				"revenue": 9044162,
-
-				"trading": 21
-
-			},
-
-			"om": {
-
-				"sales": 15,
-
-				"traffic": 150,
-
-				"contracts": 15,
-
-				"revenue": 1368217,
-
-				"trading": 11
-
-			},
-
-			"jk": {
-
-				"sales": 35,
-
-				"traffic": 250,
-
-				"contracts": 35,
-
-				"revenue": 5357397,
-
-				"trading": 25
-
-			},
-
-			"hc": {
-
-				"sales": 130,
-
-				"traffic": 900,
-
-				"contracts": 130,
-
-				"revenue": 31037454,
-
-				"trading": 78
-
-			},
-
-			"asp": {
-
-				"sales": 235,
-
-				"traffic": 850,
-
-				"contracts": 235,
-
-				"revenue": 40000000,
-
-				"trading": 59
-
-			}
-
-		},
 
 		{
 
