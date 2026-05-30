@@ -4,7 +4,7 @@
 
 	"dataType": "daily_facts",
 
-	"exportDate": "2026-05-29T21:00:23",
+	"exportDate": "2026-05-30T21:00:23",
 
 	"sourceSystem": "1C",
 
@@ -13476,7 +13476,7 @@
 
 				"sales": 0,
 
-				"traffic": 5,
+				"traffic": 4,
 
 				"contracts": 0,
 
@@ -15126,7 +15126,7 @@
 
 				"sales": 2,
 
-				"traffic": 9,
+				"traffic": 8,
 
 				"contracts": 1,
 
@@ -15408,15 +15408,15 @@
 
 			"ch": {
 
-				"sales": 7,
+				"sales": 8,
 
-				"traffic": 22,
+				"traffic": 21,
 
 				"contracts": 4,
 
-				"revenue": -35689.52,
+				"revenue": -14418.66,
 
-				"trading": 5
+				"trading": 6
 
 			},
 
@@ -15428,7 +15428,7 @@
 
 				"contracts": 2,
 
-				"revenue": -1184490.53,
+				"revenue": -1180740.53,
 
 				"trading": 1
 
@@ -15438,7 +15438,7 @@
 
 				"sales": 0,
 
-				"traffic": 8,
+				"traffic": 9,
 
 				"contracts": 0,
 
@@ -15470,7 +15470,7 @@
 
 				"contracts": 2,
 
-				"revenue": 149881.08,
+				"revenue": 240950.33,
 
 				"trading": 1
 
@@ -15498,7 +15498,111 @@
 
 				"contracts": 9,
 
-				"revenue": 2072864,
+				"revenue": 2231982.66,
+
+				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-05-30",
+
+			"ch": {
+
+				"sales": 6,
+
+				"traffic": 29,
+
+				"contracts": 5,
+
+				"revenue": 278269.57,
+
+				"trading": 4
+
+			},
+
+			"jt": {
+
+				"sales": 2,
+
+				"traffic": 10,
+
+				"contracts": 1,
+
+				"revenue": -445827.99,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 12,
+
+				"contracts": 2,
+
+				"revenue": 68250.51,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 9,
+
+				"traffic": 41,
+
+				"contracts": 7,
+
+				"revenue": 1788026.4,
+
+				"trading": 7
+
+			},
+
+			"asp": {
+
+				"sales": 10,
+
+				"traffic": 23,
+
+				"contracts": 9,
+
+				"revenue": 446262.15,
 
 				"trading": 2
 
@@ -16034,9 +16138,9 @@
 
 	"metadata": {
 
-		"totalDays": 149,
+		"totalDays": 150,
 
-		"dateRange": "2026-01-01 - 2026-05-29",
+		"dateRange": "2026-01-01 - 2026-05-30",
 
 		"brandsIncluded": [
 
@@ -16058,7 +16162,7 @@
 
 		"workDays": 107,
 
-		"weekends": 42,
+		"weekends": 43,
 
 		"defaultCurrency": "руб"
 
