@@ -4,7 +4,7 @@
 
 	"dataType": "daily_facts",
 
-	"exportDate": "2026-05-30T21:00:23",
+	"exportDate": "2026-05-31T21:00:26",
 
 	"sourceSystem": "1C",
 
@@ -13124,7 +13124,7 @@
 
 				"traffic": 25,
 
-				"contracts": 2,
+				"contracts": 1,
 
 				"revenue": 82562.96,
 
@@ -15276,7 +15276,7 @@
 
 				"contracts": 1,
 
-				"revenue": 489804.37,
+				"revenue": 490855.91,
 
 				"trading": 1
 
@@ -15514,7 +15514,7 @@
 
 				"sales": 6,
 
-				"traffic": 29,
+				"traffic": 30,
 
 				"contracts": 5,
 
@@ -15584,7 +15584,7 @@
 
 				"sales": 9,
 
-				"traffic": 41,
+				"traffic": 40,
 
 				"contracts": 7,
 
@@ -15602,9 +15602,113 @@
 
 				"contracts": 9,
 
-				"revenue": 446262.15,
+				"revenue": 300724.15,
 
 				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-05-31",
+
+			"ch": {
+
+				"sales": 5,
+
+				"traffic": 19,
+
+				"contracts": 3,
+
+				"revenue": 66660.62,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 14,
+
+				"contracts": 1,
+
+				"revenue": -215061.57,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 15,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 2,
+
+				"traffic": 5,
+
+				"contracts": 2,
+
+				"revenue": -109069.1,
+
+				"trading": 2
+
+			},
+
+			"jk": {
+
+				"sales": 4,
+
+				"traffic": 19,
+
+				"contracts": 3,
+
+				"revenue": 138983.33,
+
+				"trading": 2
+
+			},
+
+			"hc": {
+
+				"sales": 11,
+
+				"traffic": 29,
+
+				"contracts": 11,
+
+				"revenue": 1486406.32,
+
+				"trading": 7
+
+			},
+
+			"asp": {
+
+				"sales": 20,
+
+				"traffic": 36,
+
+				"contracts": 19,
+
+				"revenue": 3346122.43,
+
+				"trading": 3
 
 			}
 
@@ -16138,9 +16242,9 @@
 
 	"metadata": {
 
-		"totalDays": 150,
+		"totalDays": 151,
 
-		"dateRange": "2026-01-01 - 2026-05-30",
+		"dateRange": "2026-01-01 - 2026-05-31",
 
 		"brandsIncluded": [
 
@@ -16162,7 +16266,7 @@
 
 		"workDays": 107,
 
-		"weekends": 43,
+		"weekends": 44,
 
 		"defaultCurrency": "руб"
 
