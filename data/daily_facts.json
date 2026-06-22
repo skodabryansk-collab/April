@@ -4,7 +4,7 @@
 
 	"dataType": "daily_facts",
 
-	"exportDate": "2026-06-21T21:00:44",
+	"exportDate": "2026-06-22T21:00:22",
 
 	"sourceSystem": "1C",
 
@@ -13210,7 +13210,7 @@
 
 				"contracts": 3,
 
-				"revenue": -186725.87,
+				"revenue": -179698.57,
 
 				"trading": 0
 
@@ -17356,7 +17356,7 @@
 
 				"contracts": 4,
 
-				"revenue": 393428.35,
+				"revenue": 426534.85,
 
 				"trading": 2
 
@@ -17414,7 +17414,7 @@
 
 				"sales": 1,
 
-				"traffic": 10,
+				"traffic": 9,
 
 				"contracts": 1,
 
@@ -17772,7 +17772,7 @@
 
 				"contracts": 7,
 
-				"revenue": 1463862.62,
+				"revenue": 1477362.62,
 
 				"trading": 7
 
@@ -17806,7 +17806,7 @@
 
 				"contracts": 5,
 
-				"revenue": 4404.63,
+				"revenue": 112149.81,
 
 				"trading": 2
 
@@ -17872,7 +17872,7 @@
 
 				"sales": 5,
 
-				"traffic": 18,
+				"traffic": 19,
 
 				"contracts": 6,
 
@@ -17890,9 +17890,113 @@
 
 				"contracts": 13,
 
-				"revenue": 2014148.77,
+				"revenue": 1896859.77,
 
 				"trading": 4
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-06-22",
+
+			"ch": {
+
+				"sales": 4,
+
+				"traffic": 15,
+
+				"contracts": 4,
+
+				"revenue": 284009.31,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 12,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 179620.68,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 7,
+
+				"contracts": 1,
+
+				"revenue": -175334.82,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 19,
+
+				"contracts": 2,
+
+				"revenue": 193596.66,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 10,
+
+				"traffic": 24,
+
+				"contracts": 9,
+
+				"revenue": 2334623,
+
+				"trading": 0
 
 			}
 
@@ -18530,9 +18634,9 @@
 
 	"metadata": {
 
-		"totalDays": 172,
+		"totalDays": 173,
 
-		"dateRange": "2026-01-01 - 2026-06-21",
+		"dateRange": "2026-01-01 - 2026-06-22",
 
 		"brandsIncluded": [
 
@@ -18552,7 +18656,7 @@
 
 		],
 
-		"workDays": 122,
+		"workDays": 123,
 
 		"weekends": 50,
 
