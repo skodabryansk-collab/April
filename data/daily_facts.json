@@ -4,7 +4,7 @@
 
 	"dataType": "daily_facts",
 
-	"exportDate": "2026-06-25T21:00:22",
+	"exportDate": "2026-06-27T21:00:35",
 
 	"sourceSystem": "1C",
 
@@ -17368,7 +17368,7 @@
 
 				"contracts": 5,
 
-				"revenue": -308465.07,
+				"revenue": -305965.07,
 
 				"trading": 2
 
@@ -19016,7 +19016,7 @@
 
 				"sales": 2,
 
-				"traffic": 18,
+				"traffic": 19,
 
 				"contracts": 3,
 
@@ -19468,7 +19468,7 @@
 
 				"sales": 7,
 
-				"traffic": 28,
+				"traffic": 27,
 
 				"contracts": 7,
 
@@ -19606,7 +19606,7 @@
 
 				"sales": 2,
 
-				"traffic": 25,
+				"traffic": 26,
 
 				"contracts": 1,
 
@@ -20520,7 +20520,7 @@
 
 				"contracts": 7,
 
-				"revenue": 537600.57,
+				"revenue": 536413.07,
 
 				"trading": 2
 
@@ -20530,7 +20530,7 @@
 
 				"sales": 9,
 
-				"traffic": 29,
+				"traffic": 27,
 
 				"contracts": 9,
 
@@ -20564,7 +20564,7 @@
 
 				"sales": 1,
 
-				"traffic": 16,
+				"traffic": 15,
 
 				"contracts": 1,
 
@@ -20624,7 +20624,7 @@
 
 				"contracts": 1,
 
-				"revenue": 0,
+				"revenue": 42384.58,
 
 				"trading": 0
 
@@ -20634,11 +20634,11 @@
 
 				"sales": 5,
 
-				"traffic": 27,
+				"traffic": 28,
 
 				"contracts": 1,
 
-				"revenue": 640147.46,
+				"revenue": 633917.28,
 
 				"trading": 2
 
@@ -20752,7 +20752,7 @@
 
 				"sales": 3,
 
-				"traffic": 22,
+				"traffic": 24,
 
 				"contracts": 2,
 
@@ -20766,13 +20766,249 @@
 
 				"sales": 11,
 
-				"traffic": 25,
+				"traffic": 24,
 
 				"contracts": 9,
 
-				"revenue": 1548485.37,
+				"revenue": 1439593.37,
 
 				"trading": 2
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-06-26",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 20,
+
+				"contracts": 2,
+
+				"revenue": 178568.57,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 6,
+
+				"contracts": 2,
+
+				"revenue": -155573.83,
+
+				"trading": 1
+
+			},
+
+			"hp": {
+
+				"sales": 2,
+
+				"traffic": 11,
+
+				"contracts": 1,
+
+				"revenue": 742706.68,
+
+				"trading": 1
+
+			},
+
+			"se": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 1,
+
+				"traffic": 8,
+
+				"contracts": 1,
+
+				"revenue": -73900.44,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 0,
+
+				"traffic": 20,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"asp": {
+
+				"sales": 8,
+
+				"traffic": 21,
+
+				"contracts": 7,
+
+				"revenue": 1551130.62,
+
+				"trading": 1
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-06-27",
+
+			"ch": {
+
+				"sales": 1,
+
+				"traffic": 21,
+
+				"contracts": 4,
+
+				"revenue": -120489.11,
+
+				"trading": 1
+
+			},
+
+			"jt": {
+
+				"sales": 1,
+
+				"traffic": 9,
+
+				"contracts": 0,
+
+				"revenue": -73059.79,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 1,
+
+				"traffic": 6,
+
+				"contracts": 0,
+
+				"revenue": -29570.83,
+
+				"trading": 1
+
+			},
+
+			"se": {
+
+				"sales": 0,
+
+				"traffic": 0,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"om": {
+
+				"sales": 0,
+
+				"traffic": 3,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"jk": {
+
+				"sales": 2,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 94785.62,
+
+				"trading": 1
+
+			},
+
+			"hc": {
+
+				"sales": 4,
+
+				"traffic": 39,
+
+				"contracts": 10,
+
+				"revenue": 436934.03,
+
+				"trading": 2
+
+			},
+
+			"asp": {
+
+				"sales": 18,
+
+				"traffic": 30,
+
+				"contracts": 13,
+
+				"revenue": -568710.07,
+
+				"trading": 5
 
 			}
 
@@ -21494,9 +21730,9 @@
 
 	"metadata": {
 
-		"totalDays": 176,
+		"totalDays": 178,
 
-		"dateRange": "2026-01-01 - 2026-06-25",
+		"dateRange": "2026-01-01 - 2026-06-27",
 
 		"brandsIncluded": [
 
@@ -21518,9 +21754,9 @@
 
 		],
 
-		"workDays": 126,
+		"workDays": 127,
 
-		"weekends": 50,
+		"weekends": 51,
 
 		"defaultCurrency": "руб"
 
