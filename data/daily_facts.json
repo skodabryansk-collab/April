@@ -4,7 +4,7 @@
 
 	"dataType": "daily_facts",
 
-	"exportDate": "2026-06-27T21:00:35",
+	"exportDate": "2026-06-28T21:00:28",
 
 	"sourceSystem": "1C",
 
@@ -20770,7 +20770,7 @@
 
 				"contracts": 9,
 
-				"revenue": 1439593.37,
+				"revenue": 1439093.37,
 
 				"trading": 2
 
@@ -21006,9 +21006,127 @@
 
 				"contracts": 13,
 
-				"revenue": -568710.07,
+				"revenue": -798584.57,
 
 				"trading": 5
+
+			}
+
+		},
+
+		{
+
+			"date": "2026-06-28",
+
+			"ch": {
+
+				"sales": 3,
+
+				"traffic": 14,
+
+				"contracts": 4,
+
+				"revenue": 41197.12,
+
+				"trading": 3
+
+			},
+
+			"jt": {
+
+				"sales": 0,
+
+				"traffic": 7,
+
+				"contracts": 0,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hp": {
+
+				"sales": 0,
+
+				"traffic": 6,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"se": {
+
+				"sales": 1,
+
+				"traffic": 1,
+
+				"contracts": 1,
+
+				"revenue": -187744.99,
+
+				"trading": 1
+
+			},
+
+			"om": {
+
+				"sales": 2,
+
+				"traffic": 2,
+
+				"contracts": 1,
+
+				"revenue": 291826.8,
+
+				"trading": 1
+
+			},
+
+			"jk": {
+
+				"sales": 0,
+
+				"traffic": 9,
+
+				"contracts": 1,
+
+				"revenue": 0,
+
+				"trading": 0
+
+			},
+
+			"hc": {
+
+				"sales": 6,
+
+				"traffic": 23,
+
+				"contracts": 3,
+
+				"revenue": 1121439.27,
+
+				"trading": 5
+
+			},
+
+			"asp": {
+
+				"sales": 6,
+
+				"traffic": 27,
+
+				"contracts": 6,
+
+				"revenue": 598965.5,
+
+				"trading": 1
 
 			}
 
@@ -21730,9 +21848,9 @@
 
 	"metadata": {
 
-		"totalDays": 178,
+		"totalDays": 179,
 
-		"dateRange": "2026-01-01 - 2026-06-27",
+		"dateRange": "2026-01-01 - 2026-06-28",
 
 		"brandsIncluded": [
 
@@ -21756,7 +21874,7 @@
 
 		"workDays": 127,
 
-		"weekends": 51,
+		"weekends": 52,
 
 		"defaultCurrency": "руб"
 
