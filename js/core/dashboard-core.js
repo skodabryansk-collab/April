@@ -463,17 +463,27 @@ export class DashboardCore {
         return this.aggregateRecords(records);
     }
 
-    renderComparisonDelta(currentValue, comparisonValue) {
+    getComparisonTotals() {
+        const comparisonData = this.getComparisonData();
+        const totals = { sales: 0, traffic: 0, revenue: 0, contracts: 0, trading: 0 };
+        Object.values(comparisonData).forEach(brand => {
+            Object.keys(totals).forEach(metric => { totals[metric] += brand[metric] || 0; });
+        });
+        return Object.keys(comparisonData).length ? totals : null;
+    }
+
+    renderComparisonDelta(currentValue, comparisonValue, type) {
         if (!this.comparisonParams.enabled || comparisonValue === undefined || comparisonValue === null) return "";
+        const displayValue = type === "revenue" ? this.formatRevenueForDisplay(comparisonValue) : formatNumber(comparisonValue);
         if (comparisonValue === 0) {
-            if (currentValue === 0) return '<div class="comparison-delta neutral">0%</div>';
-            return '<div class="comparison-delta neutral">—</div>';
+            if (currentValue === 0) return '<span class="comparison-delta neutral">0% (0)</span>';
+            return '<span class="comparison-delta neutral">— (0)</span>';
         }
         const delta = Math.round(((currentValue - comparisonValue) / Math.abs(comparisonValue)) * 100);
-        const sign = delta > 0 ? '+' : '';
-        const tone = delta > 0 ? 'positive' : delta < 0 ? 'negative' : 'neutral';
-        const color = tone === 'positive' ? '#2e7d32' : tone === 'negative' ? '#d32f2f' : '#6c757d';
-        return `<span class="comparison-delta ${tone}" style="color:${color};" title="Отклонение от выбранного периода сравнения">${sign}${delta}%</span>`;
+        const sign = delta > 0 ? ' +'.trim() : "";
+        const tone = delta > 0 ? "positive" : delta < 0 ? "negative" : "neutral";
+        const color = tone === "positive" ? "#2e7d32" : tone === "negative" ? "#d32f2f" : "#6c757d";
+        return `<span class="comparison-delta ${tone}" style="color:${color};" title="Изменение факта к факту периода сравнения">${sign}${delta}% (${displayValue})</span>`;
     }
 
     aggregateRecords(records) {
@@ -1120,11 +1130,11 @@ export class DashboardCore {
                 radarScore, salesForecast, trafficForecast, revenueForecast, contractsForecast, tradingForecast, comparison } = item;
 
         const comparisonBrandData = comparison || {};
-        const salesDelta = this.renderComparisonDelta(data.sales.fact, comparisonBrandData.sales);
-        const contractsDelta = this.renderComparisonDelta(data.contracts.fact, comparisonBrandData.contracts);
-        const tradingDelta = this.renderComparisonDelta(data.trading.fact, comparisonBrandData.trading);
-        const trafficDelta = this.renderComparisonDelta(data.traffic.fact, comparisonBrandData.traffic);
-        const revenueDelta = this.renderComparisonDelta(data.revenue.fact, comparisonBrandData.revenue);
+        const salesDelta = this.renderComparisonDelta(data.sales.fact, comparisonBrandData.sales, 'sales');
+        const contractsDelta = this.renderComparisonDelta(data.contracts.fact, comparisonBrandData.contracts, 'contracts');
+        const tradingDelta = this.renderComparisonDelta(data.trading.fact, comparisonBrandData.trading, 'trading');
+        const trafficDelta = this.renderComparisonDelta(data.traffic.fact, comparisonBrandData.traffic, 'traffic');
+        const revenueDelta = this.renderComparisonDelta(data.revenue.fact, comparisonBrandData.revenue, 'revenue');
         
         const salesLevel = getLevelByPercent(salesForecastPercent);
         const trafficLevel = getLevelByPercent(trafficForecastPercent);
@@ -1474,6 +1484,12 @@ export class DashboardCore {
         
         const monthName = getMonthName(parseInt(this.rangeParams.month?.substring(5) || '1'));
         const year = this.rangeParams.month?.substring(0, 4) || '2026';
+        const comparisonTotals = this.getComparisonTotals();
+        const totalSalesDelta = this.renderComparisonDelta(totals.sales.fact, comparisonTotals?.sales, 'sales');
+        const totalContractsDelta = this.renderComparisonDelta(totals.contracts.fact, comparisonTotals?.contracts, 'contracts');
+        const totalTradingDelta = this.renderComparisonDelta(totals.trading.fact, comparisonTotals?.trading, 'trading');
+        const totalTrafficDelta = this.renderComparisonDelta(totals.traffic.fact, comparisonTotals?.traffic, 'traffic');
+        const totalRevenueDelta = this.renderComparisonDelta(totals.revenue.fact, comparisonTotals?.revenue, 'revenue');
         
         let forecastHtml = '';
         if (showForecast && forecastTotals) {
@@ -1526,7 +1542,7 @@ export class DashboardCore {
                             <div class="metric-title">ПРОДАЖИ</div>
                             <div class="fact-percent">${totals.sales.percent}%</div>
                         </div>
-                        ${createProgressBar('sales', totals.sales.fact, totals.sales.plan, showForecast ? forecastTotals.sales.totalForecast : totals.sales.fact, totals.sales.percent, showForecast ? Math.round((forecastTotals.sales.totalForecast / totals.sales.plan) * 100) : totals.sales.percent)}
+                        ${createProgressBar('sales', totals.sales.fact, totals.sales.plan, showForecast ? forecastTotals.sales.totalForecast : totals.sales.fact, totals.sales.percent, showForecast ? Math.round((forecastTotals.sales.totalForecast / totals.sales.plan) * 100) : totals.sales.percent, totalSalesDelta)}
                         <div class="metric-details">
                             <div class="detail-item"><span class="detail-label">Факт / План:</span><span class="detail-value">${formatNumber(totals.sales.fact)}/${formatNumber(totals.sales.plan)}</span></div>
                             <div class="detail-item"><span class="detail-label">Корректировка плана:</span><span class="detail-value">${planAdjustmentText}</span></div>
@@ -1541,7 +1557,7 @@ export class DashboardCore {
                             <div class="metric-title">БАНК КОНТРАКТОВ</div>
                             <div class="fact-percent">${totals.contracts.percent}%</div>
                         </div>
-                        ${createProgressBar('contracts', totals.contracts.fact, totals.contracts.plan, showForecast ? forecastTotals.contracts.totalForecast : totals.contracts.fact, totals.contracts.percent, showForecast ? Math.round((forecastTotals.contracts.totalForecast / totals.contracts.plan) * 100) : totals.contracts.percent)}
+                        ${createProgressBar('contracts', totals.contracts.fact, totals.contracts.plan, showForecast ? forecastTotals.contracts.totalForecast : totals.contracts.fact, totals.contracts.percent, showForecast ? Math.round((forecastTotals.contracts.totalForecast / totals.contracts.plan) * 100) : totals.contracts.percent, totalContractsDelta)}
                         <div class="metric-details">
                             <div class="detail-item"><span class="detail-label">Факт / План:</span><span class="detail-value">${formatNumber(totals.contracts.fact)}/${formatNumber(totals.contracts.plan)}</span></div>
                             <div class="detail-item"><span class="detail-label">% в контракт:</span><span class="detail-value">${totals.traffic.fact > 0 ? formatDecimal((totals.contracts.fact / totals.traffic.fact * 100), 1) : 0}%</span></div>
@@ -1556,7 +1572,7 @@ export class DashboardCore {
                             <div class="metric-title">КОЛ-ВО ТРЕЙДИН</div>
                             <div class="fact-percent">${totals.trading.percent}%</div>
                         </div>
-                        ${createProgressBar('trading', totals.trading.fact, totals.trading.plan, showForecast ? forecastTotals.trading.totalForecast : totals.trading.fact, totals.trading.percent, showForecast ? Math.round((forecastTotals.trading.totalForecast / totals.trading.plan) * 100) : totals.trading.percent)}
+                        ${createProgressBar('trading', totals.trading.fact, totals.trading.plan, showForecast ? forecastTotals.trading.totalForecast : totals.trading.fact, totals.trading.percent, showForecast ? Math.round((forecastTotals.trading.totalForecast / totals.trading.plan) * 100) : totals.trading.percent, totalTradingDelta)}
                         <div class="metric-details">
                             <div class="detail-item"><span class="detail-label">Факт / План:</span><span class="detail-value">${formatNumber(totals.trading.fact)}/${formatNumber(totals.trading.plan)}</span></div>
                             <div class="detail-item"><span class="detail-label">%Трейдин (охват):</span><span class="detail-value">${totals.sales.fact > 0 ? formatDecimal((totals.trading.fact / totals.sales.fact * 100), 1) : 0}%</span></div>
@@ -1571,7 +1587,7 @@ export class DashboardCore {
                             <div class="metric-title">ТРАФИК</div>
                             <div class="fact-percent">${totals.traffic.percent}%</div>
                         </div>
-                        ${createProgressBar('traffic', totals.traffic.fact, totals.traffic.plan, showForecast ? forecastTotals.traffic.totalForecast : totals.traffic.fact, totals.traffic.percent, showForecast ? Math.round((forecastTotals.traffic.totalForecast / totals.traffic.plan) * 100) : totals.traffic.percent)}
+                        ${createProgressBar('traffic', totals.traffic.fact, totals.traffic.plan, showForecast ? forecastTotals.traffic.totalForecast : totals.traffic.fact, totals.traffic.percent, showForecast ? Math.round((forecastTotals.traffic.totalForecast / totals.traffic.plan) * 100) : totals.traffic.percent, totalTrafficDelta)}
                         ${showForecast ? `
                         <div class="metric-details">
                             <div class="detail-item"><span class="detail-label">Темп в день:</span><span class="detail-value">${formatDecimal(totals.traffic.fact / day, 1)}</span></div>
@@ -1584,7 +1600,7 @@ export class DashboardCore {
                             <div class="metric-title">ДОХОД, МЛН.</div>
                             <div class="fact-percent">${totals.revenue.percent}%</div>
                         </div>
-                        ${createProgressBar('revenue', totals.revenue.fact, totals.revenue.plan, showForecast ? forecastTotals.revenue.totalForecast : totals.revenue.fact, totals.revenue.percent, showForecast ? Math.round((forecastTotals.revenue.totalForecast / totals.revenue.plan) * 100) : totals.revenue.percent)}
+                        ${createProgressBar('revenue', totals.revenue.fact, totals.revenue.plan, showForecast ? forecastTotals.revenue.totalForecast : totals.revenue.fact, totals.revenue.percent, showForecast ? Math.round((forecastTotals.revenue.totalForecast / totals.revenue.plan) * 100) : totals.revenue.percent, totalRevenueDelta)}
                         ${showForecast ? `
                         <div class="metric-details">
                             <div class="detail-item"><span class="detail-label">Темп в день:</span><span class="detail-value">${this.formatRevenueForDisplay(totals.revenue.fact / day)}</span></div>
