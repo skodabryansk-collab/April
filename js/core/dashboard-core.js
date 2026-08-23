@@ -1522,10 +1522,6 @@ export class DashboardCore {
             `;
         }
         
-        const planAdjustmentText = this.rangeParams.allDaysSelected ? 
-            'полный' : 
-            `${Math.round(this.rangeParams.planAdjustmentFactor * 100)}% от месячного (${this.rangeParams.daysCount} из ${this.rangeParams.totalDaysInMonth} дней)`;
-        
         const html = `
             <div class="total-gk-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -1544,8 +1540,6 @@ export class DashboardCore {
                         </div>
                         ${createProgressBar('sales', totals.sales.fact, totals.sales.plan, showForecast ? forecastTotals.sales.totalForecast : totals.sales.fact, totals.sales.percent, showForecast ? Math.round((forecastTotals.sales.totalForecast / totals.sales.plan) * 100) : totals.sales.percent, totalSalesDelta)}
                         <div class="metric-details">
-                            <div class="detail-item"><span class="detail-label">Факт / План:</span><span class="detail-value">${formatNumber(totals.sales.fact)}/${formatNumber(totals.sales.plan)}</span></div>
-                            <div class="detail-item"><span class="detail-label">Корректировка плана:</span><span class="detail-value">${planAdjustmentText}</span></div>
                             ${showForecast ? `
                             <div class="detail-item"><span class="detail-label">Темп в день:</span><span class="detail-value">${formatDecimal(totals.sales.fact / day, 1)}</span></div>
                             ` : ''}
@@ -1559,7 +1553,6 @@ export class DashboardCore {
                         </div>
                         ${createProgressBar('contracts', totals.contracts.fact, totals.contracts.plan, showForecast ? forecastTotals.contracts.totalForecast : totals.contracts.fact, totals.contracts.percent, showForecast ? Math.round((forecastTotals.contracts.totalForecast / totals.contracts.plan) * 100) : totals.contracts.percent, totalContractsDelta)}
                         <div class="metric-details">
-                            <div class="detail-item"><span class="detail-label">Факт / План:</span><span class="detail-value">${formatNumber(totals.contracts.fact)}/${formatNumber(totals.contracts.plan)}</span></div>
                             <div class="detail-item"><span class="detail-label">% в контракт:</span><span class="detail-value">${totals.traffic.fact > 0 ? formatDecimal((totals.contracts.fact / totals.traffic.fact * 100), 1) : 0}%</span></div>
                             ${showForecast ? `
                             <div class="detail-item"><span class="detail-label">Темп в день:</span><span class="detail-value">${formatDecimal(totals.contracts.fact / day, 1)}</span></div>
@@ -1574,7 +1567,6 @@ export class DashboardCore {
                         </div>
                         ${createProgressBar('trading', totals.trading.fact, totals.trading.plan, showForecast ? forecastTotals.trading.totalForecast : totals.trading.fact, totals.trading.percent, showForecast ? Math.round((forecastTotals.trading.totalForecast / totals.trading.plan) * 100) : totals.trading.percent, totalTradingDelta)}
                         <div class="metric-details">
-                            <div class="detail-item"><span class="detail-label">Факт / План:</span><span class="detail-value">${formatNumber(totals.trading.fact)}/${formatNumber(totals.trading.plan)}</span></div>
                             <div class="detail-item"><span class="detail-label">%Трейдин (охват):</span><span class="detail-value">${totals.sales.fact > 0 ? formatDecimal((totals.trading.fact / totals.sales.fact * 100), 1) : 0}%</span></div>
                             ${showForecast ? `
                             <div class="detail-item"><span class="detail-label">Темп в день:</span><span class="detail-value">${formatDecimal(totals.trading.fact / day, 1)}</span></div>
