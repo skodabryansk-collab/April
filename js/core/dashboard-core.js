@@ -142,7 +142,10 @@ export class DashboardCore {
         const element = document.getElementById(inputId);
         if (!element) return 0;
         const value = parseInt(element.value);
-        return isNaN(value) ? 0 : Math.abs(value);
+        if (isNaN(value)) return 0;
+        // Планы всегда неотрицательны; факты могут быть отрицательными (возвраты, сторно)
+        const planFields = ['sp', 'tp', 'rp', 'cp', 'trp'];
+        return planFields.includes(field) ? Math.abs(value) : value;
     }
     
     getAvailableMonths() {
