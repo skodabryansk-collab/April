@@ -1277,6 +1277,7 @@
                 this.currentBrand = 'all';
                 this.dailyData = [];
                 this.comparisonDailyData = [];
+                this.activeIndex = null;
                 this.init();
             }
             
@@ -1429,6 +1430,25 @@
                 
                 const color = colors[this.currentMetric] || colors.sales;
                 const metricNames = { sales: 'Продажи', contracts: 'Контракты', trading: 'Трейдин', traffic: 'Трафик', revenue: 'Доход' };
+
+                const crosshairPlugin = {
+                    id: 'dailyChartCrosshair',
+                    afterDraw: (chart) => {
+                        const active = chart.tooltip?.getActiveElements?.() || [];
+                        if (!active.length) return;
+                        const point = active[0].element;
+                        const chartArea = chart.chartArea;
+                        const context = chart.ctx;
+                        context.save();
+                        context.beginPath();
+                        context.moveTo(point.x, chartArea.top);
+                        context.lineTo(point.x, chartArea.bottom);
+                        context.lineWidth = 2;
+                        context.strokeStyle = 'rgba(52, 64, 84, 0.22)';
+                        context.stroke();
+                        context.restore();
+                    }
+                };
                 
                 this.chart = new Chart(ctx, {
                     type: 'line',
@@ -1441,7 +1461,7 @@
                                 borderColor: color.border,
                                 backgroundColor: color.bg,
                                 borderWidth: 2,
-                                pointRadius: 0,
+                                pointRadius: (context) => context.dataIndex === this.activeIndex ? 6 : 0,
                                 pointHoverRadius: 7,
                                 pointBackgroundColor: 'white',
                                 pointBorderColor: color.border,
@@ -1486,8 +1506,18 @@
                             }
                         ]
                     },
+                    plugins: [crosshairPlugin],
                     options: {
                         responsive: true,
+                        interaction: { mode: 'index', intersect: false },
+                        onClick: (event, elements, chart) => {
+                            const active = chart.getElementsAtEventForMode(event, 'index', { intersect: false }, true);
+                            if (!active.length) return;
+                            this.activeIndex = active[0].index;
+                            chart.setActiveElements(active);
+                            chart.tooltip.setActiveElements(active, { x: active[0].element.x, y: active[0].element.y });
+                            chart.update();
+                        },
                         maintainAspectRatio: false,
                         plugins: {
                             legend: {
