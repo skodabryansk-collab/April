@@ -159,7 +159,7 @@ class DashboardUtils {
         if (!jsonData || !jsonData.dailyFacts) return [];
         const months = new Set();
         jsonData.dailyFacts.forEach(record => {
-            if (record.date && record.date !== '2026-01-01') {
+            if (record.date && !record.month) {
                 const month = record.date.substring(0, 7);
                 months.add(month);
             }
