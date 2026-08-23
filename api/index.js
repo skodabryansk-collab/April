@@ -11,6 +11,25 @@ app.use(cors());
 app.use(express.json());
 
 const JSON_DATA_PATH = path.join(__dirname, '..', 'data', 'daily_facts.json');
+const EXTERNAL_JSON_URL = process.env.DATA_SOURCE_URL || 'https://xml.krona-auto.ru/Dashboard/daily_facts.json';
+const DATA_CACHE_TTL_MS = Number(process.env.DATA_CACHE_TTL_MS || 5 * 60 * 1000);
+let externalDataCache = { data: null, fetchedAt: 0 };
+
+async function fetchExternalData(force = false) {
+  const cacheIsFresh = externalDataCache.data && Date.now() - externalDataCache.fetchedAt < DATA_CACHE_TTL_MS;
+  if (!force && cacheIsFresh) return externalDataCache.data;
+  const response = await fetch(EXTERNAL_JSON_URL, { headers: { Accept: 'application/json' } });
+  if (!response.ok) throw new Error('Источник данных вернул HTTP ' + response.status);
+  const data = await response.json();
+  if (!data || !Array.isArray(data.dailyFacts)) throw new Error('Источник вернул JSON без массива dailyFacts');
+  externalDataCache = { data, fetchedAt: Date.now() };
+  return data;
+}
+
+function readLocalFallback() {
+  if (!fs.existsSync(JSON_DATA_PATH)) return null;
+  return JSON.parse(fs.readFileSync(JSON_DATA_PATH, 'utf8'));
+}
 
 // Подключение к PostgreSQL
 let pool = null;
@@ -144,24 +163,20 @@ app.get('/api/wakeup', async (req, res) => {
 });
 
 // Получить данные
-app.get('/api/data', (req, res) => {
+app.get('/api/data', async (req, res) => {
   console.log('📥 GET /api/data');
   try {
-    if (fs.existsSync(JSON_DATA_PATH)) {
-      const rawData = fs.readFileSync(JSON_DATA_PATH, 'utf8');
-      const data = JSON.parse(rawData);
-      res.json(data);
-    } else {
-      res.json({
-        version: "1.0",
-        dailyFacts: [],
-        monthlyPlans: [],
-        metadata: { brandsIncluded: [], dateRange: "" }
-      });
+    const data = await fetchExternalData(req.query.refresh === 'true');
+    res.json(data);
+  } catch (externalError) {
+    console.error('❌ Ошибка внешнего источника:', externalError.message);
+    try {
+      const fallback = readLocalFallback();
+      if (fallback) return res.json(fallback);
+    } catch (fallbackError) {
+      console.error('❌ Ошибка fallback-файла:', fallbackError.message);
     }
-  } catch (error) {
-    console.error('❌ Ошибка чтения JSON:', error);
-    res.status(500).json({ error: 'Ошибка чтения данных' });
+    res.status(502).json({ error: 'Не удалось получить данные из внешнего источника' });
   }
 });
 
@@ -328,22 +343,14 @@ app.post('/api/check-token', (req, res) => {
   res.json({ valid: !!req.body.token });
 });
 
-app.post('/api/refresh-data', (req, res) => {
+app.post('/api/refresh-data', async (req, res) => {
   console.log('📥 POST /api/refresh-data');
   try {
-    if (fs.existsSync(JSON_DATA_PATH)) {
-      const rawData = fs.readFileSync(JSON_DATA_PATH, 'utf8');
-      const data = JSON.parse(rawData);
-      res.json({ 
-        success: true, 
-        records: data.dailyFacts?.length || 0,
-        message: 'Данные обновлены'
-      });
-    } else {
-      res.status(404).json({ success: false, error: 'Файл не найден' });
-    }
+    const data = await fetchExternalData(true);
+    res.json({ success: true, records: data.dailyFacts?.length || 0, exportDate: data.exportDate || null, source: EXTERNAL_JSON_URL, message: 'Данные обновлены из внешнего источника' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.error('❌ Ошибка обновления данных:', error);
+    res.status(502).json({ success: false, error: 'Внешний источник недоступен' });
   }
 });
 
