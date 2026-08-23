@@ -164,11 +164,15 @@ export class DashboardCore {
             return;
         }
         
+        const selectedMonth = availableMonths.includes(this.rangeParams.month) ? this.rangeParams.month : availableMonths[availableMonths.length - 1];
+        if (!this.rangeParams.month || !availableMonths.includes(this.rangeParams.month)) {
+            this.rangeParams.month = selectedMonth;
+        }
         let options = '';
         availableMonths.forEach(month => {
             const [year, monthNum] = month.split('-');
             const monthName = getMonthName(parseInt(monthNum));
-            const selected = (month === this.rangeParams.month) ? 'selected' : '';
+            const selected = (month === selectedMonth) ? 'selected' : '';
             options += `<option value="${month}" ${selected}>${monthName} ${year}</option>`;
         });
         
@@ -623,14 +627,9 @@ export class DashboardCore {
         }
         
         
-        const lastDate = this.dataManager.getLastDataDate();
-        if (lastDate && this.elements.rangeStart && this.elements.rangeEnd) {
-            this.elements.rangeStart.value = lastDate;
-            this.elements.rangeEnd.value = lastDate;
-            this.rangeParams.startDate = lastDate;
-            this.rangeParams.endDate = lastDate;
-            this.updateRangeParams();
-            console.log('✅ Установлена последняя дата:', lastDate);
+        if (this.rangeParams.availableDates.length > 0) {
+            this.setDefaultRange();
+            console.log('✅ Установлен последний полный доступный период');
         }
         
         // Автоматически загружаем свежие данные из 1С при каждом входе
