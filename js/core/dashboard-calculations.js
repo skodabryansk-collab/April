@@ -26,10 +26,20 @@ export class DashboardCalculations {
      * Рассчитывает прогноз на конец месяца
      */
     calculateForecast(fact, plan, type, day, daysInMonth, brandKey = '') {
-        if (fact <= 0) return Math.round(plan * 0.3);
+        // Нет данных — базовый прогноз от плана
+        if (fact === 0) return Math.round(plan * 0.3);
         
         const daysLeft = daysInMonth - day;
         if (daysLeft <= 0) return fact;
+        
+        // Защита от деления на ноль
+        if (day <= 0) return fact;
+        
+        // Отрицательный факт (возвраты, сторно) — проецируем текущий темп
+        if (fact < 0) {
+            const dailyRate = fact / day;
+            return Math.round(fact + dailyRate * daysLeft);
+        }
         
         const dailyRate = fact / day;
         const typeFactor = this.getTypeFactor(type);
@@ -52,10 +62,23 @@ export class DashboardCalculations {
      * Рассчитывает прогноз дохода
      */
     calculateRevenueForecast(salesFact, salesPlan, revenueFact, revenuePlan, day, daysInMonth, brandKey) {
+        // Отрицательная выручка (возвраты превышают продажи) — проецируем по дневному темпу
+        if (revenueFact < 0 && day > 0) {
+            const daysLeft = daysInMonth - day;
+            if (daysLeft <= 0) return revenueFact;
+            const dailyRevRate = revenueFact / day;
+            const forecast = Math.round(revenueFact + dailyRevRate * daysLeft);
+            // Прогноз не может быть лучше текущего факта (уже понесённые потери)
+            return Math.min(forecast, revenueFact);
+        }
+        
         const salesForecast = this.calculateForecast(salesFact, salesPlan, 'sales', day, daysInMonth, brandKey);
         const currentAvgPrice = salesFact > 0 ? revenueFact / salesFact : 0;
         const planAvgPrice = salesPlan > 0 ? revenuePlan / salesPlan : currentAvgPrice;
-        const forecastAvgPrice = Math.max(currentAvgPrice, planAvgPrice * 0.25);
+        // Используем реальную среднюю цену без искусственного минимума
+        const forecastAvgPrice = currentAvgPrice > 0
+            ? Math.max(currentAvgPrice, planAvgPrice * 0.25)
+            : planAvgPrice * 0.25;
         const revenueForecast = salesForecast * forecastAvgPrice;
         const finalForecast = Math.max(Math.round(revenueForecast), Math.round(revenueFact));
         
