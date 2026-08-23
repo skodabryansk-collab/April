@@ -1470,11 +1470,6 @@ export class DashboardCore {
                 <div style="font-size:24px; font-weight:bold; color:${totals.contracts.percent >= 100 ? '#2e7d32' : '#d32f2f'}">${totals.contracts.percent}%</div>
                 <div style="font-size:11px; color:#666;">${formatNumber(totals.contracts.fact)}/${formatNumber(totals.contracts.plan)}</div>
             </div>
-            <div class="summary-card">
-                <div style="font-size:12px; color:#666;">Корректировка плана</div>
-                <div style="font-size:24px; font-weight:bold; color:#ff9800;">${Math.round(this.rangeParams.planAdjustmentFactor * 100)}%</div>
-                <div style="font-size:11px; color:#666;">от месячного плана</div>
-            </div>
         `;
     }
     
