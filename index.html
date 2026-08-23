@@ -1444,8 +1444,11 @@
                                 pointBackgroundColor: 'white',
                                 pointBorderColor: color.border,
                                 pointBorderWidth: 2,
-                                tension: 0.2,
-                                fill: true
+                                tension: 0.42,
+                                fill: true,
+                                cubicInterpolationMode: 'monotone',
+                                borderJoinStyle: 'round',
+                                borderCapStyle: 'round'
                             },
                             ...(this.comparisonDailyData.length > 0 ? [{
                                 label: 'Период сравнения',
@@ -1462,8 +1465,11 @@
                                 pointBackgroundColor: 'white',
                                 pointBorderColor: '#607d8b',
                                 pointBorderWidth: 2,
-                                tension: 0.2,
-                                fill: false
+                                tension: 0.42,
+                                fill: false,
+                                cubicInterpolationMode: 'monotone',
+                                borderJoinStyle: 'round',
+                                borderCapStyle: 'round'
                             }] : []),
                             {
                                 label: 'Среднее за 7 дней',
@@ -1472,7 +1478,7 @@
                                 borderWidth: 2,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
-                                tension: 0.3,
+                                tension: 0.42,
                                 fill: false
                             }
                         ]
