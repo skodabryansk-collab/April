@@ -119,7 +119,7 @@ test('DataService reloads client state from /api/data after refresh', { concurre
 });
 
 test('DashboardCore refresh reloads data and moves range to the latest date', { concurrency: false }, async () => {
-  const source = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js/core/dashboard-core.js'), 'utf8');
+  let source = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js/core/dashboard-core.js'), 'utf8');
   const context = { window: {}, console, document: {}, fetch: null, confirm: () => true };
   source = source.replace(/^import[^\n]+\n/, '');
   vm.runInNewContext(source, context, { filename: 'dashboard-core.js' });
