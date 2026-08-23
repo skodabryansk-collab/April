@@ -173,16 +173,9 @@ export class DashboardCalculations {
                 if (current && historical) return current * 0.75 + historical * 0.25;
                 return current || historical || fallbackRate;
             };
-            const groupRates = { weekday: [], weekend: [] };
-            const groupHistoricalRates = { weekday: [], weekend: [] };
-            targetRows.forEach(row => groupRates[isWeekend(row) ? 'weekend' : 'weekday'].push(groupValue(row)));
-            historyRows.forEach(row => groupHistoricalRates[isWeekend(row) ? 'weekend' : 'weekday'].push(groupValue(row)));
-            const groupRate = kind => average(smooth(groupRates[kind])) || average(smooth(groupHistoricalRates[kind])) || 0;
+            // Прогноз строится только по бренду. ГК не имеет собственной модели:
+            // итог ГК формируется суммированием результатов брендов в dashboard-core.
             const brandRemaining = sum(futureRows.map(row => expectedRate(isWeekend(row) ? 'weekend' : 'weekday')));
-            const groupRemaining = sum(futureRows.map(row => groupRate(isWeekend(row) ? 'weekend' : 'weekday')));
-            const brandWeight = clamp(0.45 + targetRows.length / (targetRows.length + 20), 0.55, 0.85);
-            const groupCount = Math.max(1, Object.keys(targetRows[0] || {}).filter(key => key !== 'date').length);
-            const stabilizedRemaining = brandRemaining * brandWeight + (groupRemaining / groupCount) * (1 - brandWeight);
 
             const period = monthRows => {
                 const early = monthRows.filter(row => dayOf(row) <= day).map(value);
@@ -190,12 +183,8 @@ export class DashboardCalculations {
                 return { early: average(smooth(early)), late: average(smooth(late)) };
             };
             const brandPeriod = period(historyRows);
-            const groupPeriodRows = historyRows;
-            const groupEarly = average(smooth(groupPeriodRows.filter(row => dayOf(row) <= day).map(groupValue)));
-            const groupLate = average(smooth(groupPeriodRows.filter(row => dayOf(row) > day).map(groupValue)));
             const brandFactor = brandPeriod.early > 0 && brandPeriod.late > 0 ? brandPeriod.late / brandPeriod.early : 1;
-            const groupFactor = groupEarly > 0 && groupLate > 0 ? groupLate / groupEarly : 1;
-            const seasonalCorrection = historyMonths.length >= 2 ? clamp(0.75 * brandFactor + 0.25 * groupFactor, 0.9, 1.1) : 1;
+            const seasonalCorrection = historyMonths.length >= 2 ? clamp(brandFactor, 0.9, 1.1) : 1;
             const recent = smooth(currentValues.slice(-Math.min(7, currentValues.length)));
             const previous = smooth(currentValues.slice(-Math.min(14, currentValues.length), -Math.min(7, currentValues.length)));
             const trendRatio = previous.length && average(previous) > 0 ? average(recent) / average(previous) : 1;
@@ -205,18 +194,18 @@ export class DashboardCalculations {
 
             // Трафик — самостоятельная модель: календарный темп важнее истории и не зависит от конверсии.
             if (type === 'traffic') {
-                return Math.max(Math.round(currentFact), Math.round(currentFact + stabilizedRemaining * seasonalCorrection * trendCorrection));
+                return Math.max(Math.round(currentFact), Math.round(currentFact + brandRemaining * seasonalCorrection * trendCorrection));
             }
             // Контракты и трейдинг — консервативный baseline без конверсии и без планов.
             if (type === 'contracts' || type === 'trading') {
-                return Math.max(Math.round(currentFact), Math.round(currentFact + stabilizedRemaining * clamp(seasonalCorrection, 0.95, 1.05) * trendCorrection));
+                return Math.max(Math.round(currentFact), Math.round(currentFact + brandRemaining * clamp(seasonalCorrection, 0.95, 1.05) * trendCorrection));
             }
             // Продажи используют сезонный профиль, но не конверсию.
             if (type === 'sales') {
-                return Math.max(Math.round(currentFact), Math.round(currentFact + stabilizedRemaining * seasonalCorrection * trendCorrection));
+                return Math.max(Math.round(currentFact), Math.round(currentFact + brandRemaining * seasonalCorrection * trendCorrection));
             }
             // Выручка прогнозируется напрямую по revenue, включая отрицательные дневные значения.
-            return Math.round(currentFact + stabilizedRemaining * seasonalCorrection * trendCorrection);
+            return Math.round(currentFact + brandRemaining * seasonalCorrection * trendCorrection);
         }
         /**
      * Рассчитывает оценку динамики (1-5 баллов)
