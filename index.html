@@ -1049,7 +1049,8 @@
                     <input type="date" id="comparisonEnd">
                 </div>
             </div>
-            <button type="button" id="loadDataForRangeBtn">Загрузить данные</button>
+            <button type="button" id="loadDataForRangeBtn">Применить период</button>
+            <button type="button" id="refreshDataBtn" class="secondary-action">Обновить данные</button>
         </div>
         <div class="range-info" id="rangeInfo">
             <span id="rangeDaysInfo">📆 0 дней</span>
@@ -1058,9 +1059,11 @@
         </div>
     </div>
     
-    <!-- Панель загрузки JSON данных -->
-    <div class="json-section">
-        <h3>Загрузка данных из JSON</h3>
+    <!-- Дополнительные инструменты данных: доступны только администратору -->
+    <details id="adminDataTools" class="json-admin-tools viewer-hidden">
+        <summary>Дополнительные инструменты данных</summary>
+        <div class="json-section">
+            <h3>Администрирование данных</h3>
         <div class="json-status">
             <span class="json-status-indicator not-loaded" id="jsonStatusIndicator"></span>
             <span id="jsonStatusText">Данные из JSON не загружены</span>
@@ -1071,7 +1074,6 @@
             <button type="button" id="importJsonBtn">Импортировать</button>
             <button type="button" id="updatePlansBtn">Обновить планы</button>
             <button type="button" id="clearJsonBtn">Очистить</button>
-            <button type="button" id="refreshDataBtn" style="background: #ff9800;">Обновить данные</button>
         </div>
         
         <div id="jsonUrlInputContainer" style="margin-top: 15px; margin-bottom: 10px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: #f5f5f5; padding: 15px; border-radius: 8px;">
@@ -1092,7 +1094,8 @@
         </div>
         
         <div id="jsonDataPreview" class="json-data-preview" style="display: none;"></div>
-    </div>
+        </div>
+    </details>
     
     <!-- Информационная панель -->
     <div class="info-panel">
