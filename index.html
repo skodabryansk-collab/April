@@ -1037,6 +1037,18 @@
                 <label>По:</label>
                 <input type="date" id="rangeEnd">
             </div>
+            <div class="comparison-controls">
+                <label class="comparison-toggle">
+                    <input type="checkbox" id="comparePeriods">
+                    <span>Сравнить с</span>
+                </label>
+                <div class="comparison-range-fields" id="comparisonRangeFields" style="display:none;">
+                    <label>С:</label>
+                    <input type="date" id="comparisonStart">
+                    <label>По:</label>
+                    <input type="date" id="comparisonEnd">
+                </div>
+            </div>
             <button type="button" id="loadDataForRangeBtn">Загрузить данные</button>
         </div>
         <div class="range-info" id="rangeInfo">
