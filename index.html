@@ -848,12 +848,18 @@
 
         /* Стили для графика */
         #dailyChartContainer {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            background: #ffffff;
+            border: 1px solid #edf1f6;
+            border-radius: 28px;
+            padding: 30px 32px 24px;
+            box-shadow: 0 12px 32px rgba(44, 62, 80, 0.08);
             margin: 30px 0;
-            border-left: 6px solid #2196f3;
+        }
+
+        #dailyChartContainer h3 {
+            color: #344054 !important;
+            font-size: 26px;
+            letter-spacing: -0.5px;
         }
         
         #chartMetricSelector, #chartBrandSelector {
@@ -871,6 +877,8 @@
             width: 100%;
             height: 450px;
         }
+
+        #dailySalesChart { background: #ffffff; }
         
         .stat-card {
             background: linear-gradient(145deg, #f8f9fa, #ffffff);
@@ -948,8 +956,9 @@
             .forecast-card { padding: 12px; }
             .forecast-card > div { grid-template-columns: 1fr; gap: 10px; }
             
-            #dailyChartContainer { padding: 20px 15px; }
-            #chartCanvasContainer { height: 350px; }
+            #dailyChartContainer { padding: 22px 16px 18px; border-radius: 22px; }
+            #dailyChartContainer h3 { font-size: 21px; }
+            #chartCanvasContainer { height: 360px; }
             .stat-value { font-size: 22px; }
             
             button span:first-child { display: none; }
@@ -1387,7 +1396,10 @@
                 const ctx = canvas.getContext('2d');
                 if (this.chart) this.chart.destroy();
                 
-                const labels = this.dailyData.map(d => d.day);
+                const labels = this.dailyData.map(d => {
+                    const parts = d.date.split('-');
+                    return parts[2] + '.' + parts[1];
+                });
                 const isRevenue = this.currentMetric === 'revenue';
                 const mainData = this.dailyData.map(d => {
                     let value = d[this.currentMetric] || 0;
@@ -1480,7 +1492,24 @@
                                 }
                             },
                             tooltip: {
+                                backgroundColor: '#ffffff',
+                                titleColor: '#344054',
+                                bodyColor: '#667085',
+                                borderColor: '#dfe5ec',
+                                borderWidth: 1,
+                                cornerRadius: 16,
+                                padding: 14,
+                                displayColors: true,
+                                boxWidth: 11,
+                                boxHeight: 11,
+                                usePointStyle: true,
+                                titleFont: { size: 16, weight: '700' },
+                                bodyFont: { size: 14, weight: '500' },
                                 callbacks: {
+                                    title: (items) => {
+                                        const index = items[0]?.dataIndex ?? 0;
+                                        return this.dailyData[index]?.date || '';
+                                    },
                                     label: (ctx) => {
                                         let value = ctx.raw;
                                         if (isRevenue) return `Доход: ${value.toFixed(1)} млн`;
@@ -1490,11 +1519,18 @@
                             }
                         },
                         scales: {
+                            x: {
+                                grid: { color: 'rgba(152, 162, 179, 0.14)', borderDash: [5, 5] },
+                                ticks: { color: '#98a2b3', maxTicksLimit: 8, padding: 8 }
+                            },
                             y: {
                                 beginAtZero: true,
+                                grid: { color: 'rgba(152, 162, 179, 0.16)', borderDash: [5, 5] },
+                                ticks: { color: '#98a2b3', padding: 8 },
                                 title: {
                                     display: true,
-                                    text: isRevenue ? 'Сумма (млн ₽)' : 'Количество'
+                                    text: isRevenue ? 'Сумма (млн ₽)' : 'Количество',
+                                    color: '#667085'
                                 }
                             }
                         }
