@@ -1,18 +1,19 @@
 {
-  "name": "dashboard-auto",
-  "version": "1.0.0",
-  "description": "Дашборд продаж автодилера",
-  "main": "api/index.js",
-  "scripts": {
-    "start": "node api/index.js",
-    "vercel-build": "npm install"
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "pg": "^8.11.3"
   },
+  "description": "Дашборд продаж автодилера",
   "engines": {
     "node": "24.x"
   },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "pg": "^8.11.3"
-  }
-}
+  "main": "api/index.js",
+  "name": "dashboard-auto",
+  "scripts": {
+    "start": "node api/index.js",
+    "test": "node --test tests/data-flow.test.js",
+    "vercel-build": "npm install"
+  },
+  "version": "1.0.0"
+}\n
