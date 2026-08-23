@@ -1379,7 +1379,9 @@
                 const currentStart = currentMonth + '-01';
                 const lastDay = String(new Date(year, month, 0).getDate()).padStart(2, '0');
                 const currentEnd = currentMonth + '-' + lastDay;
-                this.dailyData = aggregatePeriod(currentStart, currentEnd);
+                const lastDataDate = dashboardCore.getLastDataDate?.();
+                const effectiveCurrentEnd = lastDataDate && lastDataDate < currentEnd ? lastDataDate : currentEnd;
+                this.dailyData = aggregatePeriod(currentStart, effectiveCurrentEnd);
 
                 const comparison = dashboardCore.comparisonParams;
                 this.comparisonDailyData = comparison?.enabled && comparison.startDate && comparison.endDate
@@ -1444,7 +1446,7 @@
                                 pointBackgroundColor: 'white',
                                 pointBorderColor: color.border,
                                 pointBorderWidth: 2,
-                                tension: 0.42,
+                                tension: 0.48,
                                 fill: true,
                                 cubicInterpolationMode: 'monotone',
                                 borderJoinStyle: 'round',
@@ -1465,7 +1467,7 @@
                                 pointBackgroundColor: 'white',
                                 pointBorderColor: '#607d8b',
                                 pointBorderWidth: 2,
-                                tension: 0.42,
+                                tension: 0.48,
                                 fill: false,
                                 cubicInterpolationMode: 'monotone',
                                 borderJoinStyle: 'round',
@@ -1474,11 +1476,12 @@
                             {
                                 label: 'Среднее за 7 дней',
                                 data: movingAvg,
+                                hidden: this.comparisonDailyData.length > 0,
                                 borderColor: '#ff9800',
                                 borderWidth: 2,
                                 borderDash: [5, 5],
                                 pointRadius: 0,
-                                tension: 0.42,
+                                tension: 0.48,
                                 fill: false
                             }
                         ]
