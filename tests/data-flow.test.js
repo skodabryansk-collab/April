@@ -52,7 +52,7 @@ test.after(async () => {
   await new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
 });
 
-test('GET /api/data returns validated external data when upstream is available', async () => {
+test('GET /api/data returns validated external data when upstream is available', { concurrency: false }, async () => {
   upstreamAvailable = true;
   const response = await request(server, 'GET', '/api/data?refresh=true');
   assert.equal(response.status, 200);
@@ -60,7 +60,7 @@ test('GET /api/data returns validated external data when upstream is available',
   assert.ok(Array.isArray(response.body.dailyFacts));
 });
 
-test('GET /api/data returns local fallback when upstream is unavailable', async () => {
+test('GET /api/data returns local fallback when upstream is unavailable', { concurrency: false }, async () => {
   upstreamAvailable = false;
   const response = await request(server, 'GET', '/api/data?refresh=true');
   assert.equal(response.status, 200);
@@ -68,7 +68,7 @@ test('GET /api/data returns local fallback when upstream is unavailable', async 
   assert.notEqual(response.body.exportDate, externalPayload.exportDate);
 });
 
-test('POST /api/refresh-data force-refreshes and reports upstream metadata', async () => {
+test('POST /api/refresh-data force-refreshes and reports upstream metadata', { concurrency: false }, async () => {
   upstreamAvailable = true;
   const response = await request(server, 'POST', '/api/refresh-data');
   assert.equal(response.status, 200);
@@ -78,7 +78,7 @@ test('POST /api/refresh-data force-refreshes and reports upstream metadata', asy
   assert.match(response.body.source, /test\.invalid/);
 });
 
-test('DataService reloads client state from /api/data after refresh', async () => {
+test('DataService reloads client state from /api/data after refresh', { concurrency: false }, async () => {
   const source = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'data-service.js'), 'utf8');
   const requests = [];
   const storage = new Map();
@@ -118,7 +118,7 @@ test('DataService reloads client state from /api/data after refresh', async () =
   assert.equal(requests.length, 2);
 });
 
-test('DashboardCore refresh reloads data and moves range to the latest date', async () => {
+test('DashboardCore refresh reloads data and moves range to the latest date', { concurrency: false }, async () => {
   const source = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js/core/dashboard-core.js'), 'utf8');
   const context = { window: {}, console, document: {}, fetch: null, confirm: () => true };
   source = source.replace(/^import[^\n]+\n/, '');
