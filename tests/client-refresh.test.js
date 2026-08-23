@@ -2,6 +2,8 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const http = require('node:http');
 const vm = require('node:vm');
+
+function jsonResponse(body, ok = true, status = 200) { return { ok, status, async json() { return body; } }; }
 test('DataService reloads client state from /api/data after refresh', { concurrency: false }, async () => {
   const source = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'data-service.js'), 'utf8');
   const requests = [];
@@ -45,6 +47,7 @@ test('DataService reloads client state from /api/data after refresh', { concurre
 test('DashboardCore refresh reloads data and moves range to the latest date', { concurrency: false }, async () => {
   let source = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js/core/dashboard-core.js'), 'utf8');
   const context = { window: {}, console, document: {}, fetch: null, confirm: () => true };
+  source = source.replace(/^import[^\n]+\n/, '');
   source = source.replace(/^import[^\n]+\n/, '');
   vm.runInNewContext(source, context, { filename: 'dashboard-core.js' });
   const calls = [];
