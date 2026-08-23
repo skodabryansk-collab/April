@@ -600,3 +600,15 @@ button:hover {
 .loading-indicator {
     animation: pulse 1.5s ease-in-out infinite;
 }
+
+/* ===== СРАВНЕНИЕ ПЕРИОДОВ ===== */
+.comparison-controls { display:flex; flex-direction:column; gap:6px; min-width:240px; }
+.comparison-toggle { display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; }
+.comparison-toggle input { width:16px; height:16px; accent-color:var(--info); }
+.comparison-range-fields { align-items:center; flex-wrap:wrap; gap:6px; font-size:12px; }
+.comparison-range-fields input { min-width:128px; padding:6px 8px; border:1px solid #bdc3c7; border-radius:6px; }
+.comparison-delta { display:inline-block; margin:3px 0 5px; font-size:12px; font-weight:700; line-height:1.2; }
+.comparison-delta.positive { color:#2e7d32; }
+.comparison-delta.negative { color:#d32f2f; }
+.comparison-delta.neutral { color:#6c757d; }
+@media (max-width:768px) { .comparison-controls { width:100%; min-width:0; } .comparison-range-fields input { flex:1; min-width:120px; } }
