@@ -32,8 +32,9 @@ export const createProgressBar = (type, fact, plan, forecast, factPercent, forec
             </div>
             <div class="progress-labels">
                 <span class="progress-label-left">
-                    Прогноз: ${type === 'revenue' ? formatRevenue(forecast) : forecastValue} (${forecastPercent}%)${comparisonDelta}
+                    Прогноз: ${type === 'revenue' ? formatRevenue(forecast) : forecastValue} (${forecastPercent}%)
                 </span>
+                ${comparisonDelta}
             </div>
         </div>
     `;
