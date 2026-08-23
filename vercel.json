@@ -1,30 +1,83 @@
 {
   "version": 2,
-  "redirects": [
+  "builds": [
     {
-      "source": "/favicon.ico",
-      "destination": "/favicon/favicon-32x32.png",
-      "permanent": true
+      "src": "api/index.js",
+      "use": "@vercel/node"
     },
     {
-      "source": "/apple-touch-icon.png",
-      "destination": "/favicon/apple-touch-icon.png",
-      "permanent": true
+      "src": "index.html",
+      "use": "@vercel/static"
     },
     {
-      "source": "/site.webmanifest",
-      "destination": "/favicon/site.webmanifest",
-      "permanent": true
+      "src": "*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "js/**/*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "css/**/*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "data/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "images/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "favicon/**/*",
+      "use": "@vercel/static"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/index.js"
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
     },
     {
-      "source": "/:path*",
-      "destination": "/index.html"
+      "src": "/favicon.ico",
+      "dest": "/favicon/favicon-32x32.png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "dest": "/favicon/apple-touch-icon.png"
+    },
+    {
+      "src": "/site.webmanifest",
+      "dest": "/favicon/site.webmanifest"
+    },
+    {
+      "src": "/(.*\\.js)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.svg)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.png)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.ico)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.json)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.css)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
