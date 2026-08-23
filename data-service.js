@@ -6,13 +6,6 @@ class DataService {
         this.jsonData = null;
         this.jsonBrands = [];
         this.jsonBrandMapping = {};
-        this.jsonStats = {
-            totalRecords: 0,
-            dateRange: '',
-            brandsCount: 0,
-            totalDays: 0,
-            availableMonths: []
-        };
         
         this.loadHistory();
         this.loadMonthlyTotals();
@@ -62,9 +55,7 @@ class DataService {
         console.log('📋 Бренды из JSON:', this.jsonBrands);
         console.log('📋 Маппинг брендов:', this.jsonBrandMapping);
         
-        this.jsonStats.availableMonths = DashboardUtils.getAvailableMonthsFromJson(jsonData);
         
-        this.updateJsonStats();
     }
     
     getJsonData() {
@@ -79,31 +70,7 @@ class DataService {
         return this.jsonBrandMapping;
     }
     
-    getJsonStats() {
-        return this.jsonStats;
-    }
     
-    updateJsonStats() {
-        if (!this.jsonData) return;
-        
-        const dailyFacts = this.jsonData.dailyFacts || [];
-        const metadata = this.jsonData.metadata || {};
-        
-        const uniqueDates = new Set();
-        dailyFacts.forEach(record => {
-            if (record.date && record.date !== '2026-01-01' && !record.month) {
-                uniqueDates.add(record.date);
-            }
-        });
-        
-        this.jsonStats = {
-            totalRecords: uniqueDates.size,
-            dateRange: metadata.dateRange || 'Не указан',
-            brandsCount: this.jsonBrands.length,
-            totalDays: metadata.totalDays || uniqueDates.size,
-            availableMonths: DashboardUtils.getAvailableMonthsFromJson(this.jsonData)
-        };
-    }
     
     getLastDataDate() {
         return DashboardUtils.getLastDataDate(this.jsonData);
@@ -117,20 +84,6 @@ class DataService {
         return DashboardUtils.aggregateJsonDataByMonth(this.jsonData, targetDateStr);
     }
     
-    clearJsonData() {
-        this.jsonData = null;
-        this.jsonBrands = [];
-        this.jsonBrandMapping = {};
-        this.jsonStats = {
-            totalRecords: 0,
-            dateRange: '',
-            brandsCount: 0,
-            totalDays: 0,
-            availableMonths: []
-        };
-        localStorage.removeItem('jsonData');
-        console.log('✅ JSON данные очищены');
-    }
     
     loadHistory() {
         try {
