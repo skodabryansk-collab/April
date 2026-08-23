@@ -131,7 +131,10 @@ export class DashboardCalculations {
         const targetRows = rows.filter(row => monthKey(row) === targetMonth && dayNumber(row) <= day);
         const priorMonths = [...new Set(rows.map(monthKey))].filter(month => month < targetMonth).sort().slice(-6);
         const priorRows = rows.filter(row => priorMonths.includes(monthKey(row)));
-        const remainingRows = rows.filter(row => monthKey(row) === targetMonth && dayNumber(row) > day);
+        const remainingRows = Array.from({ length: Math.max(0, daysInMonth - day) }, (_, index) => {
+            const futureDay = day + index + 1;
+            return { date: targetMonth + '-' + String(futureDay).padStart(2, '0') };
+        });
         const fallbackRate = fact / day;
         const rates = (sourceRows, weekend) => {
             const selected = sourceRows.filter(row => isWeekend(row) === weekend);
