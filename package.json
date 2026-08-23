@@ -8,7 +8,7 @@
     "vercel-build": "npm install"
   },
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "dependencies": {
     "express": "^4.18.2",
