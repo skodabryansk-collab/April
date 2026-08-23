@@ -55,6 +55,9 @@ export class DashboardCore {
             availableDatesInMonth: [],
             availableDates: []
         };
+
+        // Параметры периода сравнения
+        this.comparisonParams = { enabled: false, startDate: null, endDate: null };
         
         this.brandInputs = {};
         this.filteredBrand = 'all';
@@ -114,6 +117,7 @@ export class DashboardCore {
             'loadJsonUrlBtn', 'saveJsonUrlBtn', 'clearJsonUrlBtn', 'testJsonUrlBtn',
             'jsonUrlInput', 'jsonUrlHistory', 'urlHistoryList', 'clearUrlHistoryBtn',
             'rangeStart', 'rangeEnd', 'loadDataForRangeBtn',
+            'comparePeriods', 'comparisonRangeFields', 'comparisonStart', 'comparisonEnd',
             'rangeDaysInfo', 'rangePlanInfo', 'forecastStatus', 'monthSelector',
             'refreshDataBtn'
         ];
@@ -407,6 +411,22 @@ export class DashboardCore {
             });
         }
         
+        if (this.elements.comparePeriods) {
+            this.elements.comparePeriods.addEventListener('change', () => {
+                this.comparisonParams.enabled = this.elements.comparePeriods.checked;
+                if (this.comparisonParams.enabled) this.setComparisonDefaults();
+                if (this.elements.comparisonRangeFields) this.elements.comparisonRangeFields.style.display = this.comparisonParams.enabled ? 'flex' : 'none';
+                this.calculate();
+            });
+        }
+
+        ['comparisonStart', 'comparisonEnd'].forEach(field => {
+            if (this.elements[field]) this.elements[field].addEventListener('change', () => {
+                this.comparisonParams[field === 'comparisonStart' ? 'startDate' : 'endDate'] = this.elements[field].value || null;
+                this.calculate();
+            });
+        });
+
         if (this.elements.loadDataForRangeBtn) {
             this.elements.loadDataForRangeBtn.addEventListener('click', () => {
                 this.loadDataForRange();
@@ -423,6 +443,38 @@ export class DashboardCore {
         );
     }
     
+    setComparisonDefaults() {
+        const dates = this.rangeParams.availableDates || [];
+        const currentStartIndex = dates.indexOf(this.rangeParams.startDate);
+        const currentEndIndex = dates.indexOf(this.rangeParams.endDate);
+        if (currentStartIndex <= 0 || currentEndIndex < currentStartIndex) return;
+        const periodLength = currentEndIndex - currentStartIndex + 1;
+        const comparisonEndIndex = currentStartIndex - 1;
+        const comparisonStartIndex = Math.max(0, comparisonEndIndex - periodLength + 1);
+        this.comparisonParams.startDate = dates[comparisonStartIndex] || null;
+        this.comparisonParams.endDate = dates[comparisonEndIndex] || null;
+        if (this.elements.comparisonStart) this.elements.comparisonStart.value = this.comparisonParams.startDate || '';
+        if (this.elements.comparisonEnd) this.elements.comparisonEnd.value = this.comparisonParams.endDate || '';
+    }
+
+    getComparisonData() {
+        if (!this.comparisonParams.enabled || !this.jsonData?.dailyFacts || !this.comparisonParams.startDate || !this.comparisonParams.endDate) return {};
+        const records = this.jsonData.dailyFacts.filter(record => record.date && record.date >= this.comparisonParams.startDate && record.date <= this.comparisonParams.endDate);
+        return this.aggregateRecords(records);
+    }
+
+    renderComparisonDelta(currentValue, comparisonValue) {
+        if (!this.comparisonParams.enabled || comparisonValue === undefined || comparisonValue === null) return "";
+        if (comparisonValue === 0) {
+            if (currentValue === 0) return '<div class="comparison-delta neutral">0%</div>';
+            return '<div class="comparison-delta neutral">—</div>';
+        }
+        const delta = Math.round(((currentValue - comparisonValue) / Math.abs(comparisonValue)) * 100);
+        const sign = delta > 0 ? '+' : '';
+        const tone = delta > 0 ? 'positive' : delta < 0 ? 'negative' : 'neutral';
+        return `<div class="comparison-delta ${tone}" title="Отклонение от выбранного периода сравнения">${sign}${delta}%</div>`;
+    }
+
     aggregateRecords(records) {
         const aggregated = {};
         
@@ -942,6 +994,7 @@ export class DashboardCore {
             const day = parseInt(this.rangeParams.endDate?.substring(8) || '15');
             const daysInMonth = this.rangeParams.totalDaysInMonth;
             const showForecast = this.rangeParams.allDaysSelected;
+            const comparisonData = this.getComparisonData();
             
             filteredBrands.forEach(brand => {
                 const data = {
@@ -1025,7 +1078,8 @@ export class DashboardCore {
                     contractsForecastPercent,
                     tradingForecastPercent,
                     radarScore,
-                    radarMetrics
+                    radarMetrics,
+                    comparison: comparisonData[brand.key] || null
                 });
             });
             
@@ -1062,7 +1116,14 @@ export class DashboardCore {
         const { brand, data, salesPercent, salesForecastPercent, trafficPercent, trafficForecastPercent,
                 revenuePercent, revenueForecastPercent, contractsPercent, contractsForecastPercent,
                 tradingPercent, tradingForecastPercent, salesConversionPercent, tradingCoveragePercent,
-                radarScore, salesForecast, trafficForecast, revenueForecast, contractsForecast, tradingForecast } = item;
+                radarScore, salesForecast, trafficForecast, revenueForecast, contractsForecast, tradingForecast, comparison } = item;
+
+        const comparisonBrandData = comparison || {};
+        const salesDelta = this.renderComparisonDelta(data.sales.fact, comparisonBrandData.sales);
+        const contractsDelta = this.renderComparisonDelta(data.contracts.fact, comparisonBrandData.contracts);
+        const tradingDelta = this.renderComparisonDelta(data.trading.fact, comparisonBrandData.trading);
+        const trafficDelta = this.renderComparisonDelta(data.traffic.fact, comparisonBrandData.traffic);
+        const revenueDelta = this.renderComparisonDelta(data.revenue.fact, comparisonBrandData.revenue);
         
         const salesLevel = getLevelByPercent(salesForecastPercent);
         const trafficLevel = getLevelByPercent(trafficForecastPercent);
@@ -1084,6 +1145,7 @@ export class DashboardCore {
                     <div class="fact-percent">${salesPercent}%</div>
                 </div>
                 ${createProgressBar('sales', data.sales.fact, data.sales.plan, salesForecast, salesPercent, salesForecastPercent)}
+                ${salesDelta}
                 <div class="metric-details">
                     <div class="detail-item">
                         <span class="detail-label">Конверсия:</span>
@@ -1107,6 +1169,7 @@ export class DashboardCore {
                     <div class="fact-percent">${contractsPercent}%</div>
                 </div>
                 ${createProgressBar('contracts', data.contracts.fact, data.contracts.plan, contractsForecast, contractsPercent, contractsForecastPercent)}
+                ${contractsDelta}
                 <div class="metric-details">
                     <div class="detail-item">
                         <span class="detail-label">% контракт:</span>
@@ -1130,6 +1193,7 @@ export class DashboardCore {
                     <div class="fact-percent">${tradingPercent}%</div>
                 </div>
                 ${createProgressBar('trading', data.trading.fact, data.trading.plan, tradingForecast, tradingPercent, tradingForecastPercent)}
+                ${tradingDelta}
                 <div class="metric-details">
                     <div class="detail-item">
                         <span class="detail-label">%Трейдин (охват):</span>
@@ -1153,6 +1217,7 @@ export class DashboardCore {
                     <div class="fact-percent">${trafficPercent}%</div>
                 </div>
                 ${createProgressBar('traffic', data.traffic.fact, data.traffic.plan, trafficForecast, trafficPercent, trafficForecastPercent)}
+                ${trafficDelta}
                 ${showForecast ? `
                 <div class="metric-details">
                     <div class="detail-item">
@@ -1172,6 +1237,7 @@ export class DashboardCore {
                     <div class="fact-percent">${revenuePercent}%</div>
                 </div>
                 ${createProgressBar('revenue', data.revenue.fact, data.revenue.plan, revenueForecast, revenuePercent, revenueForecastPercent)}
+                ${revenueDelta}
                 ${showForecast ? `
                 <div class="metric-details">
                     <div class="detail-item">
