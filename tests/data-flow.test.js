@@ -1,6 +1,8 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
 const vm = require('node:vm');
 
 const externalPayload = {
@@ -36,6 +38,15 @@ function request(server, method, path) {
 let app;
 let server;
 let upstreamAvailable = true;
+const fallbackPath = path.join(__dirname, '..', 'data', 'daily_facts.json');
+const originalFallback = fs.readFileSync(fallbackPath, 'utf8');
+
+function withFallbackContents(contents, callback) {
+  fs.writeFileSync(fallbackPath, contents);
+  return Promise.resolve().then(callback).finally(() => {
+    fs.writeFileSync(fallbackPath, originalFallback);
+  });
+}
 
 test.before(async () => {
   process.env.DATA_SOURCE_URL = 'https://test.invalid/daily_facts.json';
@@ -66,6 +77,20 @@ test('GET /api/data returns local fallback when upstream is unavailable', { conc
   assert.equal(response.status, 200);
   assert.ok(Array.isArray(response.body.dailyFacts));
   assert.notEqual(response.body.exportDate, externalPayload.exportDate);
+});
+
+test('GET /api/data returns 502 when local fallback is invalid JSON', { concurrency: false }, async () => {
+  upstreamAvailable = false;
+  const response = await withFallbackContents('{ invalid json', () => request(server, 'GET', '/api/data?refresh=true'));
+  assert.equal(response.status, 502);
+  assert.deepEqual(response.body, { error: 'Не удалось получить данные из внешнего источника' });
+});
+
+test('GET /api/data returns 502 when local fallback has no dailyFacts', { concurrency: false }, async () => {
+  upstreamAvailable = false;
+  const response = await withFallbackContents(JSON.stringify({ exportDate: '2099-01-02' }), () => request(server, 'GET', '/api/data?refresh=true'));
+  assert.equal(response.status, 502);
+  assert.deepEqual(response.body, { error: 'Не удалось получить данные из внешнего источника' });
 });
 
 test('POST /api/refresh-data force-refreshes and reports upstream metadata', { concurrency: false }, async () => {
