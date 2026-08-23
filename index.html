@@ -1142,14 +1142,6 @@
                 <button id="refreshChartBtn" style="background: #2196f3; padding: 10px 20px;">Обновить</button>
             </div>
         </div>
-        <div style="display: flex; gap: 30px; margin-bottom: 20px; flex-wrap: wrap; padding: 16px 20px; background: #f8f9fa; border-radius: 12px;">
-            <div style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-block; width: 14px; height: 14px; background: #2e7d32; border-radius: 4px;"></span><span>Продажи</span></div>
-            <div style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-block; width: 14px; height: 14px; background: #7b1fa2; border-radius: 4px;"></span><span>Контракты</span></div>
-            <div style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-block; width: 14px; height: 14px; background: #00695c; border-radius: 4px;"></span><span>Трейдин</span></div>
-            <div style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-block; width: 14px; height: 14px; background: #1565c0; border-radius: 4px;"></span><span>Трафик</span></div>
-            <div style="display: flex; align-items: center; gap: 10px;"><span style="display: inline-block; width: 14px; height: 14px; background: #ef6c00; border-radius: 4px;"></span><span>Доход</span></div>
-            <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;"><span style="display: inline-block; width: 20px; height: 4px; background: #ff9800; border-radius: 2px;"></span><span>Среднее 7 дней</span></div>
-        </div>
         <div id="chartCanvasContainer">
             <canvas id="dailySalesChart"></canvas>
         </div>
@@ -1477,6 +1469,16 @@
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    boxWidth: 14,
+                                    boxHeight: 8,
+                                    padding: 12,
+                                    font: { size: 12 }
+                                }
+                            },
                             tooltip: {
                                 callbacks: {
                                     label: (ctx) => {
