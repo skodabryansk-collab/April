@@ -733,7 +733,7 @@ export class DashboardCore {
             
             console.log('✅ Данные на сервере обновлены:', refreshResult);
             
-            const dataResponse = await fetch('/api/data?refresh=true');
+            const dataResponse = await fetch('/api/data');
             const freshData = await dataResponse.json();
             
             if (this.dataService && this.dataService.processJsonData) {
@@ -747,11 +747,24 @@ export class DashboardCore {
             
             this.updateAvailableDates();
             this.updateBrandsFromJson();
+            
+            // Пункт 3: сдвинуть дату на последнюю доступную после обновления
+            const newLastDate = this.dataManager.getLastDataDate();
+            if (newLastDate && this.elements.rangeStart && this.elements.rangeEnd) {
+                this.elements.rangeStart.value = newLastDate;
+                this.elements.rangeEnd.value   = newLastDate;
+            }
+            
             this.loadDataForRange();
             
             this.renderJsonStats();
             this.renderJsonPreview();
             this.updateJsonStatus(true);
+            
+            // Пункт 5: обновить дневной график свежими данными
+            if (window.dailyChartManager && typeof window.dailyChartManager.loadData === 'function') {
+                window.dailyChartManager.loadData();
+            }
             
             this.uiManager.showNotification(
                 `Данные обновлены! Загружено ${refreshResult.records || 0} записей`, 
