@@ -578,6 +578,9 @@ export class DashboardCore {
             this.updateRangeParams();
             console.log('✅ Установлена последняя дата:', lastDate);
         }
+        
+        // Автоматически загружаем свежие данные из 1С при каждом входе
+        this.refreshDataFromServer(true);
     }
     
     onUserLogout() {
@@ -711,10 +714,10 @@ export class DashboardCore {
         }
     }
     
-    async refreshDataFromServer() {
+    async refreshDataFromServer(silent = false) {
         console.log('🔄 Принудительное обновление данных с сервера...');
         
-        this.uiManager.showNotification('Обновление данных...', 'info');
+        if (!silent) this.uiManager.showNotification('Обновление данных...', 'info');
         
         try {
             const refreshResponse = await fetch('/api/refresh-data', {
@@ -757,7 +760,7 @@ export class DashboardCore {
             
         } catch (error) {
             console.error('❌ Ошибка обновления данных:', error);
-            this.uiManager.showNotification('Ошибка обновления данных: ' + error.message, 'error');
+            if (!silent) this.uiManager.showNotification('Ошибка обновления данных: ' + error.message, 'error');
         }
     }
     
