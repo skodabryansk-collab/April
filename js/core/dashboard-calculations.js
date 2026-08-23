@@ -116,6 +116,67 @@ export class DashboardCalculations {
     }
     
     /**
+     * Динамический прогноз по признакам из дневного JSON.
+     * План намеренно не используется в основной формуле.
+     */
+    calculateFeatureForecast(fact, type, day, daysInMonth, brandKey, dailyFacts, targetMonth) {
+        if (!Array.isArray(dailyFacts) || !targetMonth || day <= 0 || daysInMonth <= day) return Math.round(fact);
+        const metrics = ['sales', 'traffic', 'contracts', 'trading', 'revenue'];
+        if (!metrics.includes(type)) return Math.round(fact);
+        const rows = dailyFacts.filter(row => row && row.date);
+        const monthKey = row => row.date.substring(0, 7);
+        const dayNumber = row => parseInt(row.date.substring(8, 10), 10);
+        const isWeekend = row => { const weekday = new Date(row.date + 'T12:00:00').getDay(); return weekday === 0 || weekday === 6; };
+        const value = row => Number(row[brandKey]?.[type] || 0);
+        const targetRows = rows.filter(row => monthKey(row) === targetMonth && dayNumber(row) <= day);
+        const priorMonths = [...new Set(rows.map(monthKey))].filter(month => month < targetMonth).sort().slice(-6);
+        const priorRows = rows.filter(row => priorMonths.includes(monthKey(row)));
+        const remainingRows = rows.filter(row => monthKey(row) === targetMonth && dayNumber(row) > day);
+        const fallbackRate = fact / day;
+        const rates = (sourceRows, weekend) => {
+            const selected = sourceRows.filter(row => isWeekend(row) === weekend);
+            return selected.length ? selected.reduce((total, row) => total + value(row), 0) / selected.length : null;
+        };
+        const currentWeekday = rates(targetRows, false);
+        const currentWeekend = rates(targetRows, true);
+        const historyWeekday = rates(priorRows, false);
+        const historyWeekend = rates(priorRows, true);
+        const blendedRate = weekend => {
+            const current = weekend ? currentWeekend : currentWeekday;
+            const history = weekend ? historyWeekend : historyWeekday;
+            if (current !== null && history !== null) return current * 0.65 + history * 0.35;
+            if (current !== null) return current;
+            if (history !== null) return history;
+            return fallbackRate;
+        };
+        const periodCoefficient = (brand, metric) => {
+            const early = priorRows.filter(row => dayNumber(row) <= day && row[brand]?.[metric] !== undefined);
+            const late = priorRows.filter(row => dayNumber(row) > day && row[brand]?.[metric] !== undefined);
+            const earlyRate = early.length ? early.reduce((total, row) => total + Number(row[brand]?.[metric] || 0), 0) / early.length : 0;
+            const lateRate = late.length ? late.reduce((total, row) => total + Number(row[brand]?.[metric] || 0), 0) / late.length : 0;
+            const groupEarly = priorRows.filter(row => dayNumber(row) <= day).reduce((total, row) => total + brandsValue(row, metric), 0);
+            const groupLate = priorRows.filter(row => dayNumber(row) > day).reduce((total, row) => total + brandsValue(row, metric), 0);
+            const groupEarlyRows = priorRows.filter(row => dayNumber(row) <= day).length;
+            const groupLateRows = priorRows.filter(row => dayNumber(row) > day).length;
+            const individual = earlyRate > 0 && lateRate > 0 ? lateRate / earlyRate : null;
+            const group = groupEarly > 0 && groupLate > 0 ? (groupLate / (groupLateRows || 1)) / (groupEarly / (groupEarlyRows || 1)) : 1;
+            let coefficient = individual === null ? group : individual * 0.6 + group * 0.4;
+            if (metric === 'revenue' && (individual === null || coefficient <= 0)) coefficient = group;
+            return Math.max(0.8, Math.min(2, Number.isFinite(coefficient) && coefficient > 0 ? coefficient : 1));
+        };
+        const brandsValue = (row, metric) => Object.keys(row).filter(key => key !== 'date').reduce((total, key) => total + Number(row[key]?.[metric] || 0), 0);
+        const previousRows = targetRows.filter(row => dayNumber(row) >= Math.max(1, day - 13) && dayNumber(row) <= day - 7);
+        const recentRows = targetRows.filter(row => dayNumber(row) >= Math.max(1, day - 6) && dayNumber(row) <= day);
+        const previousTotal = previousRows.reduce((total, row) => total + value(row), 0);
+        const recentTotal = recentRows.reduce((total, row) => total + value(row), 0);
+        const rawTrend = previousTotal > 0 ? recentTotal / previousTotal : 1;
+        const trend = Math.max(0.7, Math.min(1.3, rawTrend));
+        const trendFactor = 1 + 0.2 * (trend - 1);
+        const coefficient = periodCoefficient(brandKey, type);
+        const projectedRemaining = remainingRows.reduce((total, row) => total + blendedRate(isWeekend(row)) * trendFactor * coefficient, 0);
+        return Math.max(Number(fact) || 0, Math.round((Number(fact) || 0) + projectedRemaining));
+    }
+    /**
      * Рассчитывает оценку динамики (1-5 баллов)
      */
     getDynamicsScore(current, plan, daysPassed, totalDays) {
