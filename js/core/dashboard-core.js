@@ -205,7 +205,7 @@ export class DashboardCore {
         
         const dates = new Set();
         this.jsonData.dailyFacts.forEach(record => {
-            if (record.date && record.date !== '2026-01-01' && !record.month) {
+            if (record.date && true && !record.month) {
                 const hasData = Object.values(record).some(value => 
                     typeof value === 'object' && (
                         value.sales > 0 || 
