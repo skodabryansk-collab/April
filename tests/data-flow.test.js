@@ -65,7 +65,7 @@ test('GET /api/data returns local fallback when upstream is unavailable', async 
   const response = await request(server, 'GET', '/api/data?refresh=true');
   assert.equal(response.status, 200);
   assert.ok(Array.isArray(response.body.dailyFacts));
-  assert.notDeepEqual(response.body, externalPayload);
+  assert.notEqual(response.body.exportDate, externalPayload.exportDate);
 });
 
 test('POST /api/refresh-data force-refreshes and reports upstream metadata', async () => {
