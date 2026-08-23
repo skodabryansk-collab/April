@@ -1275,6 +1275,7 @@
                 this.currentMetric = 'sales';
                 this.currentBrand = 'all';
                 this.dailyData = [];
+                this.comparisonDailyData = [];
                 this.init();
             }
             
@@ -1334,68 +1335,60 @@
             
             loadData() {
                 const dashboardCore = window.dashboardCore;
-                if (!dashboardCore || !dashboardCore.jsonData) return;
-                
+                if (!dashboardCore || !dashboardCore.jsonData?.dailyFacts) return;
+
                 const jsonData = dashboardCore.jsonData;
                 const currentMonth = dashboardCore.rangeParams?.month;
                 if (!currentMonth) return;
-                
-                const [year, month] = currentMonth.split('-');
-                const targetYear = parseInt(year);
-                const targetMonth = parseInt(month);
-                const daysInMonth = new Date(targetYear, targetMonth, 0).getDate();
-                
-                const dailyMap = new Map();
-                for (let d = 1; d <= daysInMonth; d++) {
-                    const dateStr = `${targetYear}-${targetMonth.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`;
-                    dailyMap.set(dateStr, {
-                        date: dateStr,
-                        day: d,
-                        sales: 0,
-                        traffic: 0,
-                        contracts: 0,
-                        trading: 0,
-                        revenue: 0
-                    });
-                }
-                
-                jsonData.dailyFacts.forEach(record => {
-                    if (!record.date) return;
-                    const recordDate = new Date(record.date);
-                    if (recordDate.getFullYear() === targetYear && recordDate.getMonth() + 1 === targetMonth) {
-                        const dayData = dailyMap.get(record.date);
-                        if (dayData) {
+
+                const aggregatePeriod = (startDate, endDate) => {
+                    if (!startDate || !endDate) return [];
+                    const result = [];
+                    const start = new Date(startDate + 'T00:00:00');
+                    const end = new Date(endDate + 'T00:00:00');
+                    for (let cursor = new Date(start), day = 1; cursor <= end; cursor.setDate(cursor.getDate() + 1), day++) {
+                        const dateStr = cursor.toISOString().slice(0, 10);
+                        const values = { date: dateStr, day, sales: 0, traffic: 0, contracts: 0, trading: 0, revenue: 0 };
+                        jsonData.dailyFacts.forEach(record => {
+                            if (record.date !== dateStr || record.month) return;
+                            const addBrand = brandData => {
+                                if (!brandData) return;
+                                values.sales += Number(brandData.sales) || 0;
+                                values.traffic += Number(brandData.traffic) || 0;
+                                values.contracts += Number(brandData.contracts) || 0;
+                                values.trading += Number(brandData.trading) || 0;
+                                values.revenue += Number(brandData.revenue) || 0;
+                            };
                             if (this.currentBrand === 'all') {
                                 Object.keys(record).forEach(key => {
-                                    if (key !== 'date' && key !== 'month' && typeof record[key] === 'object') {
-                                        const brandData = record[key];
-                                        dayData.sales += Number(brandData.sales) || 0;
-                                        dayData.traffic += Number(brandData.traffic) || 0;
-                                        dayData.contracts += Number(brandData.contracts) || 0;
-                                        dayData.trading += Number(brandData.trading) || 0;
-                                        dayData.revenue += Number(brandData.revenue) || 0;
-                                    }
+                                    if (key !== 'date' && key !== 'month' && typeof record[key] === 'object') addBrand(record[key]);
                                 });
                             } else {
-                                const brandData = record[this.currentBrand];
-                                if (brandData) {
-                                    dayData.sales += Number(brandData.sales) || 0;
-                                    dayData.traffic += Number(brandData.traffic) || 0;
-                                    dayData.contracts += Number(brandData.contracts) || 0;
-                                    dayData.trading += Number(brandData.trading) || 0;
-                                    dayData.revenue += Number(brandData.revenue) || 0;
-                                }
+                                addBrand(record[this.currentBrand]);
                             }
-                        }
+                        });
+                        result.push(values);
                     }
-                });
-                
-                this.dailyData = Array.from(dailyMap.values()).sort((a, b) => a.day - b.day);
+                    return result;
+                };
+
+                const monthParts = currentMonth.split('-').map(Number);
+                const year = monthParts[0];
+                const month = monthParts[1];
+                const currentStart = currentMonth + '-01';
+                const lastDay = String(new Date(year, month, 0).getDate()).padStart(2, '0');
+                const currentEnd = currentMonth + '-' + lastDay;
+                this.dailyData = aggregatePeriod(currentStart, currentEnd);
+
+                const comparison = dashboardCore.comparisonParams;
+                this.comparisonDailyData = comparison?.enabled && comparison.startDate && comparison.endDate
+                    ? aggregatePeriod(comparison.startDate, comparison.endDate)
+                    : [];
+
                 this.renderChart();
                 this.updateStats();
             }
-            
-            renderChart() {
+                        renderChart() {
                 const canvas = document.getElementById('dailySalesChart');
                 if (!canvas || this.dailyData.length === 0) return;
                 
@@ -1450,6 +1443,24 @@
                                 tension: 0.2,
                                 fill: true
                             },
+                            ...(this.comparisonDailyData.length > 0 ? [{
+                                label: 'Период сравнения',
+                                data: this.comparisonDailyData.map(d => {
+                                    const value = d[this.currentMetric] || 0;
+                                    return isRevenue ? value / 1000000 : value;
+                                }),
+                                borderColor: '#607d8b',
+                                backgroundColor: 'rgba(96,125,139,0.08)',
+                                borderWidth: 2,
+                                borderDash: [8, 4],
+                                pointRadius: 3,
+                                pointHoverRadius: 6,
+                                pointBackgroundColor: 'white',
+                                pointBorderColor: '#607d8b',
+                                pointBorderWidth: 2,
+                                tension: 0.2,
+                                fill: false
+                            }] : []),
                             {
                                 label: 'Среднее за 7 дней',
                                 data: movingAvg,
