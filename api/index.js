@@ -26,6 +26,10 @@ async function fetchExternalData(force = false) {
   return data;
 }
 
+function addSourceMetadata(data, source, fallbackAt = null) {
+  return { ...data, source, fallbackAt };
+}
+
 function readLocalFallback() {
   if (!fs.existsSync(JSON_DATA_PATH)) return null;
   return JSON.parse(fs.readFileSync(JSON_DATA_PATH, 'utf8'));
@@ -167,12 +171,12 @@ app.get('/api/data', async (req, res) => {
   console.log('📥 GET /api/data');
   try {
     const data = await fetchExternalData(req.query.refresh === 'true');
-    res.json(data);
+    res.json(addSourceMetadata(data, 'external'));
   } catch (externalError) {
     console.error('❌ Ошибка внешнего источника:', externalError.message);
     try {
       const fallback = readLocalFallback();
-      if (fallback) return res.json(fallback);
+      if (fallback) return res.json(addSourceMetadata(fallback, 'fallback', new Date().toISOString()));
     } catch (fallbackError) {
       console.error('❌ Ошибка fallback-файла:', fallbackError.message);
     }
