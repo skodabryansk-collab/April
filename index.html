@@ -1380,9 +1380,18 @@
                 const currentStart = currentMonth + '-01';
                 const lastDay = String(new Date(year, month, 0).getDate()).padStart(2, '0');
                 const currentEnd = currentMonth + '-' + lastDay;
+                const selectedStart = dashboardCore.rangeParams?.startDate;
+                const selectedEnd = dashboardCore.rangeParams?.endDate;
+                const periodStart = selectedStart && selectedStart >= currentStart && selectedStart <= currentEnd ? selectedStart : currentStart;
+                const periodEnd = selectedEnd && selectedEnd >= periodStart && selectedEnd <= currentEnd ? selectedEnd : currentEnd;
                 const lastDataDate = dashboardCore.getLastDataDate?.();
-                const effectiveCurrentEnd = lastDataDate && lastDataDate < currentEnd ? lastDataDate : currentEnd;
-                this.dailyData = aggregatePeriod(currentStart, effectiveCurrentEnd);
+                const effectiveCurrentEnd = lastDataDate && lastDataDate < periodEnd ? lastDataDate : periodEnd;
+                const trimTrailingEmptyDays = (rows) => {
+                    let lastDataIndex = rows.length - 1;
+                    while (lastDataIndex > 0 && !Object.keys(rows[lastDataIndex]).some(key => ['sales', 'traffic', 'contracts', 'trading', 'revenue'].includes(key) && Number(rows[lastDataIndex][key]) !== 0)) lastDataIndex--;
+                    return rows.slice(0, lastDataIndex + 1);
+                };
+                this.dailyData = trimTrailingEmptyDays(aggregatePeriod(periodStart, effectiveCurrentEnd));
 
                 const comparison = dashboardCore.comparisonParams;
                 this.comparisonDailyData = comparison?.enabled && comparison.startDate && comparison.endDate
@@ -1559,6 +1568,7 @@
                         },
                         scales: {
                             x: {
+                                offset: false,
                                 grid: { color: 'rgba(152, 162, 179, 0.14)', borderDash: [5, 5] },
                                 ticks: { color: '#98a2b3', maxTicksLimit: 8, padding: 8 }
                             },
