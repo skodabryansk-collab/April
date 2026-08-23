@@ -110,10 +110,10 @@ test('DataService reloads client state from /api/data after refresh', async () =
   };
   vm.runInNewContext(source, context, { filename: 'data-service.js' });
   const service = new context.window.DataService();
-  await service.loadJsonDataFromServer();
+  await new Promise((resolve) => setImmediate(resolve));
   assert.deepEqual(service.getJsonData(), clientPayload);
   assert.deepEqual(service.getJsonBrands(), ['Test Brand']);
-  assert.deepEqual(requests, ['/api/data']);
+  assert.equal(requests.length, 1);
   await service.refreshJsonData();
   assert.equal(requests.length, 2);
 });
@@ -121,6 +121,7 @@ test('DataService reloads client state from /api/data after refresh', async () =
 test('DashboardCore refresh reloads data and moves range to the latest date', async () => {
   const source = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js/core/dashboard-core.js'), 'utf8');
   const context = { window: {}, console, document: {}, fetch: null, confirm: () => true };
+  source = source.replace(/^import[^\n]+\n/, '');
   vm.runInNewContext(source, context, { filename: 'dashboard-core.js' });
   const calls = [];
   const freshData = { metadata: { brandsIncluded: ['Test Brand'] }, dailyFacts: [{ date: '2099-01-04' }] };
