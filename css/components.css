@@ -609,7 +609,7 @@ button:hover {
 .comparison-range-fields label { font-weight:600; color:#2c3e50; }
 .comparison-range-fields input { width:132px; min-width:0; padding:8px 10px; border:1px solid #e0e0e0; border-radius:10px; background:#fff; font-family:inherit; font-size:14px; }
 .comparison-range-fields input:focus { border-color:#2196f3; outline:none; box-shadow:0 0 0 3px rgba(33,150,243,.1); }
-.comparison-delta { display:inline-block; margin-left:12px; font:inherit; font-weight:700; white-space:nowrap; }
+.comparison-delta { display:inline-block; margin-left:auto; padding-left:8px; font:inherit; font-weight:700; white-space:nowrap; text-align:right; }
 .comparison-delta.positive { color:#2e7d32 !important; }
 .comparison-delta.negative { color:#d32f2f !important; }
 .comparison-delta.neutral { color:#6c757d !important; }
