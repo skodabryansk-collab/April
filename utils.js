@@ -225,7 +225,7 @@ class DashboardUtils {
         if (jsonData.metadata?.brandsIncluded) return jsonData.metadata.brandsIncluded;
         const brandSet = new Set();
         jsonData.dailyFacts.forEach(record => {
-            if (record.date && record.date !== '2026-01-01' && !record.month) {
+            if (record.date && !record.month) {
                 Object.keys(record).forEach(key => {
                     if (key !== 'date' && key !== 'month' && typeof record[key] === 'object') {
                         brandSet.add(key);
