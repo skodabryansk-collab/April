@@ -662,6 +662,7 @@ export class DashboardCore {
         this.jsonData = null;
         this.jsonBrands = [];
         this.jsonBrandMapping = {};
+        this.stats = {
             totalRecords: 0,
             dateRange: '',
             brandsCount: 0,
