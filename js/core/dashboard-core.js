@@ -144,7 +144,7 @@ export class DashboardCore {
         
         const months = new Set();
         this.jsonData.dailyFacts.forEach(record => {
-            if (record.date && record.date !== '2026-01-01' && !record.month) {
+            if (record.date && !record.month) {
                 const month = record.date.substring(0, 7);
                 months.add(month);
             }
