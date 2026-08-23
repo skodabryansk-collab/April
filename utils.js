@@ -93,7 +93,7 @@ class DashboardUtils {
         const dailyMap = new Map();
 
         jsonData.dailyFacts.forEach(record => {
-            if (!record.date || record.date === '2026-01-01') return;
+            if (!record.date) return;
 
             const recordDate = new Date(record.date);
             const recordYear = recordDate.getFullYear();
