@@ -54,6 +54,7 @@ class DataService {
         
         console.log('📋 Бренды из JSON:', this.jsonBrands);
         console.log('📋 Маппинг брендов:', this.jsonBrandMapping);
+        this.updateJsonStats();
         
         
     }
