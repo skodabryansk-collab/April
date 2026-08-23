@@ -493,9 +493,9 @@
 
         .metric-details {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 8px;
         }
         .detail-item {
             display: flex;
@@ -649,6 +649,9 @@
             border-left: 5px solid var(--info);
             margin: 20px 0;
         }
+        .total-gk-card .gk-progress-container { gap: 20px; }
+        .total-gk-card .metric-details { margin-top: 8px; }
+        .total-gk-card .progress-labels { margin-top: 4px; }
         .summary-table-container {
             background: white;
             padding: 20px;
@@ -948,7 +951,9 @@
             .filter-section select { width: 100%; }
             
             .total-gk-card { padding: 15px; }
-            .gk-progress-container { gap: 15px; }
+            .total-gk-card > div:first-child { margin-bottom: 14px !important; }
+            .total-gk-card .gk-progress-container { gap: 16px; }
+            .total-gk-card .metric-details { gap: 6px; }
             
             .forecast-card { padding: 12px; }
             .forecast-card > div { grid-template-columns: 1fr; gap: 10px; }
