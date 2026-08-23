@@ -17,7 +17,7 @@
 
 ## Установка и запуск
 
-### Локально
+### Локально1
 ```bash
 git clone <repository-url>
 cd dashboard-auto
