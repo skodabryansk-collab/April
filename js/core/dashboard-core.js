@@ -472,7 +472,8 @@ export class DashboardCore {
         const delta = Math.round(((currentValue - comparisonValue) / Math.abs(comparisonValue)) * 100);
         const sign = delta > 0 ? '+' : '';
         const tone = delta > 0 ? 'positive' : delta < 0 ? 'negative' : 'neutral';
-        return `<div class="comparison-delta ${tone}" title="Отклонение от выбранного периода сравнения">${sign}${delta}%</div>`;
+        const color = tone === 'positive' ? '#2e7d32' : tone === 'negative' ? '#d32f2f' : '#6c757d';
+        return `<span class="comparison-delta ${tone}" style="color:${color};" title="Отклонение от выбранного периода сравнения">${sign}${delta}%</span>`;
     }
 
     aggregateRecords(records) {
@@ -1144,8 +1145,7 @@ export class DashboardCore {
                     </div>
                     <div class="fact-percent">${salesPercent}%</div>
                 </div>
-                ${createProgressBar('sales', data.sales.fact, data.sales.plan, salesForecast, salesPercent, salesForecastPercent)}
-                ${salesDelta}
+                ${createProgressBar('sales', data.sales.fact, data.sales.plan, salesForecast, salesPercent, salesForecastPercent, salesDelta)}
                 <div class="metric-details">
                     <div class="detail-item">
                         <span class="detail-label">Конверсия:</span>
@@ -1168,8 +1168,7 @@ export class DashboardCore {
                     </div>
                     <div class="fact-percent">${contractsPercent}%</div>
                 </div>
-                ${createProgressBar('contracts', data.contracts.fact, data.contracts.plan, contractsForecast, contractsPercent, contractsForecastPercent)}
-                ${contractsDelta}
+                ${createProgressBar('contracts', data.contracts.fact, data.contracts.plan, contractsForecast, contractsPercent, contractsForecastPercent, contractsDelta)}
                 <div class="metric-details">
                     <div class="detail-item">
                         <span class="detail-label">% контракт:</span>
@@ -1192,8 +1191,7 @@ export class DashboardCore {
                     </div>
                     <div class="fact-percent">${tradingPercent}%</div>
                 </div>
-                ${createProgressBar('trading', data.trading.fact, data.trading.plan, tradingForecast, tradingPercent, tradingForecastPercent)}
-                ${tradingDelta}
+                ${createProgressBar('trading', data.trading.fact, data.trading.plan, tradingForecast, tradingPercent, tradingForecastPercent, tradingDelta)}
                 <div class="metric-details">
                     <div class="detail-item">
                         <span class="detail-label">%Трейдин (охват):</span>
@@ -1216,8 +1214,7 @@ export class DashboardCore {
                     </div>
                     <div class="fact-percent">${trafficPercent}%</div>
                 </div>
-                ${createProgressBar('traffic', data.traffic.fact, data.traffic.plan, trafficForecast, trafficPercent, trafficForecastPercent)}
-                ${trafficDelta}
+                ${createProgressBar('traffic', data.traffic.fact, data.traffic.plan, trafficForecast, trafficPercent, trafficForecastPercent, trafficDelta)}
                 ${showForecast ? `
                 <div class="metric-details">
                     <div class="detail-item">
@@ -1236,8 +1233,7 @@ export class DashboardCore {
                     </div>
                     <div class="fact-percent">${revenuePercent}%</div>
                 </div>
-                ${createProgressBar('revenue', data.revenue.fact, data.revenue.plan, revenueForecast, revenuePercent, revenueForecastPercent)}
-                ${revenueDelta}
+                ${createProgressBar('revenue', data.revenue.fact, data.revenue.plan, revenueForecast, revenuePercent, revenueForecastPercent, revenueDelta)}
                 ${showForecast ? `
                 <div class="metric-details">
                     <div class="detail-item">
