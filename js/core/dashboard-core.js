@@ -35,13 +35,6 @@ export class DashboardCore {
         this.jsonData = null;
         this.jsonBrands = [];
         this.jsonBrandMapping = {};
-        this.jsonStats = {
-            totalRecords: 0,
-            dateRange: '',
-            brandsCount: 0,
-            totalDays: 0,
-            availableMonths: []
-        };
         
         // Параметры диапазона дат
         this.rangeParams = {
@@ -95,7 +88,6 @@ export class DashboardCore {
                 this.jsonData = jsonData;
                 this.jsonBrands = this.dataManager.getJsonBrands();
                 this.jsonBrandMapping = this.dataManager.getJsonBrandMapping();
-                this.jsonStats = this.dataManager.getJsonStats();
                 this.updateAvailableDates();
                 this.updateBrandsFromJson();
                 this.setDefaultRange();
@@ -111,11 +103,6 @@ export class DashboardCore {
             'summaryContainer',
             'radarContainer', 'radarGrid', 'gkRadarContainer',
             'totalGKContainer', 'summaryTableContainer',
-            'loadJsonBtn', 'importJsonBtn', 'updatePlansBtn', 'clearJsonBtn', 'jsonStatusIndicator',
-            'jsonStatusText', 'jsonStats', 'jsonRecordCount', 'jsonDateRange',
-            'jsonBrandsCount', 'jsonTotalDays', 'jsonDataPreview',
-            'loadJsonUrlBtn', 'saveJsonUrlBtn', 'clearJsonUrlBtn', 'testJsonUrlBtn',
-            'jsonUrlInput', 'jsonUrlHistory', 'urlHistoryList', 'clearUrlHistoryBtn',
             'rangeStart', 'rangeEnd', 'loadDataForRangeBtn',
             'comparePeriods', 'comparisonRangeFields', 'comparisonStart', 'comparisonEnd',
             'rangeDaysInfo', 'rangePlanInfo', 'forecastStatus', 'monthSelector',
@@ -632,8 +619,6 @@ export class DashboardCore {
             this.uiManager.showViewerMode();
         }
         
-        this.renderJsonStats();
-        this.renderJsonPreview();
         
         const lastDate = this.dataManager.getLastDataDate();
         if (lastDate && this.elements.rangeStart && this.elements.rangeEnd) {
@@ -660,11 +645,7 @@ export class DashboardCore {
         this.jsonData = data.jsonData;
         this.jsonBrands = data.jsonBrands;
         this.jsonBrandMapping = data.jsonBrandMapping;
-        this.jsonStats = data.jsonStats;
         
-        this.updateJsonStatus(true);
-        this.renderJsonStats();
-        this.renderJsonPreview();
         
         this.updateAvailableDates();
         this.updateBrandsFromJson();
@@ -681,16 +662,12 @@ export class DashboardCore {
         this.jsonData = null;
         this.jsonBrands = [];
         this.jsonBrandMapping = {};
-        this.jsonStats = {
             totalRecords: 0,
             dateRange: '',
             brandsCount: 0,
             totalDays: 0,
             availableMonths: []
         };
-        this.updateJsonStatus(false);
-        if (this.elements.jsonStats) this.elements.jsonStats.style.display = 'none';
-        if (this.elements.jsonDataPreview) this.elements.jsonDataPreview.style.display = 'none';
     }
     
     updateBrandsFromJson() {
@@ -730,8 +707,6 @@ export class DashboardCore {
     
     enableAdminFeatures() {
         const adminButtons = [
-            'loadJsonBtn', 'importJsonBtn', 'updatePlansBtn', 'clearJsonBtn',
-            'loadJsonUrlBtn', 'saveJsonUrlBtn', 'clearJsonUrlBtn', 'testJsonUrlBtn',
             'refreshDataBtn'
         ];
         
@@ -745,13 +720,7 @@ export class DashboardCore {
     }
     
     setupEventListeners() {
-        if (this.elements.loadJsonBtn) {
-            this.elements.loadJsonBtn.addEventListener('click', () => this.loadJsonFromFile());
-        }
         
-        if (this.elements.clearJsonBtn) {
-            this.elements.clearJsonBtn.addEventListener('click', () => this.clearJsonData());
-        }
         
         if (this.elements.calcBtn) {
             this.elements.calcBtn.addEventListener('click', () => this.calculate());
@@ -809,7 +778,6 @@ export class DashboardCore {
             this.jsonData = freshData;
             this.jsonBrands = freshData.metadata?.brandsIncluded || [];
             this.jsonBrandMapping = this.dataManager.getJsonBrandMapping();
-            this.jsonStats = this.dataManager.getJsonStats();
             
             this.updateAvailableDates();
             this.updateBrandsFromJson();
@@ -823,9 +791,6 @@ export class DashboardCore {
             
             this.loadDataForRange();
             
-            this.renderJsonStats();
-            this.renderJsonPreview();
-            this.updateJsonStatus(true);
             
             // Пункт 5: обновить дневной график свежими данными
             if (window.dailyChartManager && typeof window.dailyChartManager.loadData === 'function') {
@@ -881,116 +846,10 @@ export class DashboardCore {
             this.brands.map(brand => `<option value="${brand.key}">${brand.name}</option>`).join('');
     }
     
-    loadJsonFromFile() {
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = '.json,.txt';
-        fileInput.style.display = 'none';
-        fileInput.onchange = async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                try {
-                    const jsonData = JSON.parse(event.target.result);
-                    this.dataManager.processJsonData(jsonData);
-                    this.uiManager.showNotification('JSON данные загружены', 'success');
-                } catch (error) {
-                    this.uiManager.showNotification('Ошибка чтения JSON', 'error');
-                }
-            };
-            reader.readAsText(file);
-        };
-        document.body.appendChild(fileInput);
-        fileInput.click();
-        document.body.removeChild(fileInput);
-    }
     
-    clearJsonData() {
-        this.dataManager.clearJsonData();
-        this.uiManager.showNotification('JSON данные очищены', 'success');
-        this.calculate();
-    }
     
-    updateJsonStatus(loaded = false) {
-        if (!this.elements.jsonStatusIndicator || !this.elements.jsonStatusText) return;
-        
-        const stats = this.dataManager.getJsonStats();
-        if (loaded && this.dataManager.getJsonData()) {
-            this.elements.jsonStatusIndicator.className = 'json-status-indicator loaded';
-            const monthsCount = stats.availableMonths?.length || 0;
-            this.elements.jsonStatusText.textContent = `Данные загружены: ${stats.totalRecords} записей, ${stats.brandsCount} брендов, ${monthsCount} мес.`;
-        } else {
-            this.elements.jsonStatusIndicator.className = 'json-status-indicator not-loaded';
-            this.elements.jsonStatusText.textContent = 'Данные из JSON не загружены';
-        }
-    }
     
-    renderJsonStats() {
-        if (!this.elements.jsonStats) return;
-        
-        const stats = this.dataManager.getJsonStats();
-        
-        if (this.elements.jsonRecordCount) {
-            this.elements.jsonRecordCount.textContent = stats.totalRecords;
-        }
-        if (this.elements.jsonDateRange) {
-            this.elements.jsonDateRange.textContent = stats.dateRange;
-        }
-        if (this.elements.jsonBrandsCount) {
-            this.elements.jsonBrandsCount.textContent = stats.brandsCount;
-        }
-        if (this.elements.jsonTotalDays) {
-            this.elements.jsonTotalDays.textContent = stats.totalDays;
-        }
-        
-        const monthsInfo = stats.availableMonths?.length ? stats.availableMonths.join(', ') : 'Нет данных';
-        
-        let monthsElement = document.getElementById('jsonMonths');
-        if (!monthsElement) {
-            const statsContainer = this.elements.jsonStats;
-            const newStat = document.createElement('div');
-            newStat.className = 'json-stat';
-            newStat.innerHTML = `
-                <div class="json-stat-label">Доступные месяцы</div>
-                <div class="json-stat-value" id="jsonMonths">${monthsInfo}</div>
-            `;
-            statsContainer.appendChild(newStat);
-        } else {
-            monthsElement.textContent = monthsInfo;
-        }
-        
-        this.elements.jsonStats.style.display = 'grid';
-    }
     
-    renderJsonPreview() {
-        if (!this.elements.jsonDataPreview) return;
-        
-        const jsonData = this.dataManager.getJsonData();
-        if (!jsonData) {
-            this.elements.jsonDataPreview.style.display = 'none';
-            return;
-        }
-        
-        const stats = this.dataManager.getJsonStats();
-        const availableMonths = stats.availableMonths || [];
-        const jsonBrands = this.dataManager.getJsonBrands();
-        const jsonBrandMapping = this.dataManager.getJsonBrandMapping();
-        
-        const preview = document.createElement('div');
-        preview.innerHTML = `
-            <div><strong>Версия:</strong> ${jsonData.version || '1.0'}</div>
-            <div><strong>Тип данных:</strong> ${jsonData.dataType || 'daily_facts'}</div>
-            <div><strong>Дата экспорта:</strong> ${jsonData.exportDate || 'Не указана'}</div>
-            <div><strong>Бренды:</strong> ${jsonBrands.join(', ')}</div>
-            <div><strong>Доступные месяцы:</strong> ${availableMonths.join(', ') || 'Нет данных'}</div>
-        `;
-        
-        this.elements.jsonDataPreview.innerHTML = '';
-        this.elements.jsonDataPreview.appendChild(preview);
-        this.elements.jsonDataPreview.style.display = 'block';
-    }
     
     calculate() {
         console.log('🔄 Начало расчета...');
