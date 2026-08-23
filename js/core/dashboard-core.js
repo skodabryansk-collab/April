@@ -404,6 +404,7 @@ export class DashboardCore {
                 if (this.comparisonParams.enabled) this.setComparisonDefaults();
                 if (this.elements.comparisonRangeFields) this.elements.comparisonRangeFields.style.display = this.comparisonParams.enabled ? 'flex' : 'none';
                 this.calculate();
+                if (window.dailyChartManager?.loadData) window.dailyChartManager.loadData();
             });
         }
 
@@ -411,6 +412,7 @@ export class DashboardCore {
             if (this.elements[field]) this.elements[field].addEventListener('change', () => {
                 this.comparisonParams[field === 'comparisonStart' ? 'startDate' : 'endDate'] = this.elements[field].value || null;
                 this.calculate();
+                if (window.dailyChartManager?.loadData) window.dailyChartManager.loadData();
             });
         });
 
@@ -558,6 +560,7 @@ export class DashboardCore {
         };
         
         this.calculate();
+        if (window.dailyChartManager?.loadData) window.dailyChartManager.loadData();
         
         this.uiManager.showNotification(`Данные за ${this.rangeParams.daysCount} ${this.getDaysWord(this.rangeParams.daysCount)} загружены`, 'success');
     }
