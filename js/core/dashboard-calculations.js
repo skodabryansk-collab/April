@@ -120,66 +120,110 @@ export class DashboardCalculations {
      * План намеренно не используется в основной формуле.
      */
     calculateFeatureForecast(fact, type, day, daysInMonth, brandKey, dailyFacts, targetMonth) {
-        if (!Array.isArray(dailyFacts) || !targetMonth || day <= 0 || daysInMonth <= day) return Math.round(fact);
-        const metrics = ['sales', 'traffic', 'contracts', 'trading', 'revenue'];
-        if (!metrics.includes(type)) return Math.round(fact);
-        const rows = dailyFacts.filter(row => row && row.date);
-        const monthKey = row => row.date.substring(0, 7);
-        const dayNumber = row => parseInt(row.date.substring(8, 10), 10);
-        const isWeekend = row => { const weekday = new Date(row.date + 'T12:00:00').getDay(); return weekday === 0 || weekday === 6; };
-        const value = row => Number(row[brandKey]?.[type] || 0);
-        const targetRows = rows.filter(row => monthKey(row) === targetMonth && dayNumber(row) <= day);
-        const priorMonths = [...new Set(rows.map(monthKey))].filter(month => month < targetMonth).sort().slice(-6);
-        const priorRows = rows.filter(row => priorMonths.includes(monthKey(row)));
-        const remainingRows = Array.from({ length: Math.max(0, daysInMonth - day) }, (_, index) => {
-            const futureDay = day + index + 1;
-            return { date: targetMonth + '-' + String(futureDay).padStart(2, '0') };
-        });
-        const fallbackRate = fact / day;
-        const rates = (sourceRows, weekend) => {
-            const selected = sourceRows.filter(row => isWeekend(row) === weekend);
-            return selected.length ? selected.reduce((total, row) => total + value(row), 0) / selected.length : null;
-        };
-        const currentWeekday = rates(targetRows, false);
-        const currentWeekend = rates(targetRows, true);
-        const historyWeekday = rates(priorRows, false);
-        const historyWeekend = rates(priorRows, true);
-        const blendedRate = weekend => {
-            const current = weekend ? currentWeekend : currentWeekday;
-            const history = weekend ? historyWeekend : historyWeekday;
-            if (current !== null && history !== null) return current * 0.65 + history * 0.35;
-            if (current !== null) return current;
-            if (history !== null) return history;
-            return fallbackRate;
-        };
-        const periodCoefficient = (brand, metric) => {
-            const early = priorRows.filter(row => dayNumber(row) <= day && row[brand]?.[metric] !== undefined);
-            const late = priorRows.filter(row => dayNumber(row) > day && row[brand]?.[metric] !== undefined);
-            const earlyRate = early.length ? early.reduce((total, row) => total + Number(row[brand]?.[metric] || 0), 0) / early.length : 0;
-            const lateRate = late.length ? late.reduce((total, row) => total + Number(row[brand]?.[metric] || 0), 0) / late.length : 0;
-            const groupEarly = priorRows.filter(row => dayNumber(row) <= day).reduce((total, row) => total + brandsValue(row, metric), 0);
-            const groupLate = priorRows.filter(row => dayNumber(row) > day).reduce((total, row) => total + brandsValue(row, metric), 0);
-            const groupEarlyRows = priorRows.filter(row => dayNumber(row) <= day).length;
-            const groupLateRows = priorRows.filter(row => dayNumber(row) > day).length;
-            const individual = earlyRate > 0 && lateRate > 0 ? lateRate / earlyRate : null;
-            const group = groupEarly > 0 && groupLate > 0 ? (groupLate / (groupLateRows || 1)) / (groupEarly / (groupEarlyRows || 1)) : 1;
-            let coefficient = individual === null ? group : individual * 0.6 + group * 0.4;
-            if (metric === 'revenue' && (individual === null || coefficient <= 0)) coefficient = group;
-            return Math.max(0.8, Math.min(2, Number.isFinite(coefficient) && coefficient > 0 ? coefficient : 1));
-        };
-        const brandsValue = (row, metric) => Object.keys(row).filter(key => key !== 'date').reduce((total, key) => total + Number(row[key]?.[metric] || 0), 0);
-        const previousRows = targetRows.filter(row => dayNumber(row) >= Math.max(1, day - 13) && dayNumber(row) <= day - 7);
-        const recentRows = targetRows.filter(row => dayNumber(row) >= Math.max(1, day - 6) && dayNumber(row) <= day);
-        const previousTotal = previousRows.reduce((total, row) => total + value(row), 0);
-        const recentTotal = recentRows.reduce((total, row) => total + value(row), 0);
-        const rawTrend = previousTotal > 0 ? recentTotal / previousTotal : 1;
-        const trend = Math.max(0.7, Math.min(1.3, rawTrend));
-        const trendFactor = 1 + 0.2 * (trend - 1);
-        const coefficient = periodCoefficient(brandKey, type);
-        const projectedRemaining = remainingRows.reduce((total, row) => total + blendedRate(isWeekend(row)) * trendFactor * coefficient, 0);
-        return Math.max(Number(fact) || 0, Math.round((Number(fact) || 0) + projectedRemaining));
-    }
-    /**
+            if (!Array.isArray(dailyFacts) || !targetMonth || day <= 0 || daysInMonth <= day) return Math.round(Number(fact) || 0);
+            const metrics = ['sales', 'traffic', 'contracts', 'trading', 'revenue'];
+            if (!metrics.includes(type)) return Math.round(Number(fact) || 0);
+
+            const rows = dailyFacts.filter(row => row && /^\d{4}-\d{2}-\d{2}$/.test(row.date));
+            const monthOf = row => row.date.substring(0, 7);
+            const dayOf = row => parseInt(row.date.substring(8, 10), 10);
+            const isWeekend = row => {
+                const weekday = new Date(row.date + 'T12:00:00').getDay();
+                return weekday === 0 || weekday === 6;
+            };
+            const seasonOf = month => {
+                const monthNumber = parseInt(month.substring(5, 7), 10);
+                if (monthNumber === 12 || monthNumber <= 2) return 'winter';
+                if (monthNumber <= 4) return 'spring';
+                if (monthNumber <= 8) return 'summer';
+                return 'autumn';
+            };
+            const value = (row, brand = brandKey) => Number(row[brand]?.[type]) || 0;
+            const groupValue = row => Object.keys(row)
+                .filter(key => key !== 'date' && key !== 'month' && row[key] && typeof row[key] === 'object')
+                .reduce((total, key) => total + (Number(row[key]?.[type]) || 0), 0);
+            const sum = values => values.reduce((total, item) => total + item, 0);
+            const average = values => values.length ? sum(values) / values.length : 0;
+            const median = values => {
+                if (!values.length) return 0;
+                const sorted = [...values].sort((a, b) => a - b);
+                const middle = Math.floor(sorted.length / 2);
+                return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+            };
+            const smooth = values => {
+                if (values.length < 4) return values;
+                const center = median(values);
+                const deviation = median(values.map(valueItem => Math.abs(valueItem - center))) || Math.max(1, Math.abs(center) * 0.1);
+                return values.map(valueItem => Math.max(center - 3 * deviation, Math.min(center + 3 * deviation, valueItem)));
+            };
+            const clamp = (number, min, max) => Math.max(min, Math.min(max, Number.isFinite(number) ? number : 1));
+
+            const targetRows = rows.filter(row => monthOf(row) === targetMonth && dayOf(row) <= day);
+            const priorMonthKeys = [...new Set(rows.map(monthOf))].filter(month => month < targetMonth).sort();
+            const seasonalMonths = priorMonthKeys.filter(month => seasonOf(month) === seasonOf(targetMonth));
+            const historyMonthKeys = (seasonalMonths.length ? seasonalMonths : priorMonthKeys).slice(-3);
+            const historyRows = rows.filter(row => historyMonthKeys.includes(monthOf(row)));
+            const futureRows = Array.from({ length: Math.max(0, daysInMonth - day) }, (_, index) => ({
+                date: targetMonth + '-' + String(day + index + 1).padStart(2, '0')
+            }));
+            const observed = smooth(targetRows.map(row => value(row)));
+            const currentFact = Number.isFinite(Number(fact)) ? Number(fact) : sum(observed);
+            const fallbackRate = day > 0 ? currentFact / day : 0;
+
+            const currentRates = { weekday: [], weekend: [] };
+            const historyRates = { weekday: [], weekend: [] };
+            targetRows.forEach(row => currentRates[isWeekend(row) ? 'weekend' : 'weekday'].push(value(row)));
+            historyRows.forEach(row => historyRates[isWeekend(row) ? 'weekend' : 'weekday'].push(value(row)));
+            const expectedRate = kind => {
+                const current = average(smooth(currentRates[kind]));
+                const historical = average(smooth(historyRates[kind]));
+                if (current && historical) return current * 0.7 + historical * 0.3;
+                return current || historical || fallbackRate;
+            };
+
+            const groupCurrentRates = { weekday: [], weekend: [] };
+            const groupHistoryRates = { weekday: [], weekend: [] };
+            targetRows.forEach(row => groupCurrentRates[isWeekend(row) ? 'weekend' : 'weekday'].push(groupValue(row)));
+            historyRows.forEach(row => groupHistoryRates[isWeekend(row) ? 'weekend' : 'weekday'].push(groupValue(row)));
+            const groupExpectedRate = kind => {
+                const current = average(smooth(groupCurrentRates[kind]));
+                const historical = average(smooth(groupHistoryRates[kind]));
+                return current || historical || (day > 0 ? currentFact / day : 0);
+            };
+
+            const brandCalendarRemaining = sum(futureRows.map(row => expectedRate(isWeekend(row) ? 'weekend' : 'weekday')));
+            const groupCalendarRemaining = sum(futureRows.map(row => groupExpectedRate(isWeekend(row) ? 'weekend' : 'weekday')));
+            const observationConfidence = clamp(0.45 + targetRows.length / (targetRows.length + 20), 0.45, 0.85);
+            const perBrandGroup = groupCalendarRemaining / Math.max(1, Object.keys(targetRows[0] || {}).filter(key => key !== 'date').length);
+            const calendarRemaining = brandCalendarRemaining * observationConfidence + perBrandGroup * (1 - observationConfidence);
+
+            const periodStats = monthRows => {
+                const early = monthRows.filter(row => dayOf(row) <= day).map(row => value(row));
+                const late = monthRows.filter(row => dayOf(row) > day).map(row => value(row));
+                return { early: average(smooth(early)), late: average(smooth(late)) };
+            };
+            const brandPeriod = periodStats(historyRows);
+            const groupPeriod = (() => {
+                const early = historyRows.filter(row => dayOf(row) <= day).map(row => groupValue(row));
+                const late = historyRows.filter(row => dayOf(row) > day).map(row => groupValue(row));
+                return { early: average(smooth(early)), late: average(smooth(late)) };
+            })();
+            const brandPeriodFactor = brandPeriod.early > 0 && brandPeriod.late > 0 ? brandPeriod.late / brandPeriod.early : 1;
+            const groupPeriodFactor = groupPeriod.early > 0 && groupPeriod.late > 0 ? groupPeriod.late / groupPeriod.early : 1;
+            const seasonCorrection = clamp(0.7 * brandPeriodFactor + 0.3 * groupPeriodFactor, 0.9, 1.1);
+
+            const recent = smooth(observed.slice(-Math.min(7, observed.length)));
+            const previous = smooth(observed.slice(-Math.min(14, observed.length), -Math.min(7, observed.length)));
+            const trendRatio = previous.length && average(previous) > 0 ? average(recent) / average(previous) : 1;
+            const trendCorrection = clamp(1 + 0.2 * (clamp(trendRatio, 0.8, 1.2) - 1), 0.95, 1.05);
+            const metricCorrection = type === 'traffic' ? clamp(seasonCorrection * trendCorrection, 0.9, 1.1) : clamp(seasonCorrection * trendCorrection, 0.9, 1.1);
+            const projectedRemaining = calendarRemaining * metricCorrection;
+            const forecast = currentFact + projectedRemaining;
+
+            if (type === 'revenue') return Math.round(forecast);
+            return Math.max(Math.round(currentFact), Math.round(Math.max(0, forecast)));
+        }
+        /**
      * Рассчитывает оценку динамики (1-5 баллов)
      */
     getDynamicsScore(current, plan, daysPassed, totalDays) {
