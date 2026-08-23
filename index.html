@@ -683,7 +683,6 @@
             background: #f9f9f9;
         }
 
-        .json-section {
             background: #fff3e0;
             border-left: 4px solid #ff9800;
             padding: 20px;
@@ -691,43 +690,35 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             margin: 20px 0;
         }
-        .json-status {
             display: flex;
             align-items: center;
             gap: 10px;
             margin-bottom: 10px;
         }
-        .json-status-indicator {
             width: 12px;
             height: 12px;
             border-radius: 50%;
             display: inline-block;
         }
-        .json-status-indicator.loaded {
             background: #4caf50;
         }
-        .json-status-indicator.not-loaded {
             background: #f44336;
         }
-        .json-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 10px;
             margin-top: 15px;
         }
-        .json-stat {
             background: white;
             padding: 10px;
             border-radius: 6px;
             text-align: center;
             border: 1px solid #ffe0b2;
         }
-        .json-stat-label {
             font-size: 11px;
             color: #666;
             margin-bottom: 5px;
         }
-        .json-stat-value {
             font-size: 16px;
             font-weight: bold;
             color: #ff9800;
@@ -920,7 +911,6 @@
             .range-info { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px; margin-top: 12px; }
             #loadDataForRangeBtn { width: 100%; margin-top: 5px; }
             
-            .json-section { padding: 15px; }
             .button-group { flex-direction: column; gap: 8px; }
             .button-group button { width: 100%; justify-content: center; }
             
@@ -1063,44 +1053,6 @@
             <span id="forecastStatus" class="forecast-indicator inactive">Прогноз: недоступен</span>
         </div>
     </div>
-    
-    <!-- Дополнительные инструменты данных: доступны только администратору -->
-    <details id="adminDataTools" class="json-admin-tools viewer-hidden">
-        <summary>Дополнительные инструменты данных</summary>
-        <div class="json-section">
-            <h3>Администрирование данных</h3>
-        <div class="json-status">
-            <span class="json-status-indicator not-loaded" id="jsonStatusIndicator"></span>
-            <span id="jsonStatusText">Данные из JSON не загружены</span>
-        </div>
-        
-        <div class="button-group">
-            <button type="button" id="loadJsonBtn">Загрузить JSON</button>
-            <button type="button" id="importJsonBtn">Импортировать</button>
-            <button type="button" id="updatePlansBtn">Обновить планы</button>
-            <button type="button" id="clearJsonBtn">Очистить</button>
-        </div>
-        
-        <div id="jsonUrlInputContainer" style="margin-top: 15px; margin-bottom: 10px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: #f5f5f5; padding: 15px; border-radius: 8px;">
-            <div style="flex: 1; min-width: 250px;">
-                <label for="jsonUrlInput" style="display: block; margin-bottom: 5px; font-size: 12px; font-weight: 600;">Ссылка на JSON файл:</label>
-                <input type="url" id="jsonUrlInput" placeholder="https://example.com/data.json" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: monospace;">
-            </div>
-            <div>
-                <button type="button" id="testJsonUrlBtn" style="background: #2196f3; padding: 10px 20px;">Проверить</button>
-            </div>
-        </div>
-        
-        <div class="json-stats" id="jsonStats" style="display: none;">
-            <div class="json-stat"><div class="json-stat-label">Загружено записей</div><div class="json-stat-value" id="jsonRecordCount">0</div></div>
-            <div class="json-stat"><div class="json-stat-label">Диапазон дат</div><div class="json-stat-value" id="jsonDateRange">-</div></div>
-            <div class="json-stat"><div class="json-stat-label">Бренды</div><div class="json-stat-value" id="jsonBrandsCount">0</div></div>
-            <div class="json-stat"><div class="json-stat-label">Всего дней</div><div class="json-stat-value" id="jsonTotalDays">0</div></div>
-        </div>
-        
-        <div id="jsonDataPreview" class="json-data-preview" style="display: none;"></div>
-        </div>
-    </details>
     
     <!-- Информационная панель -->
     <div class="info-panel">
@@ -1301,7 +1253,6 @@
             getJsonData() { return this.jsonData; }
             getJsonBrands() { return this.jsonBrands; }
             getJsonBrandMapping() { return this.jsonBrandMapping; }
-            getJsonStats() { return { totalRecords: this.jsonData?.dailyFacts?.length || 0 }; }
             getLastDataDate() { return this.jsonData?.dailyFacts?.[this.jsonData.dailyFacts.length - 1]?.date; }
             getHistory() { return this.history; }
             getMonthlyTotals() { return this.monthlyTotals; }
