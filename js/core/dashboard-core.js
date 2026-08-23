@@ -905,11 +905,11 @@ export class DashboardCore {
                 let tradingForecastPercent = calculatePercentage(tradingForecast, data.trading.plan);
                 
                 if (showForecast) {
-                    salesForecast = this.calculator.calculateForecast(data.sales.fact, data.sales.plan, 'sales', day, daysInMonth, brand.key);
-                    trafficForecast = this.calculator.calculateForecast(data.traffic.fact, data.traffic.plan, 'traffic', day, daysInMonth, brand.key);
-                    revenueForecast = this.calculator.calculateRevenueForecast(data.sales.fact, data.sales.plan, data.revenue.fact, data.revenue.plan, day, daysInMonth, brand.key);
-                    contractsForecast = this.calculator.calculateForecast(data.contracts.fact, data.contracts.plan, 'contracts', day, daysInMonth, brand.key);
-                    tradingForecast = this.calculator.calculateForecast(data.trading.fact, data.trading.plan, 'trading', day, daysInMonth, brand.key);
+                    salesForecast = this.calculator.calculateFeatureForecast(data.sales.fact, 'sales', day, daysInMonth, brand.key, this.jsonData.dailyFacts, this.rangeParams.month);
+                    trafficForecast = this.calculator.calculateFeatureForecast(data.traffic.fact, 'traffic', day, daysInMonth, brand.key, this.jsonData.dailyFacts, this.rangeParams.month);
+                    revenueForecast = this.calculator.calculateFeatureForecast(data.revenue.fact, 'revenue', day, daysInMonth, brand.key, this.jsonData.dailyFacts, this.rangeParams.month);
+                    contractsForecast = this.calculator.calculateFeatureForecast(data.contracts.fact, 'contracts', day, daysInMonth, brand.key, this.jsonData.dailyFacts, this.rangeParams.month);
+                    tradingForecast = this.calculator.calculateFeatureForecast(data.trading.fact, 'trading', day, daysInMonth, brand.key, this.jsonData.dailyFacts, this.rangeParams.month);
                     
                     salesForecastPercent = calculatePercentage(salesForecast, data.sales.plan);
                     trafficForecastPercent = calculatePercentage(trafficForecast, data.traffic.plan);
