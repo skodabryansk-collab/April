@@ -640,12 +640,26 @@ export class DashboardCore {
         this.authManager.hideUserPanel();
     }
     
+    updateDataSourceNotice(data) {
+        const jsonData = data?.jsonData || data;
+        if (jsonData?.source === 'fallback') {
+            const fallbackAt = jsonData.fallbackAt ? new Date(jsonData.fallbackAt).toLocaleString('ru-RU') : '';
+            const timestamp = fallbackAt ? ' на ' + fallbackAt : '';
+            this.uiManager.showNotification(
+                'Внешний источник недоступен. Показаны локальные данные' + timestamp + ' — они могут быть неактуальны.',
+                'warning'
+            );
+        }
+    }
+
     onDataLoaded(data) {
         console.log('📊 Данные загружены:', data);
         this.jsonData = data.jsonData;
         this.jsonBrands = data.jsonBrands;
         this.jsonBrandMapping = data.jsonBrandMapping;
         
+        
+                this.updateDataSourceNotice(data);
         
         this.updateAvailableDates();
         this.updateBrandsFromJson();
@@ -777,7 +791,8 @@ export class DashboardCore {
             }
             
             this.jsonData = freshData;
-            this.jsonBrands = freshData.metadata?.brandsIncluded || [];
+                         this.updateDataSourceNotice(freshData);
+             this.jsonBrands = freshData.metadata?.brandsIncluded || [];
             this.jsonBrandMapping = this.dataManager.getJsonBrandMapping();
             
             this.updateAvailableDates();
