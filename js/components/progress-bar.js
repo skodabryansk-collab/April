@@ -1,7 +1,7 @@
 // js/components/progress-bar.js
 import { formatNumber, formatRevenueForProgressBar, formatRevenue } from '../utils/formatters.js';
 
-export const createProgressBar = (type, fact, plan, forecast, factPercent, forecastPercent) => {
+export const createProgressBar = (type, fact, plan, forecast, factPercent, forecastPercent, comparisonDelta = '') => {
     let factValue, forecastValue;
     
     if (type === 'revenue') {
@@ -32,7 +32,7 @@ export const createProgressBar = (type, fact, plan, forecast, factPercent, forec
             </div>
             <div class="progress-labels">
                 <span class="progress-label-left">
-                    Прогноз: ${type === 'revenue' ? formatRevenue(forecast) : forecastValue} (${forecastPercent}%)
+                    Прогноз: ${type === 'revenue' ? formatRevenue(forecast) : forecastValue} (${forecastPercent}%)${comparisonDelta}
                 </span>
             </div>
         </div>
