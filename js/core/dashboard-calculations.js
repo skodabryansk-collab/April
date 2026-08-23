@@ -11,7 +11,8 @@ export class DashboardCalculations {
             'ch': { sales: 1.00, traffic: 1.00, contracts: 1.07, trading: 1.05 },
             'om': { sales: 1.10, traffic: 1.05, contracts: 1.12, trading: 1.10 },
             'jk': { sales: 0.85, traffic: 0.90, contracts: 1.15, trading: 1.12 },
-            'asp': { sales: 1.08, traffic: 1.03, contracts: 1.06, trading: 1.04 }
+            'asp': { sales: 1.08, traffic: 1.03, contracts: 1.06, trading: 1.04 },
+            'se':  { sales: 1.00, traffic: 1.00, contracts: 1.00, trading: 1.00 }  // Соуист
         };
         
         // Сезонные коэффициенты по месяцам
