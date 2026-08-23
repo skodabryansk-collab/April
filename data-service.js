@@ -66,6 +66,25 @@ class DataService {
         return this.jsonBrands;
     }
     
+    getJsonStats() {
+        if (!this.jsonStats) this.updateJsonStats();
+        return this.jsonStats;
+    }
+    
+    updateJsonStats() {
+        const dailyFacts = Array.isArray(this.jsonData?.dailyFacts) ? this.jsonData.dailyFacts : [];
+        const datedRecords = dailyFacts.filter(record => record?.date && !record.month);
+        const dates = [...new Set(datedRecords.map(record => record.date))].sort();
+        this.jsonStats = {
+            totalRecords: datedRecords.length,
+            dateRange: dates.length ? dates[0] + ' - ' + dates[dates.length - 1] : '',
+            brandsCount: this.jsonBrands.length,
+            totalDays: dates.length,
+            availableMonths: this.getAvailableMonths()
+        };
+        return this.jsonStats;
+    }
+    
     getJsonBrandMapping() {
         return this.jsonBrandMapping;
     }
