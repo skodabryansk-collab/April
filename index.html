@@ -1349,7 +1349,7 @@
                     const start = new Date(startDate + 'T00:00:00');
                     const end = new Date(endDate + 'T00:00:00');
                     for (let cursor = new Date(start), day = 1; cursor <= end; cursor.setDate(cursor.getDate() + 1), day++) {
-                        const dateStr = cursor.toISOString().slice(0, 10);
+                        const dateStr = cursor.getFullYear() + '-' + String(cursor.getMonth() + 1).padStart(2, '0') + '-' + String(cursor.getDate()).padStart(2, '0');
                         const values = { date: dateStr, day, sales: 0, traffic: 0, contracts: 0, trading: 0, revenue: 0 };
                         jsonData.dailyFacts.forEach(record => {
                             if (record.date !== dateStr || record.month) return;
