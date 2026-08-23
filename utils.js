@@ -244,7 +244,8 @@ class DashboardUtils {
             'ch': 'Чери',
             'om': 'Омода',
             'jk': 'Джейку',
-            'asp': 'АСП'
+            'asp': 'АСП',
+            'se':  'Соуист'
         };
         const mapping = {};
         jsonBrands.forEach(brand => {
