@@ -176,7 +176,7 @@ class DashboardUtils {
         if (!jsonData || !jsonData.dailyFacts) return null;
         for (let i = jsonData.dailyFacts.length - 1; i >= 0; i--) {
             const record = jsonData.dailyFacts[i];
-            if (record.date && record.date !== '2026-01-01' && !record.month) {
+            if (record.date && !record.month) {
                 const hasData = Object.values(record).some(val => 
                     typeof val === 'object' && (
                         (val.sales && val.sales > 0) || 
