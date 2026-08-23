@@ -32,7 +32,9 @@ function addSourceMetadata(data, source, fallbackAt = null) {
 
 function readLocalFallback() {
   if (!fs.existsSync(JSON_DATA_PATH)) return null;
-  return JSON.parse(fs.readFileSync(JSON_DATA_PATH, 'utf8'));
+  const data = JSON.parse(fs.readFileSync(JSON_DATA_PATH, 'utf8'));
+  if (!data || !Array.isArray(data.dailyFacts)) throw new Error('Fallback-файл не содержит массив dailyFacts');
+  return data;
 }
 
 // Подключение к PostgreSQL
