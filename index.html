@@ -1099,19 +1099,20 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
 
 /* ===== COMPACT SUMMARY KPI ===== */
 .summary-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0 20px; }
-.summary-card { min-width: 0; min-height: 88px; padding: 12px 14px; border: 1px solid var(--color-border-subtle); border-radius: 12px; box-shadow: 0 3px 10px rgba(44,62,80,.05); text-align: left; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr; grid-template-areas: "label value" "detail detail"; align-items: center; gap: 3px 10px; }
+ .summary-card { min-width: 0; min-height: 88px; padding: 12px 14px; border: 1px solid var(--color-border-subtle); border-radius: 12px; box-shadow: 0 3px 10px rgba(44,62,80,.05); text-align: left; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 24px 1fr; grid-template-areas: "label value" "detail detail"; align-items: start; gap: 4px 10px; }
  .summary-label { grid-area: label; color: var(--color-text-muted); font-size: 11px; font-weight: 600; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.summary-value { grid-area: value; font-size: 22px; font-weight: 750; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+ .summary-value { grid-area: value; justify-self: end; align-self: center; font-size: 22px; font-weight: 750; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
 .summary-value.is-positive { color: var(--color-success); }
 .summary-value.is-negative { color: var(--color-danger); }
 .summary-value.is-info { color: var(--color-focus); font-size: 16px; }
-.summary-detail { grid-area: detail; color: var(--color-text-muted); font-size: 11px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+ .summary-detail { grid-area: detail; align-self: start; color: var(--color-text-muted); font-size: 11px; line-height: 1.2; font-variant-numeric: tabular-nums; }
 @media (max-width: 900px) { .summary-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 480px) { .summary-cards { gap: 8px; margin: 12px 0 16px; } .summary-card { min-height: 76px; padding: 10px 11px; border-radius: 10px; gap: 2px 6px; } .summary-label { font-size: 10px; } .summary-value { font-size: 20px; } .summary-value.is-info { font-size: 14px; } .summary-detail { font-size: 10px; } }
+ @media (max-width: 480px) { .summary-cards { gap: 8px; margin: 12px 0 16px; } .summary-card { min-height: 76px; padding: 10px 11px; border-radius: 10px; grid-template-rows: 22px 1fr; gap: 3px 6px; } .summary-label { font-size: 10px; } .summary-value { font-size: 20px; } .summary-value.is-info { font-size: 14px; } .summary-detail { font-size: 10px; } }
  .ui-icon { width: 1.05em; height: 1.05em; flex: 0 0 auto; vertical-align: -0.16em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
  .back-to-top { position: fixed; top: 14px; right: 14px; z-index: 1050; display: inline-grid; place-items: center; width: 38px; min-width: 38px; height: 38px; min-height: 38px; padding: 0; color: var(--color-text-muted); background: rgba(255,255,255,.94); border: 1px solid var(--color-border); border-radius: 10px; box-shadow: 0 5px 16px rgba(44,62,80,.12); opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity var(--transition-fast), transform var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast); }
  .back-to-top.is-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
  .back-to-top:hover { color: var(--color-focus); background: var(--color-surface); border-color: var(--color-focus); }
+ @media (max-width: 768px) { .back-to-top { top: max(68px, calc(env(safe-area-inset-top) + 52px)); right: 16px; width: 44px; min-width: 44px; height: 44px; min-height: 44px; color: var(--color-focus); background: rgba(255,255,255,.98); border-width: 1.5px; border-radius: 12px; box-shadow: 0 7px 20px rgba(44,62,80,.2); } }
  .metric-title { min-width: 0; white-space: nowrap; }
  .metric-title > span:first-child { white-space: nowrap; }
  .metric-title .forecast-badge { margin-left: 0; flex: 0 0 auto; }
