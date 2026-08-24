@@ -603,12 +603,13 @@ button:hover {
 
 /* ===== СРАВНЕНИЕ ПЕРИОДОВ ===== */
 .comparison-controls { display:flex; align-items:center; gap:12px; flex:1 1 auto; min-width:390px; }
-.comparison-toggle { display:flex; align-items:center; gap:7px; white-space:nowrap; font-weight:600; cursor:pointer; }
-.comparison-toggle input { width:16px; height:16px; margin:0; accent-color:var(--info); }
-.comparison-range-fields { align-items:center; gap:7px; flex-wrap:nowrap; white-space:nowrap; font-size:13px; }
-.comparison-range-fields label { font-weight:600; color:#2c3e50; }
-.comparison-range-fields input { width:132px; min-width:0; padding:8px 10px; border:1px solid #e0e0e0; border-radius:10px; background:#fff; font-family:inherit; font-size:14px; }
-.comparison-range-fields input:focus { border-color:#2196f3; outline:none; box-shadow:0 0 0 3px rgba(33,150,243,.1); }
+    .comparison-toggle { display:flex; align-items:center; gap:7px; white-space:nowrap; font-weight:600; cursor:pointer; }
+    .comparison-toggle input { width:16px; height:16px; margin:0; accent-color:var(--info); }
+    .comparison-range-fields { display:flex; align-items:center; gap:8px; flex-wrap:nowrap; white-space:nowrap; }
+    .comparison-range-fields .range-field { display:flex; align-items:center; gap:8px; }
+    .comparison-range-fields .range-field label { font-weight:600; color:#2c3e50; }
+    .comparison-range-fields .range-field input { width:132px; min-width:132px; padding:10px 14px; border:1px solid #e0e0e0; border-radius:10px; background:#fff; font-family:inherit; font-size:14px; transition:all .2s; }
+    .comparison-range-fields .range-field input:focus { border-color:#2196f3; outline:none; box-shadow:0 0 0 3px rgba(33,150,243,.1); }
 .comparison-delta { display:inline-block; margin-left:auto; padding-left:8px; font:inherit; font-weight:700; white-space:nowrap; text-align:right; }
 .comparison-delta.positive { color:#2e7d32 !important; }
 .comparison-delta.negative { color:#d32f2f !important; }
