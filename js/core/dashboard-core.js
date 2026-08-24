@@ -406,7 +406,7 @@ export class DashboardCore {
             this.elements.comparePeriods.addEventListener('change', () => {
                 this.comparisonParams.enabled = this.elements.comparePeriods.checked;
                 if (this.comparisonParams.enabled) this.setComparisonDefaults();
-                if (this.elements.comparisonRangeFields) this.elements.comparisonRangeFields.style.display = this.comparisonParams.enabled ? 'flex' : 'none';
+                if (this.elements.comparisonRangeFields) this.elements.comparisonRangeFields.style.display = this.comparisonParams.enabled ? 'grid' : 'none';
                 this.calculate();
                 if (window.dailyChartManager?.loadData) window.dailyChartManager.loadData();
             });
