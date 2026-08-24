@@ -1047,12 +1047,16 @@
                     <span>Сравнить с периодом:</span>
                 </label>
                 <div class="comparison-range-fields" id="comparisonRangeFields" style="display:none;">
-                    <label>С:</label>
-                    <input type="date" id="comparisonStart">
-                    <label>По:</label>
-                    <input type="date" id="comparisonEnd">
+                        <div class="range-field">
+                            <label>С:</label>
+                            <input type="date" id="comparisonStart">
+                        </div>
+                        <div class="range-field">
+                            <label>По:</label>
+                            <input type="date" id="comparisonEnd">
+                        </div>
+                    </div>
                 </div>
-            </div>
             <button type="button" id="loadDataForRangeBtn">Применить период</button>
             <button type="button" id="refreshDataBtn" class="secondary-action">Обновить данные</button>
         </div>
