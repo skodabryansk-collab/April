@@ -30,7 +30,7 @@
         --radius-control: 10px;
         --radius-card: 16px;
         --radius-panel: 20px;
-        --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+        --shadow-card: 0 6px 18px rgba(0, 0, 0, 0.08);
         --shadow-form: 0 4px 14px rgba(0, 0, 0, 0.08);
         --focus-ring: 0 0 0 3px rgba(33, 150, 243, 0.1);
     }
