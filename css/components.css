@@ -268,7 +268,7 @@ button:hover {
 /* ===== ПЕРИОД ИНДИКАТОРЫ ===== */
 .period-indicator {
     background: #fff3cd;
-    border-left: 4px solid var(--warning);
+    border-top: 2px solid var(--warning);
     padding: 12px 20px;
     border-radius: 8px;
     margin-bottom: 20px;
@@ -283,7 +283,7 @@ button:hover {
     padding: 15px; 
     border-radius: 8px; 
     box-shadow: var(--card-shadow); 
-    border-left: 4px solid var(--monthly); 
+    border-top: 2px solid var(--monthly); 
 }
 
 .monthly-cards { 
@@ -299,7 +299,7 @@ button:hover {
     border-radius: 12px;
     box-shadow: var(--form-shadow);
     margin: 20px 0;
-    border-left: 4px solid var(--monthly);
+    border-top: 2px solid var(--monthly);
 }
 
 .totals-grid {
@@ -369,7 +369,7 @@ button:hover {
 /* ===== JSON СЕКЦИЯ ===== */
 .json-section {
     background: #fff3e0;
-    border-left: 4px solid var(--warning);
+    border-top: 2px solid var(--warning);
     padding: 20px;
     border-radius: 12px;
     box-shadow: var(--form-shadow);
