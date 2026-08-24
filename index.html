@@ -1113,6 +1113,23 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
  .back-to-top.is-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
  .back-to-top:hover { color: var(--color-focus); background: var(--color-surface); border-color: var(--color-focus); }
  @media (max-width: 768px) { .back-to-top { top: max(68px, calc(env(safe-area-inset-top) + 52px)); right: 16px; width: 44px; min-width: 44px; height: 44px; min-height: 44px; color: var(--color-focus); background: rgba(255,255,255,.98); border-width: 1.5px; border-radius: 12px; box-shadow: 0 7px 20px rgba(44,62,80,.2); } }
+ @media (max-width: 480px) {
+     .total-gk-card { padding: 12px; margin: 12px 0; border-radius: 14px; }
+     .total-gk-card .gk-card-header { gap: 8px; margin-bottom: 12px; }
+     .total-gk-card .gk-card-header h2 { font-size: 16px; }
+     .total-gk-card .period-badge { padding: 3px 7px; font-size: 10px; }
+     .total-gk-card .gk-progress-container { gap: 0; }
+     .total-gk-card .gk-progress-container > div { margin-bottom: 8px; padding-bottom: 7px; }
+     .total-gk-card .gk-progress-container > div + div { padding-top: 1px; }
+     .total-gk-card .gk-progress-container > div:last-child { margin-bottom: 0; padding-bottom: 0; }
+     .total-gk-card .metric-header { margin-bottom: 5px; }
+     .total-gk-card .metric-title, .total-gk-card .fact-percent { font-size: 12px; }
+     .total-gk-card .progress-bar { height: 28px; margin-bottom: 3px; }
+     .total-gk-card .progress-labels { margin-top: 3px; min-height: 14px; font-size: 10px; }
+     .total-gk-card .metric-details { gap: 5px; margin-top: 5px; }
+     .total-gk-card .detail-item { padding: 4px 7px; font-size: 10px; }
+     .total-gk-card > div:last-child { margin-top: 14px !important; padding-top: 12px !important; }
+ }
  .metric-title { min-width: 0; white-space: nowrap; }
  .metric-title > span:first-child { white-space: nowrap; }
  .metric-title .forecast-badge { margin-left: 0; flex: 0 0 auto; }
