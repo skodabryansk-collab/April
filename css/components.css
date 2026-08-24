@@ -29,7 +29,7 @@
     border: 1px solid #bdc3c7; 
     font-size: 13px; 
     text-align: center; 
-    transition: all var(--transition-speed); 
+    transition: transform var(--transition-speed), opacity var(--transition-speed), background-color var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed); 
 }
 
 .input-table input:focus { 
@@ -55,7 +55,7 @@ button {
     font-size: 13px; 
     font-weight: 600; 
     cursor: pointer; 
-    transition: all var(--transition-speed); 
+    transition: transform var(--transition-speed), opacity var(--transition-speed), background-color var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed); 
     flex: 1; 
     min-width: 120px; 
     display: flex; 
@@ -528,7 +528,7 @@ button:hover {
 #jsonUrlInputContainer {
     background: linear-gradient(145deg, #ffffff, #f5f5f5);
     border: 1px solid #e0e0e0;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #jsonUrlInputContainer:hover {
@@ -538,7 +538,7 @@ button:hover {
 
 #jsonUrlInput {
     font-family: 'Courier New', monospace;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #jsonUrlInput:focus {
@@ -548,11 +548,11 @@ button:hover {
 }
 
 #jsonUrlHistory {
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #jsonUrlHistory .url-item {
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 #jsonUrlHistory .url-item:hover {
@@ -562,7 +562,7 @@ button:hover {
 
 #loadJsonUrlBtn {
     background: linear-gradient(145deg, #9c27b0, #7b1fa2);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #loadJsonUrlBtn:hover {
@@ -573,7 +573,7 @@ button:hover {
 
 #saveJsonUrlBtn {
     background: linear-gradient(145deg, #00796b, #00695c);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #saveJsonUrlBtn:hover {
@@ -610,7 +610,7 @@ button:hover {
     .comparison-range-fields { display:flex; align-items:center; gap:8px; flex-wrap:nowrap; white-space:nowrap; }
     .comparison-range-fields .range-field { display:flex; align-items:center; gap:8px; }
     .comparison-range-fields .range-field label { font-weight:600; color:#2c3e50; }
-    .comparison-range-fields .range-field input { width:132px; min-width:132px; padding:10px 14px; border:1px solid #e0e0e0; border-radius:10px; background:#fff; font-family:inherit; font-size:14px; transition:all .2s; }
+    .comparison-range-fields .range-field input { width:132px; min-width:132px; padding:10px 14px; border:1px solid #e0e0e0; border-radius:10px; background:#fff; font-family:inherit; font-size:14px; transition: transform .2s, opacity .2s, background-color .2s, border-color .2s, box-shadow .2s; }
     .comparison-range-fields .range-field input:focus { border-color:#2196f3; outline:none; box-shadow:0 0 0 3px rgba(33,150,243,.1); }
 .comparison-delta { display:inline-block; margin-left:auto; padding-left:8px; font:inherit; font-weight:700; white-space:nowrap; text-align:right; }
 .comparison-delta.positive { color:#2e7d32 !important; }
@@ -679,3 +679,11 @@ input:focus-visible, select:focus-visible, button:focus-visible {
         scroll-behavior: auto !important;
     }
 }
+
+button, input, select { font-family: var(--font-sans); }
+button { transition: transform var(--transition-fast), opacity var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast); }
+button:active { transform: translateY(1px) scale(0.99); }
+input, select { transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast); }
+.field-error { margin: 5px 0 0; color: var(--color-danger); font-size: 12px; line-height: 1.35; }
+.field-error[hidden], .form-error-summary[hidden] { display: none; }
+.form-error-summary { margin: 0 0 14px; padding: 10px 12px; color: var(--color-danger); background: var(--color-error-surface); border: 1px solid var(--color-error-border); border-radius: var(--radius-control); font-size: 13px; }
