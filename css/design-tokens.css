@@ -1,0 +1,37 @@
+/* Дизайн-токены дашборда «Дебрянск Авто» */
+    :root {
+        /* Semantic colors */
+        --color-sales: #2e7d32;
+        --color-sales-soft: #a5d6a7;
+        --color-traffic: #1565c0;
+        --color-traffic-soft: #90caf9;
+        --color-revenue: #ef6c00;
+        --color-revenue-soft: #ffcc80;
+        --color-contracts: #7b1fa2;
+        --color-contracts-soft: #ce93d8;
+        --color-trading: #00695c;
+        --color-trading-soft: #80cbc4;
+
+        --color-background: #f2f4f7;
+        --color-surface: #ffffff;
+        --color-surface-muted: #f8f9fa;
+        --color-surface-locked: #e9ecef;
+        --color-text: #333333;
+        --color-text-strong: #2c3e50;
+        --color-text-muted: #667085;
+        --color-border: #e0e0e0;
+        --color-border-subtle: #e9ecef;
+        --color-focus: #2196f3;
+        --color-danger: #d32f2f;
+        --color-warning: #ff9800;
+        --color-success: #388e3c;
+
+        /* Shape and elevation */
+        --radius-control: 10px;
+        --radius-card: 16px;
+        --radius-panel: 20px;
+        --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+        --shadow-form: 0 4px 14px rgba(0, 0, 0, 0.08);
+        --focus-ring: 0 0 0 3px rgba(33, 150, 243, 0.1);
+    }
+    
