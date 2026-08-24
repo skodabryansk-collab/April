@@ -655,6 +655,9 @@
             margin: 20px 0;
         }
         .total-gk-card .gk-progress-container { gap: 20px; }
+        .total-gk-card .gk-progress-container > div { margin-bottom: 19px; padding-bottom: 15px; }
+        .total-gk-card .gk-progress-container > div + div { padding-top: 4px; }
+        .total-gk-card .gk-progress-container > div:last-child { margin-bottom: 0; padding-bottom: 0; }
         .total-gk-card .metric-section { margin-bottom: 19px; padding-bottom: 15px; }
         .total-gk-card .metric-section + .metric-section { padding-top: 4px; }
         .total-gk-card .metric-details { margin-top: 10px; }
@@ -1106,6 +1109,9 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
 @media (max-width: 900px) { .summary-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .summary-cards { gap: 8px; margin: 12px 0 16px; } .summary-card { min-height: 76px; padding: 10px 11px; border-radius: 10px; gap: 2px 6px; } .summary-label { font-size: 10px; } .summary-value { font-size: 20px; } .summary-value.is-info { font-size: 14px; } .summary-detail { font-size: 10px; } }
  .ui-icon { width: 1.05em; height: 1.05em; flex: 0 0 auto; vertical-align: -0.16em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+ .back-to-top { position: fixed; top: 14px; right: 14px; z-index: 1050; display: inline-grid; place-items: center; width: 38px; min-width: 38px; height: 38px; min-height: 38px; padding: 0; color: var(--color-text-muted); background: rgba(255,255,255,.94); border: 1px solid var(--color-border); border-radius: 10px; box-shadow: 0 5px 16px rgba(44,62,80,.12); opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity var(--transition-fast), transform var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast); }
+ .back-to-top.is-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+ .back-to-top:hover { color: var(--color-focus); background: var(--color-surface); border-color: var(--color-focus); }
  .metric-title { min-width: 0; white-space: nowrap; }
  .metric-title > span:first-child { white-space: nowrap; }
  .metric-title .forecast-badge { margin-left: 0; flex: 0 0 auto; }
@@ -1140,6 +1146,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
         <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></symbol>
         <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"/></symbol>
         <symbol id="icon-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></symbol>
+        <symbol id="icon-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M6.5 10.5 12 5l5.5 5.5"/></symbol>
     </svg>
     <!-- ШАПКА С ЛОГОТИПОМ -->
     <div class="header">
@@ -1150,6 +1157,9 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
                 <div class="logo-subtitle"></div>
             </div>
         </div>
+        <button type="button" id="backToTop" class="back-to-top" aria-label="Вернуться в начало" title="В начало">
+            <svg class="ui-icon" aria-hidden="true"><use href="#icon-arrow-up"></use></svg>
+        </button>
     </div>
 
     <!-- Панель пользователя -->
@@ -1368,6 +1378,16 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
                 console.error('❌ Ошибка инициализации:', error);
             }
         });
+    </script>
+    <script>
+        (() => {
+            const backToTop = document.getElementById('backToTop');
+            if (!backToTop) return;
+            const updateBackToTop = () => backToTop.classList.toggle('is-visible', window.scrollY > 420);
+            window.addEventListener('scroll', updateBackToTop, { passive: true });
+            backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            updateBackToTop();
+        })();
     </script>
     
     <!-- Fallback для DataService -->
