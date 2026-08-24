@@ -841,16 +841,16 @@ export class DashboardCore {
         inputsTbody.innerHTML = this.brands.map(brand => `
             <tr>
                 <td style="text-align: left; padding-left: 10px; font-weight: 600;">${brand.name}</td>
-                <td><input id="${brand.key}_sf" value="${brand.sales[0]}" type="number" min="0"></td>
-                <td><input id="${brand.key}_sp" value="${brand.sales[1]}" type="number" min="0"></td>
-                <td><input id="${brand.key}_tf" value="${brand.traffic[0]}" type="number" min="0"></td>
-                <td><input id="${brand.key}_tp" value="${brand.traffic[1]}" type="number" min="0"></td>
-                <td><input id="${brand.key}_rf" value="${brand.revenue[0]}" type="number"></td>
-                <td><input id="${brand.key}_rp" value="${brand.revenue[1]}" type="number"></td>
-                <td style="background: #f9f0fa;"><input id="${brand.key}_cf" value="${brand.contracts[0]}" type="number" min="0"></td>
-                <td style="background: #f3e5f5;"><input id="${brand.key}_cp" value="${brand.contracts[1]}" type="number" min="0"></td>
-                <td style="background: #e8f5f1;"><input id="${brand.key}_trf" value="${brand.trading[0]}" type="number" min="0"></td>
-                <td style="background: #d0ece7;"><input id="${brand.key}_trp" value="${brand.trading[1]}" type="number" min="0"></td>
+                <td><input id="${brand.key}_sf" aria-label="${brand.name}: Продажи — факт" value="${brand.sales[0]}" type="number" min="0"></td>
+                <td><input id="${brand.key}_sp" aria-label="${brand.name}: Продажи — план" value="${brand.sales[1]}" type="number" min="0"></td>
+                <td><input id="${brand.key}_tf" aria-label="${brand.name}: Трафик — факт" value="${brand.traffic[0]}" type="number" min="0"></td>
+                <td><input id="${brand.key}_tp" aria-label="${brand.name}: Трафик — план" value="${brand.traffic[1]}" type="number" min="0"></td>
+                <td><input id="${brand.key}_rf" aria-label="${brand.name}: Выручка — факт" value="${brand.revenue[0]}" type="number"></td>
+                <td><input id="${brand.key}_rp" aria-label="${brand.name}: Выручка — план" value="${brand.revenue[1]}" type="number"></td>
+                <td style="background: #f9f0fa;"><input id="${brand.key}_cf" aria-label="${brand.name}: Контракты — факт" value="${brand.contracts[0]}" type="number" min="0"></td>
+                <td style="background: #f3e5f5;"><input id="${brand.key}_cp" aria-label="${brand.name}: Контракты — план" value="${brand.contracts[1]}" type="number" min="0"></td>
+                <td style="background: #e8f5f1;"><input id="${brand.key}_trf" aria-label="${brand.name}: Трейдинг — факт" value="${brand.trading[0]}" type="number" min="0"></td>
+                <td style="background: #d0ece7;"><input id="${brand.key}_trp" aria-label="${brand.name}: Трейдинг — план" value="${brand.trading[1]}" type="number" min="0"></td>
              </tr>
         `).join('');
         
