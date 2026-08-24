@@ -1062,19 +1062,6 @@
             <span id="forecastStatus" class="forecast-indicator inactive">Прогноз: недоступен</span>
         </div>
     </div>
-    
-    <!-- Информационная панель -->
-    <div class="info-panel">
-        <h4>О работе дашборда:</h4>
-        <ul>
-            <li><strong>Выбор месяца</strong> — выберите месяц для анализа</li>
-            <li><strong>Диапазон дат</strong> — можно сузить до нужного периода в выбранном месяце</li>
-            <li><strong>План корректируется</strong> — пропорционально количеству выбранных дней</li>
-            <li><strong>Прогноз</strong> — отображается только при выборе полного диапазона доступных дат в месяце</li>
-            <li><strong>Конверсия и охват</strong> — рассчитываются на основе выбранного периода</li>
-        </ul>
-    </div>
-    
     <!-- Панель управления (ТАБЛИЦА ВВОДА) - СКРЫТА ДЛЯ НАБЛЮДАТЕЛЯ -->
     <div id="dataEntryPanel" class="viewer-hidden">
         <div class="filter-section">
@@ -1110,18 +1097,6 @@
             <button type="button" id="calcBtn">Рассчитать</button>
         </div>
     </div>
-    
-    <!-- Информация о формуле -->
-    <div class="formula-status">
-        <strong>Формула прогноза:</strong> Факт + (Среднедневные × Коэф. роста × Дней осталось)
-        <div style="font-size: 11px; margin-top: 5px; color: #666;">
-            Покрытие плана = (Банк контрактов / План продаж) × 100% | Конверсия в контракт = (Банк контрактов / Трафик) × 100%
-        </div>
-        <div style="font-size: 11px; margin-top: 5px; color: #1565c0;">
-            🔮 Прогноз отображается только при выборе полного диапазона доступных дат в месяце
-        </div>
-    </div>
-    
     <!-- Основной дашборд -->
     <div id="forecastContainer"></div>
     <div id="summaryContainer" class="summary-cards"></div>
