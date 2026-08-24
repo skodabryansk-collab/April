@@ -169,7 +169,7 @@ export class UIManager {
                 margin: 10px 0;
                 font-size: 13px;
             `;
-            note.innerHTML = '👁️ Вы находитесь в режиме просмотра. Только администратор может редактировать данные и загружать файлы.';
+            note.innerHTML = '<svg class="ui-icon" aria-hidden="true"><use href="#icon-eye"></use></svg> Вы находитесь в режиме просмотра. Только администратор может редактировать данные и загружать файлы.';
             const formContainer = document.querySelector('.form-container');
             if (formContainer) formContainer.insertBefore(note, formContainer.firstChild);
         }
