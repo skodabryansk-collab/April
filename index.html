@@ -1087,6 +1087,18 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
 .button-group { gap: 8px; }
 .button-group button { flex: 0 1 auto; }
 @media (max-width: 768px) { button { min-height: 44px; } .button-group { gap: 8px; } .button-group button, .range-selector > button { width: 100%; } #logoutBtn, #notificationClose { width: auto; min-height: 36px; } #notificationClose { min-height: 28px; } }
+
+/* ===== COMPACT SUMMARY KPI ===== */
+.summary-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0 20px; }
+.summary-card { min-width: 0; min-height: 88px; padding: 12px 14px; border: 1px solid var(--color-border-subtle); border-radius: 12px; box-shadow: 0 3px 10px rgba(44,62,80,.05); text-align: left; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr; grid-template-areas: "label value" "detail detail"; align-items: center; gap: 3px 10px; }
+.summary-label { grid-area: label; color: var(--color-text-muted); font-size: 11px; font-weight: 600; line-height: 1.25; }
+.summary-value { grid-area: value; font-size: 22px; font-weight: 750; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.summary-value.is-positive { color: var(--color-success); }
+.summary-value.is-negative { color: var(--color-danger); }
+.summary-value.is-info { color: var(--color-focus); font-size: 16px; }
+.summary-detail { grid-area: detail; color: var(--color-text-muted); font-size: 11px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+@media (max-width: 900px) { .summary-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .summary-cards { gap: 8px; margin: 12px 0 16px; } .summary-card { min-height: 76px; padding: 10px 11px; border-radius: 10px; gap: 2px 6px; } .summary-label { font-size: 10px; } .summary-value { font-size: 20px; } .summary-value.is-info { font-size: 14px; } .summary-detail { font-size: 10px; } }
 </style>
 </head>
 <body>
