@@ -337,22 +337,22 @@ export class DashboardCore {
         const planPercent = Math.round(this.rangeParams.planAdjustmentFactor * 100);
         const monthName = getMonthName(parseInt(this.rangeParams.month?.substring(5) || '1'));
         
-        this.elements.rangeDaysInfo.textContent = `📆 ${daysCount} ${this.getDaysWord(daysCount)} (${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)} ${monthName})`;
+            this.elements.rangeDaysInfo.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg> ${daysCount} ${this.getDaysWord(daysCount)} (${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)} ${monthName})`;
         
         if (this.rangeParams.allDaysSelected) {
-            this.elements.rangePlanInfo.textContent = `📊 План: полный`;
+                this.elements.rangePlanInfo.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg> План: полный`;
         } else {
-            this.elements.rangePlanInfo.textContent = `📊 План: ${planPercent}% от месячного (${daysCount} из ${this.rangeParams.totalDaysInMonth} дней)`;
+                this.elements.rangePlanInfo.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg> План: ${planPercent}% от месячного (${daysCount} из ${this.rangeParams.totalDaysInMonth} дней)`;
         }
         
         const forecastStatus = this.elements.forecastStatus;
         if (forecastStatus) {
             if (this.rangeParams.allDaysSelected) {
                 forecastStatus.className = 'forecast-indicator active';
-                forecastStatus.innerHTML = '🔮 Прогноз: доступен (выбран полный диапазон данных)';
+                forecastStatus.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз: доступен (выбран полный диапазон данных)`;
             } else {
                 forecastStatus.className = 'forecast-indicator inactive';
-                forecastStatus.innerHTML = '🔮 Прогноз: недоступен (выбран неполный диапазон)';
+                forecastStatus.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз: недоступен (выбран неполный диапазон)`;
             }
         }
     }
@@ -1185,8 +1185,8 @@ export class DashboardCore {
         const fullStars = Math.floor(score);
         const emptyStars = 5 - fullStars;
         let stars = '';
-        for (let i = 0; i < fullStars; i++) stars += '<span class="star">★</span>';
-        for (let i = 0; i < emptyStars; i++) stars += '<span class="star empty">★</span>';
+        for (let i = 0; i < fullStars; i++) stars += '<svg class="ui-icon star" aria-hidden="true"><use href="#icon-star"></use></svg>';
+        for (let i = 0; i < emptyStars; i++) stars += '<svg class="ui-icon star empty" aria-hidden="true"><use href="#icon-star"></use></svg>';
         return `<div class="stars">${stars}</div>`;
     }
     
@@ -1287,7 +1287,7 @@ export class DashboardCore {
         
         forecastContainer.innerHTML = `
             <div class="forecast-card">
-                <h3 style="margin:0 0 15px 0; color:#2196f3;">📈 Прогноз на конец месяца</h3>
+                <h3 style="margin:0 0 15px 0; color:#2196f3;"><svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз на конец месяца</h3>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px;">
                     <div>
                         <div style="font-size:12px; color:#666;">Продажи</div>
@@ -1321,7 +1321,7 @@ export class DashboardCore {
         
         forecastContainer.innerHTML = `
             <div class="forecast-card" style="background: #fff3e0; border-left-color: #ff9800;">
-                <h3 style="margin:0 0 10px 0; color:#ff9800;">🔮 Прогноз недоступен</h3>
+                <h3 style="margin:0 0 10px 0; color:#ff9800;"><svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз недоступен</h3>
                 <div style="font-size:13px; color:#666;">
                     Для отображения прогноза необходимо выбрать полный диапазон доступных дат в месяце.<br>
                     Текущий диапазон: ${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)} ${getMonthName(parseInt(this.rangeParams.month?.substring(5) || '1'))} (${this.rangeParams.daysCount} из ${this.rangeParams.availableDatesInMonth.length} доступных дней)
@@ -1370,45 +1370,11 @@ export class DashboardCore {
         const totalTrafficDelta = this.renderComparisonDelta(totals.traffic.fact, comparisonTotals?.traffic, 'traffic');
         const totalRevenueDelta = this.renderComparisonDelta(totals.revenue.fact, comparisonTotals?.revenue, 'revenue');
         
-        let forecastHtml = '';
-        if (showForecast && forecastTotals) {
-            const salesForecastPercent = Math.round((forecastTotals.sales.totalForecast / forecastTotals.sales.totalPlan) * 100);
-            const contractsForecastPercent = Math.round((forecastTotals.contracts.totalForecast / forecastTotals.contracts.totalPlan) * 100);
-            forecastHtml = `
-                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e9ecef;">
-                    <div class="metric-header">
-                        <div class="metric-title">🔮 ПРОГНОЗ НА КОНЕЦ МЕСЯЦА</div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px;">
-                        <div class="detail-item">
-                            <span class="detail-label">Продажи:</span>
-                            <span class="detail-value">${formatNumber(forecastTotals.sales.totalForecast)} (${salesForecastPercent}%)</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Темп в день:</span>
-                            <span class="detail-value">${formatDecimal(totals.sales.fact / day, 1)}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Контракты:</span>
-                            <span class="detail-value">${formatNumber(forecastTotals.contracts.totalForecast)} (${contractsForecastPercent}%)</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Темп в день:</span>
-                            <span class="detail-value">${formatDecimal(totals.contracts.fact / day, 1)}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
         const html = `
             <div class="total-gk-card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <h2 style="margin:0; color:#2c3e50;">🏢 ИТОГО ПО ГК (ГРУППА КОМПАНИЙ)</h2>
-                    <div>
-                        <span style="background: #e3f2fd; padding: 4px 12px; border-radius: 20px; font-size: 12px;">${monthName} ${year}</span>
-                        <span style="margin-left:10px; font-size:12px; color:#666;">${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)} ${monthName}</span>
-                    </div>
+                <div class="gk-card-header">
+                    <h2><svg class="ui-icon" aria-hidden="true"><use href="#icon-building"></use></svg> ИТОГО ПО ГК (ГРУППА КОМПАНИЙ)</h2>
+                    <span class="period-badge"><svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)} ${monthName} ${year}</span>
                 </div>
                 
                 <div class="gk-progress-container">
@@ -1480,12 +1446,9 @@ export class DashboardCore {
                     </div>
                 </div>
                 
-                ${forecastHtml}
-                
                 <div style="margin-top:25px; padding-top:20px; border-top:2px solid #e9ecef; text-align:center;">
-                    <div style="font-size:14px; color:#666;">📅 Период: ${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)} ${monthName} ${year} (${this.rangeParams.daysCount} ${this.getDaysWord(this.rangeParams.daysCount)})</div>
                     <div style="font-size:12px; color:#999; margin-top:5px;">
-                        ${showForecast ? '📈 Прогноз рассчитан на основе данных за полный диапазон' : '🔮 Для отображения прогноза выберите полный диапазон доступных дат в месяце'}
+                        <span class="forecast-source"><svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg>${showForecast ? 'Прогноз рассчитан на основе данных за полный диапазон' : 'Для отображения прогноза выберите полный диапазон доступных дат в месяце'}</span>
                     </div>
                 </div>
             </div>
@@ -1503,7 +1466,7 @@ export class DashboardCore {
         const html = `
             <div class="summary-table-container">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <h3 style="margin:0; color:#2c3e50;">📊 СВОДНАЯ ТАБЛИЦА ПО БРЕНДАМ</h3>
+                    <h3 style="margin:0; color:#2c3e50;"><svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg> СВОДНАЯ ТАБЛИЦА ПО БРЕНДАМ</h3>
                     <span style="background: #e3f2fd; padding: 4px 12px; border-radius: 20px; font-size: 12px;">${monthName} ${year} (${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)})</span>
                 </div>
                 <table class="summary-table">
@@ -1667,7 +1630,7 @@ export class DashboardCore {
                 const deleteBtn = document.createElement('button');
                 deleteBtn.type = 'button';
                 deleteBtn.style.cssText = 'background: #f44336; padding: 5px 10px; font-size: 12px; min-width: auto; cursor: pointer; border: none; border-radius: 6px; color: white;';
-                deleteBtn.textContent = '🗑️';
+                deleteBtn.innerHTML = '<svg class="ui-icon" aria-hidden="true"><use href="#icon-trash"></use></svg><span class="sr-only">Удалить</span>';
                 deleteBtn.onclick = () => this.deleteUser(user.id);
                 actionsCell.appendChild(deleteBtn);
                 row.appendChild(actionsCell);
