@@ -1114,6 +1114,17 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
  .back-to-top:hover { color: var(--color-focus); background: var(--color-surface); border-color: var(--color-focus); }
  @media (max-width: 768px) { .back-to-top { top: max(68px, calc(env(safe-area-inset-top) + 52px)); right: 16px; width: 44px; min-width: 44px; height: 44px; min-height: 44px; color: var(--color-focus); background: rgba(255,255,255,.98); border-width: 1.5px; border-radius: 12px; box-shadow: 0 7px 20px rgba(44,62,80,.2); } }
  @media (max-width: 480px) {
+     .card { padding: 12px; border-radius: 14px; }
+     .card h2 { margin-bottom: 12px; padding-bottom: 9px; font-size: 16px; }
+     .card .metric-section { margin-bottom: 8px; padding-bottom: 7px; }
+     .card .metric-section + .metric-section { padding-top: 1px; }
+     .card .metric-header { margin-bottom: 5px; }
+     .card .metric-title, .card .fact-percent { font-size: 12px; }
+     .card .forecast-badge { padding: 2px 5px; font-size: 9px; }
+     .card .progress-bar { height: 28px; margin-bottom: 3px; }
+     .card .progress-labels { margin-top: 3px; min-height: 14px; font-size: 10px; }
+     .card .metric-details { gap: 5px; margin-top: 5px; }
+     .card .detail-item { padding: 4px 7px; font-size: 10px; }
      .total-gk-card { padding: 12px; margin: 12px 0; border-radius: 14px; }
      .total-gk-card .gk-card-header { gap: 8px; margin-bottom: 12px; }
      .total-gk-card .gk-card-header h2 { font-size: 16px; }
