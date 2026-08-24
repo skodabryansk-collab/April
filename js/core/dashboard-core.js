@@ -363,6 +363,43 @@ export class DashboardCore {
         return 'дней';
     }
     
+
+    setFieldError(fieldId, message = '') {
+        const field = document.getElementById(fieldId);
+        const error = document.getElementById(fieldId + 'Error');
+        if (error) { error.textContent = message; error.hidden = !message; }
+        if (field) field.setAttribute('aria-invalid', message ? 'true' : 'false');
+    }
+    clearFormErrors(fieldIds) {
+        fieldIds.forEach(fieldId => this.setFieldError(fieldId));
+        const summary = document.getElementById('adminFormErrorSummary');
+        if (summary) { summary.textContent = ''; summary.hidden = true; }
+    }
+    validateRangeSelection() {
+        const start = this.elements.rangeStart?.value || '';
+        const end = this.elements.rangeEnd?.value || '';
+        let valid = true;
+        this.setFieldError('rangeStart'); this.setFieldError('rangeEnd');
+        if (!start) { this.setFieldError('rangeStart', 'Укажите начальную дату.'); valid = false; }
+        if (!end) { this.setFieldError('rangeEnd', 'Укажите конечную дату.'); valid = false; }
+        if (start && end && start > end) { this.setFieldError('rangeEnd', 'Конечная дата должна быть не раньше начальной.'); valid = false; }
+        if (start && end && start.slice(0, 7) !== end.slice(0, 7)) { this.setFieldError('rangeEnd', 'Даты должны быть в пределах одного месяца.'); valid = false; }
+        if (start && this.rangeParams.availableDates.length && !this.rangeParams.availableDates.includes(start)) { this.setFieldError('rangeStart', 'На эту дату нет фактических данных.'); valid = false; }
+        if (end && this.rangeParams.availableDates.length && !this.rangeParams.availableDates.includes(end)) { this.setFieldError('rangeEnd', 'На эту дату нет фактических данных.'); valid = false; }
+        return valid;
+    }
+    validateComparisonSelection() {
+        if (!this.comparisonParams.enabled) return true;
+        const start = this.elements.comparisonStart?.value || '';
+        const end = this.elements.comparisonEnd?.value || '';
+        let valid = true;
+        this.setFieldError('comparisonStart'); this.setFieldError('comparisonEnd');
+        if (!start) { this.setFieldError('comparisonStart', 'Укажите начальную дату сравнения.'); valid = false; }
+        if (!end) { this.setFieldError('comparisonEnd', 'Укажите конечную дату сравнения.'); valid = false; }
+        if (start && end && start > end) { this.setFieldError('comparisonEnd', 'Конечная дата должна быть не раньше начальной.'); valid = false; }
+        return valid;
+    }
+
     setupRangeEventListeners() {
         const monthSelector = document.getElementById('monthSelector');
         if (monthSelector) {
@@ -379,6 +416,7 @@ export class DashboardCore {
                 const startDate = this.elements.rangeStart.value;
                 if (startDate && this.rangeParams.availableDates.includes(startDate)) {
                     this.rangeParams.startDate = startDate;
+                    this.setFieldError('rangeStart');
                     this.updateRangeParams();
                     this.loadDataForRange();
                 } else {
@@ -393,6 +431,7 @@ export class DashboardCore {
                 const endDate = this.elements.rangeEnd.value;
                 if (endDate && this.rangeParams.availableDates.includes(endDate)) {
                     this.rangeParams.endDate = endDate;
+                    this.setFieldError('rangeEnd');
                     this.updateRangeParams();
                     this.loadDataForRange();
                 } else {
@@ -530,6 +569,7 @@ export class DashboardCore {
     }
     
     loadDataForRange() {
+        if (!this.validateRangeSelection() || !this.validateComparisonSelection()) return;
         const jsonData = this.dataManager.getJsonData();
         if (!jsonData || !jsonData.dailyFacts) {
             this.uiManager.showNotification('Сначала загрузите JSON данные', 'warning');
@@ -1687,14 +1727,21 @@ export class DashboardCore {
         const password = passwordInput?.value;
         const role = roleSelect?.value;
         
-        if (!name || !login || !password || !role) {
-            this.uiManager.showNotification('Заполните все поля', 'warning');
+        const missing = [];
+        if (!name) { this.setFieldError('newUserName', 'Введите имя.'); missing.push('Имя'); } else this.setFieldError('newUserName');
+        if (!login) { this.setFieldError('newUserLogin', 'Введите логин.'); missing.push('Логин'); } else this.setFieldError('newUserLogin');
+        if (!password) { this.setFieldError('newUserPassword', 'Введите пароль.'); missing.push('Пароль'); } else this.setFieldError('newUserPassword');
+        if (!role) { this.setFieldError('newUserRole', 'Выберите роль.'); missing.push('Роль'); } else this.setFieldError('newUserRole');
+        if (missing.length) {
+            const summary = document.getElementById('adminFormErrorSummary');
+            if (summary) { summary.textContent = 'Проверьте поля: ' + missing.join(', ') + '.'; summary.hidden = false; summary.focus(); }
             return;
         }
         
         const result = await this.authService.addUser({ name, login, password, role });
         
         if (result.success) {
+            this.clearFormErrors(['newUserName', 'newUserLogin', 'newUserPassword', 'newUserRole']);
             this.uiManager.showNotification('Пользователь добавлен', 'success');
             
             if (nameInput) nameInput.value = '';
