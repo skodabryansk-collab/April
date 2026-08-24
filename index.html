@@ -1003,16 +1003,16 @@
     
     <!-- Модальное окно авторизации -->
     <div class="modal-overlay" id="loginModal" style="display: flex;">
-        <div class="modal" style="max-width: 400px;">
-            <h3 style="margin: 0 0 20px 0; text-align: center;">🔐 Вход в дашборд</h3>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" style="max-width: 400px;">
+            <h3 id="loginTitle" style="margin: 0 0 20px 0; text-align: center;">🔐 Вход в дашборд</h3>
             <div id="loginError" style="background: #ffebee; color: #c62828; padding: 10px; border-radius: 6px; margin-bottom: 15px; display: none;"></div>
             <div class="modal-input">
                 <label for="loginUsername">Логин:</label>
-                <input type="text" id="loginUsername" placeholder="Введите логин" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                <input type="text" id="loginUsername" placeholder="Введите логин" autocomplete="username" required style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">
             </div>
             <div class="modal-input">
                 <label for="loginPassword">Пароль:</label>
-                <input type="password" id="loginPassword" placeholder="Введите пароль" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                <input type="password" id="loginPassword" placeholder="Введите пароль" autocomplete="current-password" required style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">
             </div>
             <div class="modal-buttons">
                 <button type="button" id="loginBtn" style="background: #2196f3; padding: 12px;">Войти</button>
@@ -1028,31 +1028,31 @@
         <h3>Выбор периода для анализа</h3>
         <div class="range-selector">
             <div class="range-field">
-                <label>Месяц:</label>
+                <label for="monthSelector">Месяц:</label>
                 <select id="monthSelector">
                     <option value="">Загрузка...</option>
                 </select>
             </div>
             <div class="range-field">
-                <label>С:</label>
+                <label for="rangeStart">С:</label>
                 <input type="date" id="rangeStart">
             </div>
             <div class="range-field">
-                <label>По:</label>
+                <label for="rangeEnd">По:</label>
                 <input type="date" id="rangeEnd">
             </div>
             <div class="comparison-controls">
                 <label class="comparison-toggle">
-                    <input type="checkbox" id="comparePeriods">
-                    <span>Сравнить с периодом:</span>
+                    <input type="checkbox" id="comparePeriods" aria-describedby="comparisonLabel">
+                    <span id="comparisonLabel">Сравнить с периодом:</span>
                 </label>
                 <div class="comparison-range-fields" id="comparisonRangeFields" style="display:none;">
                         <div class="range-field">
-                            <label>С:</label>
+                            <label for="comparisonStart">С:</label>
                             <input type="date" id="comparisonStart">
                         </div>
                         <div class="range-field">
-                            <label>По:</label>
+                            <label for="comparisonEnd">По:</label>
                             <input type="date" id="comparisonEnd">
                         </div>
                     </div>
@@ -1063,7 +1063,7 @@
         <div class="range-info" id="rangeInfo">
             <span id="rangeDaysInfo">📆 0 дней</span>
             <span id="rangePlanInfo">📊 План: 0% от месячного</span>
-            <span id="forecastStatus" class="forecast-indicator inactive">Прогноз: недоступен</span>
+            <span id="forecastStatus" role="status" aria-live="polite" class="forecast-indicator inactive">Прогноз: недоступен</span>
         </div>
     </div>
     <!-- Панель управления (ТАБЛИЦА ВВОДА) - СКРЫТА ДЛЯ НАБЛЮДАТЕЛЯ -->
