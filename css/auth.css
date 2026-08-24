@@ -10,7 +10,7 @@
 }
 
 .blurred::after {
-    content: "🔒 Требуется авторизация";
+    content: "Требуется авторизация";
     position: absolute;
     top: 50%;
     left: 50%;
