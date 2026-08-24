@@ -1016,7 +1016,6 @@ export class DashboardCore {
             let forecastTotals = null;
             if (showForecast) {
                 forecastTotals = this.calculateForecastTotals(brandDataList, day, daysInMonth);
-                this.renderForecastAnalysis(forecastTotals);
                 this.renderSummaryCards(totals, forecastTotals);
             } else {
                 this.renderSummaryCardsNoForecast(totals);
@@ -1338,10 +1337,10 @@ export class DashboardCore {
         const contractsForecastPercent = Math.round((forecastData.contracts.totalForecast / forecastData.contracts.totalPlan) * 100);
         const card = (label, value, detail, tone) => `<div class="summary-card"><div class="summary-label">${label}</div><div class="summary-value ${tone}">${value}</div><div class="summary-detail">${detail}</div></div>`;
         summaryContainer.innerHTML = [
-            card('Выполнение плана продаж', totals.sales.percent + '%', formatNumber(totals.sales.fact) + ' / ' + formatNumber(totals.sales.plan), totals.sales.percent >= 100 ? 'is-positive' : 'is-negative'),
-            card('Прогноз продаж', salesForecastPercent + '%', formatNumber(forecastData.sales.totalForecast) + ' / ' + formatNumber(forecastData.sales.totalPlan), salesForecastPercent >= 100 ? 'is-positive' : 'is-negative'),
-            card('Выполнение плана контрактов', totals.contracts.percent + '%', formatNumber(totals.contracts.fact) + ' / ' + formatNumber(totals.contracts.plan), totals.contracts.percent >= 100 ? 'is-positive' : 'is-negative'),
-            card('Прогноз контрактов', contractsForecastPercent + '%', formatNumber(forecastData.contracts.totalForecast) + ' / ' + formatNumber(forecastData.contracts.totalPlan), contractsForecastPercent >= 100 ? 'is-positive' : 'is-negative')
+            card('Продажи', totals.sales.percent + '%', formatNumber(totals.sales.fact) + ' / ' + formatNumber(totals.sales.plan), totals.sales.percent >= 100 ? 'is-positive' : 'is-negative'),
+            card('Прогноз', salesForecastPercent + '%', formatNumber(forecastData.sales.totalForecast) + ' / ' + formatNumber(forecastData.sales.totalPlan), salesForecastPercent >= 100 ? 'is-positive' : 'is-negative'),
+            card('Контракты', totals.contracts.percent + '%', formatNumber(totals.contracts.fact) + ' / ' + formatNumber(totals.contracts.plan), totals.contracts.percent >= 100 ? 'is-positive' : 'is-negative'),
+            card('Прогноз', contractsForecastPercent + '%', formatNumber(forecastData.contracts.totalForecast) + ' / ' + formatNumber(forecastData.contracts.totalPlan), contractsForecastPercent >= 100 ? 'is-positive' : 'is-negative')
         ].join('');
     }
     
@@ -1351,9 +1350,9 @@ export class DashboardCore {
 
         const card = (label, value, detail, tone) => `<div class="summary-card"><div class="summary-label">${label}</div><div class="summary-value ${tone}">${value}</div><div class="summary-detail">${detail}</div></div>`;
         summaryContainer.innerHTML = [
-            card('Выполнение плана продаж', totals.sales.percent + '%', formatNumber(totals.sales.fact) + ' / ' + formatNumber(totals.sales.plan), totals.sales.percent >= 100 ? 'is-positive' : 'is-negative'),
-            card('Период анализа', this.rangeParams.daysCount + ' '+ this.getDaysWord(this.rangeParams.daysCount), (this.rangeParams.startDate?.substring(8) || '—') + '–' + (this.rangeParams.endDate?.substring(8) || '—') + ' ' + getMonthName(parseInt(this.rangeParams.month?.substring(5) || '1')), 'is-info'),
-            card('Выполнение плана контрактов', totals.contracts.percent + '%', formatNumber(totals.contracts.fact) + ' / ' + formatNumber(totals.contracts.plan), totals.contracts.percent >= 100 ? 'is-positive' : 'is-negative')
+            card('Продажи', totals.sales.percent + '%', formatNumber(totals.sales.fact) + ' / ' + formatNumber(totals.sales.plan), totals.sales.percent >= 100 ? 'is-positive' : 'is-negative'),
+            card('Период', this.rangeParams.daysCount + ' '+ this.getDaysWord(this.rangeParams.daysCount), (this.rangeParams.startDate?.substring(8) || '—') + '–' + (this.rangeParams.endDate?.substring(8) || '—') + ' ' + getMonthName(parseInt(this.rangeParams.month?.substring(5) || '1')), 'is-info'),
+            card('Контракты', totals.contracts.percent + '%', formatNumber(totals.contracts.fact) + ' / ' + formatNumber(totals.contracts.plan), totals.contracts.percent >= 100 ? 'is-positive' : 'is-negative')
         ].join('');
     }
     
