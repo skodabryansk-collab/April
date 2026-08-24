@@ -1373,7 +1373,7 @@ export class DashboardCore {
         const html = `
             <div class="total-gk-card">
                 <div class="gk-card-header">
-                    <h2><svg class="ui-icon" aria-hidden="true"><use href="#icon-building"></use></svg> ИТОГО ПО ГК (ГРУППА КОМПАНИЙ)</h2>
+                    <h2><svg class="ui-icon" aria-hidden="true"><use href="#icon-building"></use></svg> Итого по ГК</h2>
                     <span class="period-badge"><svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)} ${monthName} ${year}</span>
                 </div>
                 
