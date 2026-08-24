@@ -1333,55 +1333,28 @@ export class DashboardCore {
     renderSummaryCards(totals, forecastData) {
         const summaryContainer = this.elements.summaryContainer;
         if (!summaryContainer) return;
-        
+
         const salesForecastPercent = Math.round((forecastData.sales.totalForecast / forecastData.sales.totalPlan) * 100);
         const contractsForecastPercent = Math.round((forecastData.contracts.totalForecast / forecastData.contracts.totalPlan) * 100);
-        
-        summaryContainer.innerHTML = `
-            <div class="summary-card">
-                <div style="font-size:12px; color:#666;">Выполнение плана продаж</div>
-                <div style="font-size:24px; font-weight:bold; color:${totals.sales.percent >= 100 ? '#2e7d32' : '#d32f2f'}">${totals.sales.percent}%</div>
-                <div style="font-size:11px; color:#666;">${formatNumber(totals.sales.fact)}/${formatNumber(totals.sales.plan)}</div>
-            </div>
-            <div class="summary-card">
-                <div style="font-size:12px; color:#666;">Прогноз продаж</div>
-                <div style="font-size:24px; font-weight:bold; color:${salesForecastPercent >= 100 ? '#2e7d32' : '#d32f2f'}">${salesForecastPercent}%</div>
-                <div style="font-size:11px; color:#666;">${formatNumber(forecastData.sales.totalForecast)}/${formatNumber(forecastData.sales.totalPlan)}</div>
-            </div>
-            <div class="summary-card">
-                <div style="font-size:12px; color:#666;">Выполнение плана контрактов</div>
-                <div style="font-size:24px; font-weight:bold; color:${totals.contracts.percent >= 100 ? '#2e7d32' : '#d32f2f'}">${totals.contracts.percent}%</div>
-                <div style="font-size:11px; color:#666;">${formatNumber(totals.contracts.fact)}/${formatNumber(totals.contracts.plan)}</div>
-            </div>
-            <div class="summary-card">
-                <div style="font-size:12px; color:#666;">Прогноз контрактов</div>
-                <div style="font-size:24px; font-weight:bold; color:${contractsForecastPercent >= 100 ? '#2e7d32' : '#d32f2f'}">${contractsForecastPercent}%</div>
-                <div style="font-size:11px; color:#666;">${formatNumber(forecastData.contracts.totalForecast)}/${formatNumber(forecastData.contracts.totalPlan)}</div>
-            </div>
-        `;
+        const card = (label, value, detail, tone) => `<div class="summary-card"><div class="summary-label">${label}</div><div class="summary-value ${tone}">${value}</div><div class="summary-detail">${detail}</div></div>`;
+        summaryContainer.innerHTML = [
+            card('Выполнение плана продаж', totals.sales.percent + '%', formatNumber(totals.sales.fact) + ' / ' + formatNumber(totals.sales.plan), totals.sales.percent >= 100 ? 'is-positive' : 'is-negative'),
+            card('Прогноз продаж', salesForecastPercent + '%', formatNumber(forecastData.sales.totalForecast) + ' / ' + formatNumber(forecastData.sales.totalPlan), salesForecastPercent >= 100 ? 'is-positive' : 'is-negative'),
+            card('Выполнение плана контрактов', totals.contracts.percent + '%', formatNumber(totals.contracts.fact) + ' / ' + formatNumber(totals.contracts.plan), totals.contracts.percent >= 100 ? 'is-positive' : 'is-negative'),
+            card('Прогноз контрактов', contractsForecastPercent + '%', formatNumber(forecastData.contracts.totalForecast) + ' / ' + formatNumber(forecastData.contracts.totalPlan), contractsForecastPercent >= 100 ? 'is-positive' : 'is-negative')
+        ].join('');
     }
     
     renderSummaryCardsNoForecast(totals) {
         const summaryContainer = this.elements.summaryContainer;
         if (!summaryContainer) return;
-        
-        summaryContainer.innerHTML = `
-            <div class="summary-card">
-                <div style="font-size:12px; color:#666;">Выполнение плана продаж</div>
-                <div style="font-size:24px; font-weight:bold; color:${totals.sales.percent >= 100 ? '#2e7d32' : '#d32f2f'}">${totals.sales.percent}%</div>
-                <div style="font-size:11px; color:#666;">${formatNumber(totals.sales.fact)}/${formatNumber(totals.sales.plan)}</div>
-            </div>
-            <div class="summary-card">
-                <div style="font-size:12px; color:#666;">Период анализа</div>
-                <div style="font-size:24px; font-weight:bold; color:#2196f3;">${this.rangeParams.daysCount} ${this.getDaysWord(this.rangeParams.daysCount)}</div>
-                <div style="font-size:11px; color:#666;">${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)} ${getMonthName(parseInt(this.rangeParams.month?.substring(5) || '1'))}</div>
-            </div>
-            <div class="summary-card">
-                <div style="font-size:12px; color:#666;">Выполнение плана контрактов</div>
-                <div style="font-size:24px; font-weight:bold; color:${totals.contracts.percent >= 100 ? '#2e7d32' : '#d32f2f'}">${totals.contracts.percent}%</div>
-                <div style="font-size:11px; color:#666;">${formatNumber(totals.contracts.fact)}/${formatNumber(totals.contracts.plan)}</div>
-            </div>
-        `;
+
+        const card = (label, value, detail, tone) => `<div class="summary-card"><div class="summary-label">${label}</div><div class="summary-value ${tone}">${value}</div><div class="summary-detail">${detail}</div></div>`;
+        summaryContainer.innerHTML = [
+            card('Выполнение плана продаж', totals.sales.percent + '%', formatNumber(totals.sales.fact) + ' / ' + formatNumber(totals.sales.plan), totals.sales.percent >= 100 ? 'is-positive' : 'is-negative'),
+            card('Период анализа', this.rangeParams.daysCount + ' '+ this.getDaysWord(this.rangeParams.daysCount), (this.rangeParams.startDate?.substring(8) || '—') + '–' + (this.rangeParams.endDate?.substring(8) || '—') + ' ' + getMonthName(parseInt(this.rangeParams.month?.substring(5) || '1')), 'is-info'),
+            card('Выполнение плана контрактов', totals.contracts.percent + '%', formatNumber(totals.contracts.fact) + ' / ' + formatNumber(totals.contracts.plan), totals.contracts.percent >= 100 ? 'is-positive' : 'is-negative')
+        ].join('');
     }
     
     renderTotalGKCard(totals, forecastTotals, showForecast, day, daysInMonth) {
