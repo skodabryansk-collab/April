@@ -382,6 +382,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex: 1 1 auto;
+            min-width: 0;
             font-weight: 600;
             color: #2c3e50;
             font-size: 14px;
@@ -400,7 +402,7 @@
             border-radius: 8px;
             font-size: 11px;
             font-weight: 600;
-            margin-left: 8px;
+            margin-left: 0;
         }
         .forecast-badge.low {
             background: #ffebee;
@@ -1102,6 +1104,11 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
  .ui-icon { width: 1.05em; height: 1.05em; flex: 0 0 auto; vertical-align: -0.16em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
  .metric-title { min-width: 0; white-space: nowrap; }
  .metric-title > span:first-child { white-space: nowrap; }
+ .metric-title .forecast-badge { margin-left: 0; flex: 0 0 auto; }
+ .card .metric-section { margin-bottom: 18px; padding-bottom: 14px; }
+ .card .metric-section + .metric-section { padding-top: 2px; }
+ .card .progress-labels { margin-top: 7px; min-height: 16px; }
+ .card .metric-details { margin-top: 9px; }
  .comparison-delta { font-weight: 700; font-size: 11px; }
  .gk-card-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; }
  .gk-card-header h2 { display: inline-flex; align-items: center; gap: 7px; min-width: 0; margin: 0; color: #2c3e50; font-size: clamp(16px, 2vw, 22px); white-space: nowrap; }
@@ -1115,7 +1122,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
  .chart-meta { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
  .chart-meta-item { display: inline-flex; align-items: center; gap: 5px; min-height: 30px; padding: 5px 10px; border: 1px solid var(--color-border-subtle); border-radius: 8px; color: var(--color-text-muted); background: var(--color-surface); font-size: 12px; line-height: 1.2; }
  .chart-meta-item.is-accent { color: var(--color-focus); border-color: rgba(33,150,243,.25); background: #f0f7ff; }
- @media (max-width: 768px) { .daily-chart-header { align-items: stretch; } .daily-chart-header h3 { font-size: 21px; } .chart-controls { width: 100%; grid-template-columns: 1fr 1fr; } .chart-controls select, .chart-controls button { min-width: 0; width: 100%; } .chart-controls button { grid-column: 1 / -1; } .chart-meta { justify-content: stretch; gap: 6px; } .chart-meta-item { flex: 1 1 auto; justify-content: center; } }
+ @media (max-width: 768px) { .daily-chart-header { align-items: stretch; } .daily-chart-header h3 { font-size: 21px; } .chart-controls { width: 100%; grid-template-columns: 1fr 1fr; } .chart-controls select, .chart-controls button { min-width: 0; width: 100%; } .chart-controls button { grid-column: 1 / -1; } .chart-meta { justify-content: stretch; gap: 6px; } .chart-meta-item { flex: 1 1 auto; justify-content: center; } .card .metric-section { margin-bottom: 16px; padding-bottom: 12px; } }
  @media (max-width: 480px) { .chart-controls { grid-template-columns: 1fr; } .chart-controls button { grid-column: auto; } .chart-meta-item { flex-basis: calc(50% - 6px); } .chart-meta-item.is-accent { flex-basis: 100%; } }
 </style>
 </head>
