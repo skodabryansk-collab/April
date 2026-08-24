@@ -20,13 +20,13 @@
     <meta name="theme-color" content="#2196f3">
     
     <!-- Подключаем внешние модули -->
-    <script src="constants.js"></script>
-    <script src="utils.js"></script>
-    <script src="auth.js"></script>
-    <script src="data-service.js"></script>
+    <script src="constants.js" defer></script>
+    <script src="utils.js" defer></script>
+    <script src="auth.js" defer></script>
+    <script src="data-service.js" defer></script>
     
     <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js" defer></script>
     
     <style>
         /* ========= ОСНОВНЫЕ СТИЛИ ========= */
@@ -207,7 +207,7 @@
             border: 1px solid #e0e0e0;
             font-size: 14px;
             background: white;
-            transition: all 0.2s;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
         }
         .range-field select:focus, .range-field input:focus {
             border-color: #2196f3;
@@ -348,7 +348,7 @@
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
             flex: 1;
             min-width: 120px;
             display: flex;
@@ -441,7 +441,7 @@
             font-size: 12px;
             z-index: 2;
             min-width: 50px;
-            transition: width 0.5s ease;
+            transition: none;
             white-space: nowrap;
             text-shadow: 0 0 2px rgba(0,0,0,0.3);
         }
@@ -456,7 +456,9 @@
             left: 0;
             height: 100%;
             z-index: 1;
-            transition: width 0.5s ease;
+            width: 100%;
+            transform-origin: left center;
+            transition: transform 0.5s ease;
         }
         .progress-forecast.sales-forecast { background: var(--sales-f); }
         .progress-forecast.traffic-forecast { background: var(--traffic-f); }
