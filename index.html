@@ -1022,6 +1022,29 @@
                 #chartDetailedStats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
                 #dailyChartContainer { padding: 18px 12px 14px; }
             }
+    
+            /* ========= ФИНАЛЬНЫЕ СОСТОЯНИЯ И BROWSER SURFACES ========= */
+            ::selection {
+                background: rgba(33, 150, 243, 0.18);
+                color: var(--color-text);
+            }
+            input, textarea { caret-color: var(--color-focus); }
+            input:focus-visible, select:focus-visible, button:focus-visible {
+                outline: 3px solid rgba(33, 150, 243, 0.35);
+                outline-offset: 2px;
+            }
+            button:disabled, input:disabled, select:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+            @media (prefers-reduced-motion: reduce) {
+                *, *::before, *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                    scroll-behavior: auto !important;
+                }
+            }
     </style>
 </head>
 <body>
@@ -1123,19 +1146,19 @@
         <h3>Факт / План / Банк контрактов / Трейдин (по брендам)</h3>
         <div style="overflow-x: auto;">
             <table class="input-table">
-                <thead>
+                <th scope="col"ead>
                     <tr>
-                        <th style="text-align: left; padding-left: 10px;">Бренд</th>
-                        <th>Продажи факт</th>
-                        <th>Продажи план</th>
-                        <th>Трафик факт</th>
-                        <th>Трафик план</th>
-                        <th>Доход факт</th>
-                        <th>Доход план</th>
-                        <th style="background: #f3e5f5;">Банк контрактов факт</th>
-                        <th style="background: #e1bee7;">Банк контрактов план</th>
-                        <th style="background: #e0f2f1;">Кол-во Трейдин факт</th>
-                        <th style="background: #b2dfdb;">Кол-во Трейдин план</th>
+                        <th scope="col" style="text-align: left; padding-left: 10px;">Бренд</th>
+                        <th scope="col">Продажи факт</th>
+                        <th scope="col">Продажи план</th>
+                        <th scope="col">Трафик факт</th>
+                        <th scope="col">Трафик план</th>
+                        <th scope="col">Доход факт</th>
+                        <th scope="col">Доход план</th>
+                        <th scope="col" style="background: #f3e5f5;">Банк контрактов факт</th>
+                        <th scope="col" style="background: #e1bee7;">Банк контрактов план</th>
+                        <th scope="col" style="background: #e0f2f1;">Кол-во Трейдин факт</th>
+                        <th scope="col" style="background: #b2dfdb;">Кол-во Трейдин план</th>
                     </tr>
                 </thead>
                 <tbody id="inputs"></tbody>
@@ -1210,8 +1233,8 @@
                     <button type="button" id="addUserBtn" style="background: #4caf50; padding: 10px;">Добавить</button>
                 </div>
                 <table class="user-table">
-                    <thead>
-                        <tr><th>ID</th><th>Имя</th><th>Логин</th><th>Роль</th><th>Действия</th></tr>
+                    <th scope="col"ead>
+                        <tr><th scope="col">ID</th><th scope="col">Имя</th><th scope="col">Логин</th><th scope="col">Роль</th><th scope="col">Действия</th></tr>
                     </thead>
                     <tbody id="usersTableBody"></tbody>
                 </table>
