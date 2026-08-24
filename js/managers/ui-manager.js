@@ -5,6 +5,8 @@ export class UIManager {
         this.authManager = authManager;
         this.planLocked = localStorage.getItem('planLocked') === 'true';
         this.isInterfaceEnabled = false;
+        this.notificationTimer = null;
+        document.getElementById('notificationClose')?.addEventListener('click', () => this.hideNotification());
     }
     
     /**
@@ -287,16 +289,43 @@ export class UIManager {
     showNotification(message, type = 'info') {
         const notification = document.getElementById('notification');
         if (!notification) return;
-        
-        notification.textContent = message;
-        notification.style.background = type === 'success' ? '#4caf50' : 
-                                       type === 'error' ? '#f44336' : 
-                                       type === 'warning' ? '#ff9800' : '#2196f3';
-        notification.style.display = 'block';
-        
-        setTimeout(() => {
-            notification.style.display = 'none';
-        }, 3000);
+        const messageNode = document.getElementById('notificationMessage');
+        const metaNode = document.getElementById('notificationMeta');
+        notification.classList.remove('is-warning', 'is-error');
+        if (type === 'warning') notification.classList.add('is-warning');
+        if (type === 'error') notification.classList.add('is-error');
+        if (messageNode) messageNode.textContent = message; else notification.textContent = message;
+        if (metaNode) { metaNode.textContent = ""; metaNode.hidden = true; }
+        notification.style.display = 'flex';
+        clearTimeout(this.notificationTimer);
+        this.notificationTimer = setTimeout(() => this.hideNotification(), 5000);
+    }
+    showDataUpdate(data, type = 'success') {
+        const jsonData = data?.jsonData || data || {};
+        const dates = (jsonData.dailyFacts || []).map(record => record?.date).filter(Boolean).sort();
+        const formatDate = value => value ? new Date(value + 'T00:00:00').toLocaleDateString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+        const loadedAt = data?.loadedAt || jsonData.updatedAt || jsonData.updated_at || jsonData.generatedAt || jsonData.fallbackAt || new Date().toISOString();
+        const loadedLabel = new Date(loadedAt).toLocaleString('ru-RU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+        const sourceLabel = jsonData.source === 'fallback' ? 'Локальная копия' : 'Источник обновлён';
+        const message = jsonData.source === 'fallback' ? 'Показаны сохранённые данные' : 'Данные успешно загружены';
+        const meta = sourceLabel + ' · Обновлено: ' + loadedLabel + (dates.length ? ' · Период: ' + formatDate(dates[0]) + ' — ' + formatDate(dates[dates.length - 1]) : '');
+        const notification = document.getElementById('notification');
+        if (!notification) return;
+        const messageNode = document.getElementById('notificationMessage');
+        const metaNode = document.getElementById('notificationMeta');
+        notification.classList.remove('is-warning', 'is-error');
+        if (type === 'warning') notification.classList.add('is-warning');
+        if (type === 'error') notification.classList.add('is-error');
+        if (messageNode) messageNode.textContent = message;
+        if (metaNode) { metaNode.textContent = meta; metaNode.hidden = false; }
+        notification.style.display = 'flex';
+        clearTimeout(this.notificationTimer);
+        this.notificationTimer = setTimeout(() => this.hideNotification(), 8000);
+    }
+    hideNotification() {
+        const notification = document.getElementById('notification');
+        if (notification) notification.style.display = 'none';
+        clearTimeout(this.notificationTimer);
     }
     
     /**
