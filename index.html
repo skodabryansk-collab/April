@@ -1164,7 +1164,16 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
  .chart-commentary { display: none; margin: 12px 0 0; padding: 10px 12px; border-left: 2px solid var(--color-focus); border-radius: 0 8px 8px 0; color: var(--color-text-muted); background: #f7faff; font-size: 12px; line-height: 1.45; }
  .chart-commentary.is-visible { display: block; }
  @media (max-width: 768px) { .daily-chart-header { align-items: stretch; } .daily-chart-header h3 { font-size: 21px; } .chart-controls { width: 100%; grid-template-columns: 1fr 1fr; } .chart-controls select, .chart-controls button { min-width: 0; width: 100%; } .chart-controls button { grid-column: 1 / -1; } .chart-meta { justify-content: stretch; gap: 6px; } .chart-meta-item { flex: 1 1 auto; justify-content: center; } .card .metric-section { margin-bottom: 16px; padding-bottom: 12px; } }
- @media (max-width: 480px) { .chart-controls { grid-template-columns: 1fr; } .chart-controls button { grid-column: auto; } .chart-meta-item { flex-basis: calc(50% - 6px); } .chart-meta-item.is-accent { flex-basis: 100%; } }
+  @media (max-width: 480px) { .chart-controls { grid-template-columns: 1fr; } .chart-controls button { grid-column: auto; } .chart-meta-item { flex-basis: calc(50% - 6px); } .chart-meta-item.is-accent { flex-basis: 100%; } }
+  @media (max-width: 480px) {
+      .card .metric-section { margin-bottom: 8px !important; padding-bottom: 7px !important; }
+      .card .metric-section + .metric-section { padding-top: 1px !important; }
+      .card .metric-header { margin-bottom: 5px !important; }
+      .card .progress-bar { height: 28px !important; margin-bottom: 3px !important; }
+      .card .progress-labels { margin-top: 3px !important; min-height: 14px !important; }
+      .card .metric-details { gap: 5px !important; margin-top: 5px !important; }
+      .card .detail-item { padding: 4px 7px !important; font-size: 10px !important; }
+  }
 </style>
 </head>
 <body>
