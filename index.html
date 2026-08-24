@@ -1070,6 +1070,23 @@
 @keyframes notification-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 @media (max-width: 768px) { .notification { top: max(10px, env(safe-area-inset-top)); right: 10px; left: 10px; width: auto; padding: 12px; border-radius: 13px; } .notification-message { font-size: 13px; } .notification-meta { font-size: 10px; } }
 @media (prefers-reduced-motion: reduce) { .notification { animation: none; } }
+
+/* ===== BUTTON SYSTEM: QUIET ENTERPRISE CONTROLS ===== */
+button { flex: 0 1 auto; min-height: 40px; padding: 9px 15px; border: 1px solid transparent; border-radius: 8px; font-family: var(--font-sans); font-size: 13px; font-weight: 650; letter-spacing: -0.01em; box-shadow: none; transition: transform var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast); }
+button:hover { opacity: 1; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(44,62,80,.10); }
+button:active { transform: translateY(0); box-shadow: none; }
+button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow: none; }
+#loadDataForRangeBtn, #loginBtn, #addUserBtn { color: #fff !important; background: var(--color-focus) !important; border-color: var(--color-focus) !important; }
+#loadDataForRangeBtn:hover, #loginBtn:hover, #addUserBtn:hover { background: #1976d2 !important; border-color: #1976d2 !important; }
+#refreshDataBtn, #calcBtn, #refreshChartBtn, #logoutBtn { color: var(--color-text-strong) !important; background: var(--color-surface) !important; border-color: var(--color-border) !important; }
+#refreshDataBtn:hover, #calcBtn:hover, #refreshChartBtn:hover, #logoutBtn:hover { color: var(--color-focus) !important; background: var(--color-surface-hover) !important; border-color: var(--color-focus) !important; }
+#logoutBtn { min-height: 32px; padding: 6px 11px; font-size: 12px; }
+#notificationClose { min-width: 28px; min-height: 28px; width: 28px; padding: 0; border-color: transparent !important; box-shadow: none !important; }
+#usersTableBody button { min-width: 34px; min-height: 34px; padding: 6px 9px !important; color: var(--color-danger) !important; background: var(--color-error-surface) !important; border: 1px solid var(--color-error-border) !important; }
+#usersTableBody button:hover { background: #ffe8e8 !important; border-color: var(--color-danger) !important; }
+.button-group { gap: 8px; }
+.button-group button { flex: 0 1 auto; }
+@media (max-width: 768px) { button { min-height: 44px; } .button-group { gap: 8px; } .button-group button, .range-selector > button { width: 100%; } #logoutBtn, #notificationClose { width: auto; min-height: 36px; } #notificationClose { min-height: 28px; } }
 </style>
 </head>
 <body>
