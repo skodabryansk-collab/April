@@ -684,13 +684,8 @@ export class DashboardCore {
     
     updateDataSourceNotice(data) {
         const jsonData = data?.jsonData || data;
-        if (jsonData?.source === 'fallback') {
-            const fallbackAt = jsonData.fallbackAt ? new Date(jsonData.fallbackAt).toLocaleString('ru-RU') : '';
-            const timestamp = fallbackAt ? ' на ' + fallbackAt : '';
-            this.uiManager.showNotification(
-                'Внешний источник недоступен. Показаны локальные данные' + timestamp + ' — они могут быть неактуальны.',
-                'warning'
-            );
+        if (jsonData) {
+            this.uiManager.showDataUpdate(jsonData, jsonData.source === 'fallback' ? 'warning' : 'success');
         }
     }
 
