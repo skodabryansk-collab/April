@@ -82,20 +82,20 @@ export class DashboardCore {
         this.renderInputs();
         this.renderBrandFilter();
         
-        setTimeout(() => {
-            const jsonData = this.dataManager.getJsonData();
-            if (jsonData) {
-                this.jsonData = jsonData;
-                this.jsonBrands = this.dataManager.getJsonBrands();
-                this.jsonBrandMapping = this.dataManager.getJsonBrandMapping();
-                this.updateAvailableDates();
-                this.updateBrandsFromJson();
-                this.setDefaultRange();
-                this.loadDataForRange();
-            }
-        }, 500);
+        this.initializeDataWhenReady();
     }
     
+
+    async initializeDataWhenReady() {
+        try {
+            await this.dataService.ready;
+            this.dataManager.loadDataFromService();
+        } catch (error) {
+            console.error('❌ Ошибка первичной загрузки данных:', error);
+            this.uiManager.showNotification('Не удалось загрузить данные. Повторите обновление.', 'error');
+        }
+    }
+
     cacheElements() {
         const ids = [
             'notification', 'brandFilter', 'inputs', 'calcBtn', 
@@ -667,10 +667,8 @@ export class DashboardCore {
         this.updateBrandsFromJson();
         this.renderMonthSelector();
         
-        setTimeout(() => {
-            this.setDefaultRange();
-            this.loadDataForRange();
-        }, 500);
+        this.setDefaultRange();
+        this.loadDataForRange();
     }
     
     onDataCleared() {
