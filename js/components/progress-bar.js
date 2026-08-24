@@ -24,7 +24,7 @@ export const createProgressBar = (type, fact, plan, forecast, factPercent, forec
     return `
         <div class="progress-container">
             <div class="progress-bar">
-                <div class="progress-forecast ${type}-forecast" style="width: ${forecastPercentValue}%"></div>
+                <div class="progress-forecast ${type}-forecast" style="--progress-scale: ${forecastPercentValue / 100}; transform: scaleX(var(--progress-scale));"></div>
                 <div class="progress-fact ${type}" style="${factStyle}">
                     ${factValue}
                 </div>
