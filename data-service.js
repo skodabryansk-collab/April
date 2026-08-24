@@ -9,7 +9,7 @@ class DataService {
         
         this.loadHistory();
         this.loadMonthlyTotals();
-        this.loadJsonDataFromServer();
+        this.ready = this.loadJsonDataFromServer();
     }
     
     async loadJsonDataFromServer() {
