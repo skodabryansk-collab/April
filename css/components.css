@@ -122,7 +122,9 @@ button:hover {
     left: 0; 
     height: 100%; 
     z-index: 1; 
-    transition: width 0.5s ease; 
+    width: 100%;
+    transform-origin: left center;
+    transition: transform 0.5s ease; 
 }
 
 .progress-forecast.sales-forecast { background: var(--sales-f); } 
