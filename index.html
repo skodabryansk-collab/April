@@ -52,15 +52,15 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { margin: 10px; font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--color-text); line-height: 1.4; }
+        body { margin: 10px; font-family: var(--font-sans); background: var(--bg); color: var(--color-text); line-height: 1.4; }
         
         /* ========= ШАПКА С ЛОГОТИПОМ ========= */
         .header {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 30px;
-            padding: 10px 0 20px 0;
+            margin-bottom: 18px;
+            padding: 8px 0 14px 0;
             border-bottom: 2px solid #e9ecef;
             position: relative;
         }
@@ -72,8 +72,8 @@
         }
         
         .logo {
-            width: 255px;
-            height: 255px;
+            width: 140px;
+            height: 140px;
             object-fit: contain;
             transition: transform 0.2s ease;
         }
@@ -150,8 +150,8 @@
             }
             
             .logo {
-                width: 145px;
-                height: 145px;
+                width: 96px;
+                height: 96px;
             }
             
             .logo-text {
@@ -1045,7 +1045,15 @@
                     scroll-behavior: auto !important;
                 }
             }
-    </style>
+    
+/* UI refinement layout */
+.header { min-height: 154px; }
+.logo { max-width: 140px; }
+.admin-field { display: flex; flex-direction: column; gap: 5px; color: var(--color-text-strong); font-size: 12px; font-weight: 600; }
+.admin-field input, .admin-field select { width: 100%; }
+@media (max-width: 768px) { .header { min-height: 0; padding: 6px 0 12px; margin-bottom: 12px; } .logo-area { gap: 6px; } .logo { width: 96px; height: 96px; } .logo-text { font-size: 18px; } .logo-subtitle { font-size: 10px; } #userPanel { margin-top: 8px; padding: 6px 12px; gap: 8px; } .card { padding: 14px; } .metric-section { margin-bottom: 14px; padding-bottom: 10px; } .metric-details { gap: 6px; margin-top: 6px; } .detail-item { padding: 5px 8px; font-size: 11px; } .admin-field { font-size: 13px; } }
+@media (max-width: 480px) { .metric-title { font-size: 13px; } .fact-percent { font-size: 13px; } .metric-details { grid-template-columns: repeat(2, minmax(0, 1fr)); } .detail-item { min-width: 0; gap: 4px; } .detail-label, .detail-value { overflow-wrap: anywhere; } }
+</style>
 </head>
 <body>
     <!-- ШАПКА С ЛОГОТИПОМ -->
@@ -1089,7 +1097,7 @@
     </div>
     
     <!-- Уведомление -->
-    <div class="notification" id="notification"></div>
+    <div class="notification" id="notification" role="status" aria-live="polite"></div>
     
     <!-- Панель выбора диапазона дат -->
     <div class="range-panel">
@@ -1103,11 +1111,11 @@
             </div>
             <div class="range-field">
                 <label for="rangeStart">С:</label>
-                <input type="date" id="rangeStart">
+                <input type="date" id="rangeStart" aria-describedby="rangeStartError"><p class="field-error" id="rangeStartError" hidden></p>
             </div>
             <div class="range-field">
                 <label for="rangeEnd">По:</label>
-                <input type="date" id="rangeEnd">
+                <input type="date" id="rangeEnd" aria-describedby="rangeEndError"><p class="field-error" id="rangeEndError" hidden></p>
             </div>
             <div class="comparison-controls">
                 <label class="comparison-toggle">
@@ -1117,11 +1125,11 @@
                 <div class="comparison-range-fields" id="comparisonRangeFields" style="display:none;">
                         <div class="range-field">
                             <label for="comparisonStart">С:</label>
-                            <input type="date" id="comparisonStart">
+                            <input type="date" id="comparisonStart" aria-describedby="comparisonStartError"><p class="field-error" id="comparisonStartError" hidden></p>
                         </div>
                         <div class="range-field">
                             <label for="comparisonEnd">По:</label>
-                            <input type="date" id="comparisonEnd">
+                            <input type="date" id="comparisonEnd" aria-describedby="comparisonEndError"><p class="field-error" id="comparisonEndError" hidden></p>
                         </div>
                     </div>
                 </div>
@@ -1221,15 +1229,16 @@
         <div class="admin-section">
             <h3 style="margin: 0 0 15px 0; color: #ff9800;">Панель администратора</h3>
             <div class="user-management">
+                <div id="adminFormErrorSummary" class="form-error-summary" role="alert" tabindex="-1" hidden></div>
                 <h4 style="margin: 0 0 15px 0;">Управление пользователями</h4>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 20px;">
-                    <input type="text" id="newUserName" placeholder="Имя" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
-                    <input type="text" id="newUserLogin" placeholder="Логин" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
-                    <input type="password" id="newUserPassword" placeholder="Пароль" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
-                    <select id="newUserRole" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                    <label class="admin-field" for="newUserName">Имя<input type="text" id="newUserName" placeholder="Введите имя" aria-describedby="newUserNameError" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                    <label class="admin-field" for="newUserLogin">Логин<input type="text" id="newUserLogin" placeholder="Введите логин" aria-describedby="newUserLoginError" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                    <label class="admin-field" for="newUserPassword">Пароль<input type="password" id="newUserPassword" placeholder="Введите пароль" aria-describedby="newUserPasswordError" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                    <label class="admin-field" for="newUserRole">Роль<select id="newUserRole" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
                         <option value="viewer">Наблюдатель</option>
                         <option value="admin">Администратор</option>
-                    </select>
+                    </select><p class="field-error" id="newUserRoleError" hidden></p></label>
                     <button type="button" id="addUserBtn" style="background: #4caf50; padding: 10px;">Добавить</button>
                 </div>
                 <table class="user-table">
