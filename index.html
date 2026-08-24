@@ -1133,6 +1133,8 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
  .chart-meta { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
  .chart-meta-item { display: inline-flex; align-items: center; gap: 5px; min-height: 30px; padding: 5px 10px; border: 1px solid var(--color-border-subtle); border-radius: 8px; color: var(--color-text-muted); background: var(--color-surface); font-size: 12px; line-height: 1.2; }
  .chart-meta-item.is-accent { color: var(--color-focus); border-color: rgba(33,150,243,.25); background: #f0f7ff; }
+ .chart-commentary { display: none; margin: 12px 0 0; padding: 10px 12px; border-left: 2px solid var(--color-focus); border-radius: 0 8px 8px 0; color: var(--color-text-muted); background: #f7faff; font-size: 12px; line-height: 1.45; }
+ .chart-commentary.is-visible { display: block; }
  @media (max-width: 768px) { .daily-chart-header { align-items: stretch; } .daily-chart-header h3 { font-size: 21px; } .chart-controls { width: 100%; grid-template-columns: 1fr 1fr; } .chart-controls select, .chart-controls button { min-width: 0; width: 100%; } .chart-controls button { grid-column: 1 / -1; } .chart-meta { justify-content: stretch; gap: 6px; } .chart-meta-item { flex: 1 1 auto; justify-content: center; } .card .metric-section { margin-bottom: 16px; padding-bottom: 12px; } }
  @media (max-width: 480px) { .chart-controls { grid-template-columns: 1fr; } .chart-controls button { grid-column: auto; } .chart-meta-item { flex-basis: calc(50% - 6px); } .chart-meta-item.is-accent { flex-basis: 100%; } }
 </style>
@@ -1319,6 +1321,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
             <span class="chart-meta-item"><svg class="ui-icon" aria-hidden="true"><use href="#icon-target"></use></svg><span id="totalSalesAmount">0</span> всего продаж</span>
             <span id="fullDateRange" class="chart-meta-item is-accent"><svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>Весь месяц</span>
         </div>
+        <p id="chartCommentary" class="chart-commentary" role="status" aria-live="polite"></p>
     </div>
     
     <!-- Радар графики -->
@@ -1774,6 +1777,31 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
                     const monthNum = month ? parseInt(month.split('-')[1]) : 3;
                     dateRangeSpan.textContent = `${firstDay}-${lastDay} ${monthNames[monthNum - 1]}`;
                 }
+
+                const commentary = document.getElementById('chartCommentary');
+                if (!commentary) return;
+                const comparison = this.comparisonDailyData;
+                if (!comparison.length || !this.dailyData.length) {
+                    commentary.textContent = '';
+                    commentary.classList.remove('is-visible');
+                    return;
+                }
+
+                const metricNames = { sales: 'Продажи', contracts: 'Контракты', trading: 'Трейдин', traffic: 'Трафик', revenue: 'Доход' };
+                const metricName = metricNames[this.currentMetric] || 'Показатель';
+                const sum = rows => rows.reduce((total, row) => total + (Number(row[this.currentMetric]) || 0), 0);
+                const currentTotal = sum(this.dailyData);
+                const comparisonTotal = sum(comparison);
+                const formatMetric = value => this.currentMetric === 'revenue'
+                    ? `${(value / 1000000).toFixed(1)} млн ₽`
+                    : Math.round(value).toLocaleString('ru-RU');
+                const delta = comparisonTotal === 0
+                    ? (currentTotal === 0 ? 0 : null)
+                    : Math.round(((currentTotal - comparisonTotal) / Math.abs(comparisonTotal)) * 100);
+                const direction = delta === null ? 'выше' : delta > 0 ? 'выше' : delta < 0 ? 'ниже' : 'на уровне';
+                const deltaText = delta === null ? 'без базы для расчёта процента' : `${delta > 0 ? '+' : ''}${delta}%`;
+                commentary.textContent = `${metricName}: ${formatMetric(currentTotal)} за текущий период против ${formatMetric(comparisonTotal)} в периоде сравнения — ${direction} (${deltaText}).`;
+                commentary.classList.add('is-visible');
             }
         }
         
