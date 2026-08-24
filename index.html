@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Дебрянск Авто | Дашборд продаж</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
 
     
     <!-- Фавикон -->
@@ -977,6 +977,48 @@
             .summary-card div:first-child { font-size: 11px; }
             .summary-card div:last-child { font-size: 18px; }
         }
+    
+            /* ========= АДАПТАЦИЯ ДЛЯ TOUCH И УЗКИХ ЭКРАНОВ ========= */
+            @media (max-width: 768px) {
+                body {
+                    margin: 0;
+                    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+                    overflow-x: hidden;
+                }
+                .range-panel { padding: 18px 14px; }
+                .range-panel h3 { font-size: clamp(16px, 4.5vw, 18px); }
+                .range-field select,
+                .range-field input,
+                .comparison-range-fields .range-field input { min-height: 44px; font-size: 16px; box-sizing: border-box; }
+                .comparison-toggle { min-height: 44px; align-items: center; }
+                .range-selector > button,
+                .button-group button,
+                #refreshChartBtn { min-height: 44px; }
+                #dataEntryPanel,
+                .summary-table-container,
+                .user-management { -webkit-overflow-scrolling: touch; scrollbar-gutter: stable; }
+                .input-table th:first-child,
+                .input-table td:first-child,
+                .summary-table th:first-child,
+                .summary-table td:first-child {
+                    position: sticky;
+                    left: 0;
+                    z-index: 2;
+                    background: #fff;
+                    box-shadow: 2px 0 8px rgba(44, 62, 80, 0.08);
+                }
+                .input-table th:first-child,
+                .summary-table th:first-child { background: #f8f9fa; z-index: 3; }
+                #chartDetailedStats { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 10px !important; }
+                #chartDetailedStats > * { min-width: 0; }
+            }
+            @media (max-width: 480px) {
+                body { padding: max(5px, env(safe-area-inset-top)) max(5px, env(safe-area-inset-right)) max(5px, env(safe-area-inset-bottom)) max(5px, env(safe-area-inset-left)); }
+                .range-panel { padding: 16px 12px; border-radius: 16px; }
+                .range-info { align-items: stretch; }
+                #chartDetailedStats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+                #dailyChartContainer { padding: 18px 12px 14px; }
+            }
     </style>
 </head>
 <body>
