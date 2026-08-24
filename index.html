@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Дебрянск Авто | Дашборд продаж</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <link rel="stylesheet" href="css/design-tokens.css">
 
     
     <!-- Фавикон -->
@@ -30,28 +31,28 @@
     <style>
         /* ========= ОСНОВНЫЕ СТИЛИ ========= */
         :root {
-            --sales: #2e7d32;
-            --sales-f: #a5d6a7;
-            --traffic: #1565c0;
-            --traffic-f: #90caf9;
-            --revenue: #ef6c00;
-            --revenue-f: #ffcc80;
-            --contracts: #7b1fa2;
-            --contracts-f: #ce93d8;
-            --trading: #00695c;
-            --trading-f: #80cbc4;
-            --bg: #f2f4f7;
-            --locked: #e9ecef;
-            --card-shadow: 0 6px 18px rgba(0, 0, 0, .08);
-            --form-shadow: 0 4px 14px rgba(0, 0, 0, .08);
-            --danger: #d32f2f;
-            --warning: #ff9800;
-            --success: #388e3c;
-            --info: #2196f3;
+            --sales: var(--color-sales);
+                --sales-f: var(--color-sales-soft);
+                --traffic: var(--color-traffic);
+                --traffic-f: var(--color-traffic-soft);
+                --revenue: var(--color-revenue);
+                --revenue-f: var(--color-revenue-soft);
+                --contracts: var(--color-contracts);
+                --contracts-f: var(--color-contracts-soft);
+                --trading: var(--color-trading);
+                --trading-f: var(--color-trading-soft);
+                --bg: var(--color-background);
+                --locked: var(--color-surface-locked);
+                --card-shadow: var(--shadow-card);
+                --form-shadow: var(--shadow-form);
+                --danger: var(--color-danger);
+                --warning: var(--color-warning);
+                --success: var(--color-success);
+                --info: var(--color-focus);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { margin: 10px; font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: #333; line-height: 1.4; }
+        body { margin: 10px; font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--color-text); line-height: 1.4; }
         
         /* ========= ШАПКА С ЛОГОТИПОМ ========= */
         .header {
