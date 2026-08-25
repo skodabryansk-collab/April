@@ -3,7 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 const { Pool } = require('pg');
+const webpush = require('web-push');
 
 const app = express();
 
@@ -14,6 +16,106 @@ const JSON_DATA_PATH = path.join(__dirname, '..', 'data', 'daily_facts.json');
 const EXTERNAL_JSON_URL = process.env.DATA_SOURCE_URL || 'https://xml.krona-auto.ru/Dashboard/daily_facts.json';
 const DATA_CACHE_TTL_MS = Number(process.env.DATA_CACHE_TTL_MS || 5 * 60 * 1000);
 let externalDataCache = { data: null, fetchedAt: 0 };
+const memoryPushSubscriptions = new Map();
+let memoryDataState = null;
+
+function configureWebPush() {
+  const publicKey = process.env.VAPID_PUBLIC_KEY;
+  const privateKey = process.env.VAPID_PRIVATE_KEY;
+  const subject = process.env.VAPID_SUBJECT || 'mailto:admin@example.com';
+  if (!publicKey || !privateKey) return false;
+  webpush.setVapidDetails(subject, publicKey, privateKey);
+  return true;
+}
+
+function subscriptionKey(subscription) {
+  return typeof subscription?.endpoint === 'string' ? subscription.endpoint : '';
+}
+
+function dataFingerprint(data) {
+  const facts = Array.isArray(data?.dailyFacts) ? data.dailyFacts : [];
+  const records = facts
+    .filter(record => record && record.date && !record.month)
+    .map(record => JSON.stringify(record))
+    .sort();
+  return crypto.createHash('sha256').update(records.join('\n')).digest('hex');
+}
+
+function getDataUpdateDetails(previousState, data) {
+  const facts = Array.isArray(data?.dailyFacts) ? data.dailyFacts : [];
+  const datedFacts = facts.filter(record => record && record.date && !record.month);
+  const previousRecords = Number(previousState?.record_count || 0);
+  const currentRecords = datedFacts.length;
+  const dates = [...new Set(datedFacts.map(record => record.date))].sort();
+  const latestDate = dates.at(-1) || null;
+  const addedRecords = Math.max(0, currentRecords - previousRecords);
+  return { currentRecords, latestDate, addedRecords, signature: dataFingerprint(data) };
+}
+
+async function getDataUpdateState() {
+  if (pool && dbConnected) {
+    const result = await pool.query('SELECT signature, record_count, latest_date FROM data_update_state WHERE id = 1');
+    return result.rows[0] || null;
+  }
+  return memoryDataState;
+}
+
+async function saveDataUpdateState(details) {
+  if (pool && dbConnected) {
+    await pool.query(`
+      INSERT INTO data_update_state (id, signature, record_count, latest_date, updated_at)
+      VALUES (1, $1, $2, $3, CURRENT_TIMESTAMP)
+      ON CONFLICT (id) DO UPDATE SET signature = EXCLUDED.signature,
+        record_count = EXCLUDED.record_count, latest_date = EXCLUDED.latest_date,
+        updated_at = CURRENT_TIMESTAMP
+    `, [details.signature, details.currentRecords, details.latestDate]);
+  }
+  memoryDataState = { signature: details.signature, record_count: details.currentRecords, latest_date: details.latestDate };
+}
+
+async function listPushSubscriptions() {
+  if (pool && dbConnected) {
+    const result = await pool.query('SELECT endpoint, subscription FROM push_subscriptions ORDER BY created_at');
+    return result.rows;
+  }
+  return [...memoryPushSubscriptions.values()];
+}
+
+async function removePushSubscription(endpoint) {
+  memoryPushSubscriptions.delete(endpoint);
+  if (pool && dbConnected) await pool.query('DELETE FROM push_subscriptions WHERE endpoint = $1', [endpoint]);
+}
+
+async function checkForDataUpdates({ notify = true } = {}) {
+  const data = await fetchExternalData(true);
+  const previousState = await getDataUpdateState();
+  const details = getDataUpdateDetails(previousState, data);
+  const changed = Boolean(previousState && previousState.signature !== details.signature);
+  await saveDataUpdateState(details);
+  if (!changed || !notify || !configureWebPush()) {
+    return { changed, notified: 0, records: details.currentRecords, addedRecords: details.addedRecords, latestDate: details.latestDate };
+  }
+
+  const payload = JSON.stringify({
+    title: 'Данные обновлены',
+    body: details.addedRecords > 0
+      ? `Добавлено записей: ${details.addedRecords}. Последняя дата: ${details.latestDate || 'не указана'}.`
+      : `Источник обновлён. Последняя дата: ${details.latestDate || 'не указана'}.`,
+    url: '/',
+    tag: 'daily-facts-update'
+  });
+  let notified = 0;
+  for (const row of await listPushSubscriptions()) {
+    try {
+      await webpush.sendNotification(row.subscription || row, payload);
+      notified++;
+    } catch (error) {
+      if (error.statusCode === 404 || error.statusCode === 410) await removePushSubscription(row.endpoint);
+      else console.error('⚠️ Ошибка отправки push:', error.statusCode || error.message);
+    }
+  }
+  return { changed, notified, records: details.currentRecords, addedRecords: details.addedRecords, latestDate: details.latestDate };
+}
 
 async function fetchExternalData(force = false) {
   const cacheIsFresh = externalDataCache.data && Date.now() - externalDataCache.fetchedAt < DATA_CACHE_TTL_MS;
@@ -78,6 +180,22 @@ async function initDatabase() {
       )
     `);
     console.log('✅ Таблица users создана');
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS push_subscriptions (
+        endpoint TEXT PRIMARY KEY,
+        subscription JSONB NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE TABLE IF NOT EXISTS data_update_state (
+        id INTEGER PRIMARY KEY,
+        signature TEXT NOT NULL,
+        record_count INTEGER NOT NULL DEFAULT 0,
+        latest_date TEXT,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    console.log('✅ Таблицы push и состояния источника готовы');
     
     // Проверяем администратора
     const adminCheck = await pool.query('SELECT * FROM users WHERE login = $1', ['admin']);
@@ -359,6 +477,68 @@ app.post('/api/refresh-data', async (req, res) => {
     res.status(502).json({ success: false, error: 'Внешний источник недоступен' });
   }
 });
+
+app.get('/api/push/public-key', (req, res) => {
+  if (!configureWebPush() || !process.env.VAPID_PUBLIC_KEY) {
+    return res.status(503).json({ success: false, error: 'Push-уведомления пока не настроены' });
+  }
+  res.json({ success: true, publicKey: process.env.VAPID_PUBLIC_KEY });
+});
+
+app.post('/api/push/subscribe', async (req, res) => {
+  try {
+    const subscription = req.body;
+    const endpoint = subscriptionKey(subscription);
+    if (!endpoint || !subscription.keys?.p256dh || !subscription.keys?.auth) {
+      return res.status(400).json({ success: false, error: 'Некорректная push-подписка' });
+    }
+    const row = { endpoint, subscription };
+    memoryPushSubscriptions.set(endpoint, row);
+    if (pool && dbConnected) {
+      await pool.query(`
+        INSERT INTO push_subscriptions (endpoint, subscription, updated_at)
+        VALUES ($1, $2::jsonb, CURRENT_TIMESTAMP)
+        ON CONFLICT (endpoint) DO UPDATE SET subscription = EXCLUDED.subscription,
+          updated_at = CURRENT_TIMESTAMP
+      `, [endpoint, JSON.stringify(subscription)]);
+    }
+    res.json({ success: true });
+  } catch (error) {
+    console.error('❌ Ошибка сохранения push-подписки:', error.message);
+    res.status(500).json({ success: false, error: 'Не удалось сохранить подписку' });
+  }
+});
+
+app.delete('/api/push/subscribe', async (req, res) => {
+  try {
+    const endpoint = subscriptionKey(req.body);
+    if (!endpoint) return res.status(400).json({ success: false, error: 'Не указан endpoint подписки' });
+    await removePushSubscription(endpoint);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('❌ Ошибка удаления push-подписки:', error.message);
+    res.status(500).json({ success: false, error: 'Не удалось удалить подписку' });
+  }
+});
+
+async function handleDataUpdateCheck(req, res) {
+  const configuredSecret = process.env.CRON_SECRET;
+  const suppliedSecret = req.get('x-cron-secret') || (req.get('authorization') || '').replace(/^Bearer\s+/i, '');
+  if (!configuredSecret || suppliedSecret !== configuredSecret) {
+    return res.status(401).json({ success: false, error: 'Недействительный ключ проверки' });
+  }
+  try {
+    const result = await checkForDataUpdates();
+    console.log('🔔 Проверка обновления данных:', result);
+    res.json({ success: true, ...result });
+  } catch (error) {
+    console.error('❌ Ошибка проверки обновления данных:', error.message);
+    res.status(502).json({ success: false, error: 'Источник данных недоступен' });
+  }
+}
+
+app.get('/api/check-data-updates', handleDataUpdateCheck);
+app.post('/api/check-data-updates', handleDataUpdateCheck);
 
 
 app.get('/health', async (req, res) => {
