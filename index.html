@@ -1530,6 +1530,96 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
       .back-to-top { top: max(68px, calc(env(safe-area-inset-top) + 68px)) !important; }
       .notification { top: max(68px, calc(env(safe-area-inset-top) + 68px)) !important; }
   }
+
+  /* iPhone safe-area and stable user-panel grid. */
+  .header {
+      top: env(safe-area-inset-top) !important;
+      margin-top: calc(-10px + env(safe-area-inset-top)) !important;
+  }
+  .header-main {
+      padding-left: max(18px, env(safe-area-inset-left)) !important;
+      padding-right: max(16px, env(safe-area-inset-right)) !important;
+      min-height: 66px;
+  }
+  .header-brand { flex: 0 0 auto !important; }
+  .header-logo-switch {
+      width: 193px !important;
+      flex-basis: 193px !important;
+      height: 32px !important;
+  }
+  .header-logo-full, .header-logo-mini {
+      width: 193px !important;
+      height: 32px !important;
+  }
+  .header.is-scrolled .header-logo-switch {
+      width: 32px !important;
+      flex-basis: 32px !important;
+  }
+  #userPanel {
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+      width: min(380px, calc(100vw - 250px));
+      min-width: 0;
+      gap: 6px !important;
+      overflow: hidden;
+  }
+  #userPanel > div { min-width: 112px; }
+  #userPanel #enablePushBtn {
+      flex: 0 0 120px !important;
+      width: 120px !important;
+      min-width: 120px !important;
+      white-space: normal;
+      line-height: 1.1;
+  }
+  #userPanel #logoutBtn {
+      flex: 0 0 52px !important;
+      width: 52px !important;
+      min-width: 52px !important;
+      padding-left: 6px !important;
+      padding-right: 6px !important;
+  }
+  @media (max-width: 768px) {
+      .header-main {
+          min-height: 58px;
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;
+      }
+      .header-logo-switch {
+          width: 150px !important;
+          flex-basis: 150px !important;
+          height: 25px !important;
+      }
+      .header-logo-full, .header-logo-mini {
+          width: 150px !important;
+          height: 25px !important;
+      }
+      .header.is-scrolled .header-logo-switch {
+          width: 25px !important;
+          flex-basis: 25px !important;
+      }
+      #userPanel {
+          right: max(8px, env(safe-area-inset-right)) !important;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 174px;
+          padding: 3px !important;
+      }
+      #userPanel #enablePushBtn {
+          flex-basis: 108px !important;
+          width: 108px !important;
+          min-width: 108px !important;
+          min-height: 34px;
+          padding: 4px 5px !important;
+          font-size: 10px;
+      }
+      #userPanel #logoutBtn {
+          flex-basis: 52px !important;
+          width: 52px !important;
+          min-width: 52px !important;
+          min-height: 34px;
+          font-size: 10px;
+      }
+  }
 </style>
 </head>
 <body>
