@@ -1076,6 +1076,8 @@
 .notification-meta { margin-top: 5px; color: var(--color-text-muted); font-size: 11px; line-height: 1.45; }
 .notification-close { flex: 0 0 auto; min-width: 28px; width: 28px; height: 28px; padding: 0; color: var(--color-text-muted); background: transparent; border: 0; font-size: 22px; font-weight: 400; line-height: 1; }
 .notification-close:hover { color: var(--color-text-strong); background: var(--color-surface-hover); transform: none; }
+.push-subscribe-btn { min-width: auto; min-height: 34px; padding: 6px 10px; color: var(--color-focus); background: #f0f7ff; border: 1px solid rgba(33,150,243,.25); font-size: 11px; }
+.push-subscribe-btn:hover { color: #155ca8; background: #e5f2ff; border-color: var(--color-focus); }
 @keyframes notification-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 @media (max-width: 768px) { .notification { top: max(10px, env(safe-area-inset-top)); right: 10px; left: 10px; width: auto; padding: 12px; border-radius: 13px; } .notification-message { font-size: 13px; } .notification-meta { font-size: 10px; } }
 @media (prefers-reduced-motion: reduce) { .notification { animation: none; } }
@@ -1096,6 +1098,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
 .button-group { gap: 8px; }
 .button-group button { flex: 0 1 auto; }
 @media (max-width: 768px) { button { min-height: 44px; } .button-group { gap: 8px; } .button-group button, .range-selector > button { width: 100%; } #logoutBtn, #notificationClose { width: auto; min-height: 36px; } #notificationClose { min-height: 28px; } }
+@media (max-width: 768px) { .push-subscribe-btn { min-height: 36px; width: auto; } }
 
 /* ===== COMPACT SUMMARY KPI ===== */
 .summary-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0 20px; }
@@ -1209,6 +1212,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
             <span id="userNameDisplay"></span>
             <span id="userRoleDisplay"></span>
         </div>
+        <button type="button" id="enablePushBtn" class="push-subscribe-btn" hidden>Включить уведомления</button>
         <button id="logoutBtn">Выйти</button>
     </div>
     
@@ -1428,6 +1432,43 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
             window.addEventListener('scroll', updateBackToTop, { passive: true });
             backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
             updateBackToTop();
+        })();
+    </script>
+    <script>
+        (() => {
+            const button = document.getElementById('enablePushBtn');
+            if (!button) return;
+            const supported = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+            if (!supported) return;
+            button.hidden = false;
+            button.textContent = isStandalone ? 'Включить уведомления' : 'Установите приложение для push';
+            button.disabled = !isStandalone;
+            button.title = isStandalone ? 'Получать уведомления об обновлении данных' : 'Добавьте сайт на экран «Домой» для push на iPhone';
+            button.addEventListener('click', async () => {
+                if (!isStandalone) return;
+                try {
+                    const permission = await Notification.requestPermission();
+                    if (permission !== 'granted') throw new Error('Разрешение на уведомления не предоставлено');
+                    const registration = await navigator.serviceWorker.register('/service-worker.js');
+                    const keyResponse = await fetch('/api/push/public-key');
+                    const keyResult = await keyResponse.json();
+                    if (!keyResponse.ok || !keyResult.publicKey) throw new Error(keyResult.error || 'Push не настроен на сервере');
+                    const base64 = keyResult.publicKey.replace(/-/g, '+').replace(/_/g, '/');
+                    const padded = base64 + '='.repeat((4 - base64.length % 4) % 4);
+                    const applicationServerKey = Uint8Array.from(atob(padded), c => c.charCodeAt(0));
+                    const subscription = await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey });
+                    const saveResponse = await fetch('/api/push/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(subscription) });
+                    const saveResult = await saveResponse.json();
+                    if (!saveResponse.ok) throw new Error(saveResult.error || 'Не удалось сохранить подписку');
+                    button.textContent = 'Уведомления включены';
+                    button.disabled = true;
+                    window.dashboardCore?.uiManager?.showNotification('Push-уведомления включены', 'success');
+                } catch (error) {
+                    console.error('❌ Push:', error);
+                    window.dashboardCore?.uiManager?.showNotification(error.message, 'warning');
+                }
+            });
         })();
     </script>
     
