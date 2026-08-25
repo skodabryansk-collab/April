@@ -1307,12 +1307,13 @@
 }
 .header-main {
     min-height: 66px;
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 28px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0 16px 0 18px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 .header-brand {
     display: inline-flex;
@@ -1324,9 +1325,10 @@
 .header-logo-switch {
     position: relative;
     display: block;
-    width: 178px;
+    width: 193px;
     height: 32px;
     overflow: hidden;
+    flex: 0 0 193px;
 }
 .header-logo-full,
 .header-logo-mini {
@@ -1334,17 +1336,16 @@
     inset: 0 auto auto 0;
     display: block;
     height: 32px;
-    width: auto;
+    width: 193px;
     max-width: none;
     object-fit: contain;
+    object-position: left center;
     filter: brightness(0) invert(1);
     transform-origin: left center;
     transition: opacity .28s ease, transform .28s ease;
 }
 .header-logo-mini {
-    width: 32px;
-    object-fit: cover;
-    object-position: left center;
+    width: 193px;
     opacity: 0;
     transform: scale(.7);
 }
@@ -1356,18 +1357,7 @@
     opacity: 1;
     transform: scale(1);
 }
-.header-brand::after {
-    content: "";
-    position: absolute;
-    left: 28px;
-    width: 178px;
-    height: 1px;
-    margin-top: 42px;
-    background: linear-gradient(90deg, #0070b8, #87b63c, transparent);
-    opacity: .75;
-    transition: width .28s ease;
-}
-.header.is-scrolled .header-brand::after { width: 32px; }
+.header-brand::after { display: none !important; }
 .header-nav,
 .header-context,
 .header-strip,
@@ -1387,14 +1377,12 @@
 #userPanel #userNameDisplay { color: #f8fafc; }
 #userPanel #userRoleDisplay { color: #b9c1cc; background: transparent; }
 #userPanel #logoutBtn { color: #111317 !important; background: #f8fafc !important; border-color: #f8fafc !important; }
+.user-panel-icon { width: 17px; height: 17px; color: #b8c4d3; flex: 0 0 auto; }
 .header .back-to-top { position: fixed; }
 @media (max-width: 768px) {
     .header-main { min-height: 58px; padding: 0 14px; }
-    .header-logo-switch { width: 160px; height: 29px; }
-    .header-logo-full, .header-logo-mini { height: 29px; }
-    .header-logo-mini { width: 29px; }
-    .header-brand::after { left: 14px; width: 160px; margin-top: 38px; }
-    .header.is-scrolled .header-brand::after { width: 29px; }
+    .header-logo-switch { width: 175px; height: 29px; flex-basis: 175px; }
+    .header-logo-full, .header-logo-mini { width: 175px; height: 29px; }
     #userPanel { max-width: calc(100vw - 190px); }
 }
 
@@ -1539,7 +1527,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
             </a>
             <!-- Панель пользователя -->
             <div id="userPanel">
-                <span>👤</span>
+                <svg class="ui-icon user-panel-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.5 20c.8-3.5 3.3-5.5 7.5-5.5s6.7 2 7.5 5.5"></path></svg>
                 <div>
                     <span id="userNameDisplay"></span>
                     <span id="userRoleDisplay"></span>
