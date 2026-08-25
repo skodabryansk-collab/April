@@ -24,9 +24,45 @@
         return new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' }).format(new Date(year, month - 1, 1));
     };
 
-    const buildExportSurface = (children, columns) => {
+    const ensureExportStyles = () => {
+        if (document.getElementById('pptx-export-styles')) return;
+        const style = document.createElement('style');
+        style.id = 'pptx-export-styles';
+        style.textContent = `
+            .pptx-export-surface { align-items: stretch; align-content: stretch; }
+            .pptx-export-surface > .card,
+            .pptx-export-surface > .total-gk-card {
+                width: 100% !important;
+                min-width: 0 !important;
+                min-height: 0 !important;
+                height: 100% !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                padding: 13px !important;
+                border-radius: 10px !important;
+                box-shadow: none !important;
+            }
+            .pptx-export-surface > .card h2 { margin-bottom: 9px !important; padding-bottom: 7px !important; font-size: 16px !important; }
+            .pptx-export-surface > .card .metric-section { margin-bottom: 7px !important; padding-bottom: 6px !important; }
+            .pptx-export-surface > .card .metric-section + .metric-section { padding-top: 1px !important; }
+            .pptx-export-surface > .card .metric-header { margin-bottom: 4px !important; }
+            .pptx-export-surface > .card .metric-title,
+            .pptx-export-surface > .card .fact-percent { font-size: 11px !important; }
+            .pptx-export-surface > .card .forecast-badge { padding: 2px 4px !important; font-size: 8px !important; }
+            .pptx-export-surface > .card .progress-bar { height: 24px !important; margin-bottom: 2px !important; }
+            .pptx-export-surface > .card .progress-labels { margin-top: 2px !important; min-height: 12px !important; font-size: 9px !important; }
+            .pptx-export-surface > .card .metric-details { gap: 4px !important; margin-top: 4px !important; }
+            .pptx-export-surface > .card .detail-item { padding: 3px 5px !important; font-size: 9px !important; }
+            .pptx-export-surface > .card > div:last-child { margin-top: 8px !important; padding-top: 8px !important; }
+        `;
+        document.head.appendChild(style);
+    };
+
+    const buildExportSurface = (children, columns, height) => {
+        ensureExportStyles();
         const surface = document.createElement('div');
-        surface.style.cssText = `position:fixed;left:-10000px;top:0;width:1280px;box-sizing:border-box;padding:34px 42px;background:#fff;color:#344054;display:grid;grid-template-columns:repeat(${columns},minmax(0,1fr));gap:18px;z-index:-1;`;
+        surface.className = 'pptx-export-surface';
+        surface.style.cssText = `position:fixed;left:-10000px;top:0;width:1280px;height:${height}px;box-sizing:border-box;padding:26px 30px;background:#fff;color:#344054;display:grid;grid-template-columns:repeat(${columns},minmax(0,1fr));grid-template-rows:repeat(${Math.ceil(children.length / columns)},minmax(0,1fr));gap:14px;z-index:-1;`;
         children.forEach(child => surface.appendChild(child.cloneNode(true)));
         document.body.appendChild(surface);
         return surface;
@@ -63,12 +99,12 @@
 
         const surfaces = [];
         try {
-            const gkSurface = buildExportSurface([gk], 1);
+            const gkSurface = buildExportSurface([gk], 1, 700);
             surfaces.push(gkSurface);
             await addCapturedSlide(pptx, gkSurface, `Итого по ГК · ${getMonthLabel()}`);
 
             for (let start = 0, slideNumber = 2; start < brands.length; start += 4, slideNumber++) {
-                const page = buildExportSurface(brands.slice(start, start + 4), 4);
+                const page = buildExportSurface(brands.slice(start, start + 4), 4, 700);
                 surfaces.push(page);
                 await addCapturedSlide(pptx, page, `Бренды · ${getMonthLabel()} · ${slideNumber}`);
             }
