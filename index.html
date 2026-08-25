@@ -188,16 +188,35 @@
             font-size: 18px;
         }
         .range-selector {
+            display: grid;
+            grid-template-columns: minmax(360px, 1fr) minmax(390px, 1.15fr) auto;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 15px;
+        }
+        .range-main-fields {
+            display: grid;
+            grid-template-columns: minmax(150px, 1.2fr) repeat(2, minmax(125px, 1fr));
+            gap: 12px;
+            min-width: 0;
+        }
+        .range-actions {
             display: flex;
             align-items: center;
-            gap: 20px;
+            justify-content: flex-end;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 15px;
+        }
+        .range-actions button {
+            flex: 0 1 auto;
+            min-width: 128px;
+            white-space: nowrap;
         }
         .range-field {
             display: flex;
             align-items: center;
             gap: 8px;
+            min-width: 0;
         }
         .range-field label {
             font-weight: 600;
@@ -215,6 +234,30 @@
             border-color: #2196f3;
             outline: none;
             box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+        .comparison-controls {
+            display: grid;
+            gap: 9px;
+            min-width: 0;
+        }
+        .comparison-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 22px;
+            color: #2c3e50;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .comparison-toggle input { margin: 0; }
+        .comparison-range-fields {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+        .comparison-range-fields .range-field input {
+            width: 100%;
+            min-width: 0;
         }
         .range-info {
             display: flex;
@@ -924,7 +967,10 @@
         @media (max-width: 768px) {
             body { margin: 8px; }
             .range-panel { padding: 18px; }
-            .range-selector { flex-direction: column; align-items: stretch; gap: 12px; }
+            .range-selector { grid-template-columns: 1fr; align-items: stretch; gap: 12px; }
+            .range-main-fields { grid-template-columns: 1.2fr 1fr 1fr; gap: 10px; }
+            .range-actions { justify-content: stretch; }
+            .range-actions button { flex: 1 1 160px; }
             .range-field { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
             .range-field label { width: 45px; font-size: 14px; }
             .range-field select, .range-field input { flex: 1; padding: 10px 12px; font-size: 14px; min-width: 0; }
@@ -983,7 +1029,9 @@
             body { margin: 5px; }
             .range-field { flex-direction: column; align-items: flex-start; width: 100%; }
             .range-field label { width: auto; }
+            .range-main-fields { grid-template-columns: 1fr; }
             .range-field select, .range-field input { width: 100%; }
+            .comparison-range-fields { grid-template-columns: 1fr; }
             .card h2 { font-size: 14px; }
             .stars { transform: scale(0.8); }
             .forecast-badge { font-size: 9px; padding: 2px 6px; }
@@ -1254,19 +1302,21 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
     <div class="range-panel">
         <h3>Выбор периода для анализа</h3>
         <div class="range-selector">
-            <div class="range-field">
-                <label for="monthSelector">Месяц:</label>
-                <select id="monthSelector">
-                    <option value="">Загрузка...</option>
-                </select>
-            </div>
-            <div class="range-field">
-                <label for="rangeStart">С:</label>
-                <input type="date" id="rangeStart" aria-describedby="rangeStartError"><p class="field-error" id="rangeStartError" hidden></p>
-            </div>
-            <div class="range-field">
-                <label for="rangeEnd">По:</label>
-                <input type="date" id="rangeEnd" aria-describedby="rangeEndError"><p class="field-error" id="rangeEndError" hidden></p>
+            <div class="range-main-fields">
+                <div class="range-field">
+                    <label for="monthSelector">Месяц:</label>
+                    <select id="monthSelector">
+                        <option value="">Загрузка...</option>
+                    </select>
+                </div>
+                <div class="range-field">
+                    <label for="rangeStart">С:</label>
+                    <input type="date" id="rangeStart" aria-describedby="rangeStartError"><p class="field-error" id="rangeStartError" hidden></p>
+                </div>
+                <div class="range-field">
+                    <label for="rangeEnd">По:</label>
+                    <input type="date" id="rangeEnd" aria-describedby="rangeEndError"><p class="field-error" id="rangeEndError" hidden></p>
+                </div>
             </div>
             <div class="comparison-controls">
                 <label class="comparison-toggle">
@@ -1284,9 +1334,11 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
                         </div>
                     </div>
                 </div>
-            <button type="button" id="loadDataForRangeBtn">Применить период</button>
-            <button type="button" id="refreshDataBtn" class="secondary-action">Обновить данные</button>
-            <button type="button" id="exportSlidesBtn" class="export-slides-btn viewer-hidden">Скачать PPTX</button>
+            <div class="range-actions">
+                <button type="button" id="loadDataForRangeBtn">Применить период</button>
+                <button type="button" id="refreshDataBtn" class="secondary-action">Обновить данные</button>
+                <button type="button" id="exportSlidesBtn" class="export-slides-btn viewer-hidden">Скачать PPTX</button>
+            </div>
         </div>
         <div class="range-info" id="rangeInfo">
             <span id="rangeDaysInfo"><svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg> 0 дней</span>
