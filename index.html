@@ -1409,11 +1409,9 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
   }
 
   /* Keep floating controls below the sticky header. */
-  .back-to-top { top: 76px !important; }
-  .notification { top: 78px !important; }
   @media (max-width: 768px) {
-      .back-to-top { top: 76px !important; }
-      .notification { top: 78px !important; }
+      .back-to-top { top: calc(92px + env(safe-area-inset-top, 0px)) !important; }
+      .notification { top: calc(94px + env(safe-area-inset-top, 0px)) !important; }
   }
 
   /* Shared visually-hidden utility. */
