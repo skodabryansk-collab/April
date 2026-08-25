@@ -1782,6 +1782,37 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
           min-height: calc(58px + env(safe-area-inset-top)) !important;
           padding-top: env(safe-area-inset-top) !important;
           padding-bottom: 0 !important;
+          align-items: flex-start !important;
+      }
+      .header-brand {
+          align-self: flex-start !important;
+      }
+      #userPanel {
+          position: static !important;
+          top: auto !important;
+          right: auto !important;
+          transform: none !important;
+          align-self: flex-start !important;
+          margin: 0 0 0 auto !important;
+          width: 188px !important;
+          min-width: 188px !important;
+          max-width: 188px !important;
+          min-height: 46px;
+          height: 46px;
+          padding: 3px 4px !important;
+          gap: 4px !important;
+      }
+      #userPanel > div {
+          flex: 0 0 100px !important;
+          min-width: 100px !important;
+          max-width: 100px;
+          overflow: hidden;
+      }
+      #userPanel #userNameDisplay {
+          max-width: 100px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
       }
       body > *:not(.header) {
           max-width: 100%;
