@@ -145,21 +145,21 @@
                 padding-bottom: 15px;
                 margin-bottom: 20px;
             }
-            
+
             .logo-area {
                 flex-direction: column;
                 gap: 10px;
             }
-            
+
             .logo {
                 width: 96px;
                 height: 96px;
             }
-            
+
             .logo-text {
                 font-size: 20px;
             }
-            
+
             .logo-subtitle {
                 font-size: 11px;
             }
@@ -319,6 +319,37 @@
             margin: 15px 0 10px;
             color: #34495e;
         }
+        .data-entry-toggle {
+            width: 100%;
+            min-width: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            color: #34495e;
+            background: transparent;
+            border: 0;
+            border-radius: 8px;
+            text-align: left;
+            box-shadow: none;
+        }
+        .data-entry-toggle:hover {
+            color: #1565c0;
+            background: #f7faff;
+            transform: none;
+        }
+        .data-entry-toggle h3 { margin: 0; }
+        .data-entry-toggle-icon {
+            flex: 0 0 auto;
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1;
+            transition: transform 0.2s ease;
+        }
+        #dataEntryPanel.is-expanded .data-entry-toggle-icon { transform: rotate(180deg); }
+        .data-entry-content { display: none; }
+        #dataEntryPanel.is-expanded .data-entry-content { display: block; }
         
         .dashboard {
             display: grid;
@@ -1366,37 +1397,42 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
     </div>
     <!-- Панель управления (ТАБЛИЦА ВВОДА) - СКРЫТА ДЛЯ НАБЛЮДАТЕЛЯ -->
     <div id="dataEntryPanel" class="viewer-hidden">
-        <div class="filter-section">
-            <label for="brandFilter"><strong>Фильтр по бренду:</strong></label>
-            <select id="brandFilter">
-                <option value="all">Все бренды</option>
-            </select>
-        </div>
-        
-        <h3>Факт / План / Банк контрактов / Трейдин (по брендам)</h3>
-        <div style="overflow-x: auto;">
-            <table class="input-table">
-                <thead>
-                    <tr>
-                        <th scope="col" style="text-align: left; padding-left: 10px;">Бренд</th>
-                        <th scope="col">Продажи факт</th>
-                        <th scope="col">Продажи план</th>
-                        <th scope="col">Трафик факт</th>
-                        <th scope="col">Трафик план</th>
-                        <th scope="col">Доход факт</th>
-                        <th scope="col">Доход план</th>
-                        <th scope="col" style="background: #f3e5f5;">Банк контрактов факт</th>
-                        <th scope="col" style="background: #e1bee7;">Банк контрактов план</th>
-                        <th scope="col" style="background: #e0f2f1;">Кол-во Трейдин факт</th>
-                        <th scope="col" style="background: #b2dfdb;">Кол-во Трейдин план</th>
-                    </tr>
-                </thead>
-                <tbody id="inputs"></tbody>
-            </table>
-        </div>
-        
-        <div class="button-group">
-            <button type="button" id="calcBtn">Рассчитать</button>
+        <button type="button" class="data-entry-toggle" id="dataEntryToggle" aria-expanded="false" aria-controls="dataEntryContent">
+            <h3>Факт / План / Банк контрактов / Трейдин (по брендам)</h3>
+            <span class="data-entry-toggle-icon" aria-hidden="true">⌄</span>
+        </button>
+        <div class="data-entry-content" id="dataEntryContent">
+            <div class="filter-section">
+                <label for="brandFilter"><strong>Фильтр по бренду:</strong></label>
+                <select id="brandFilter">
+                    <option value="all">Все бренды</option>
+                </select>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="input-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: left; padding-left: 10px;">Бренд</th>
+                            <th scope="col">Продажи факт</th>
+                            <th scope="col">Продажи план</th>
+                            <th scope="col">Трафик факт</th>
+                            <th scope="col">Трафик план</th>
+                            <th scope="col">Доход факт</th>
+                            <th scope="col">Доход план</th>
+                            <th scope="col" style="background: #f3e5f5;">Банк контрактов факт</th>
+                            <th scope="col" style="background: #e1bee7;">Банк контрактов план</th>
+                            <th scope="col" style="background: #e0f2f1;">Кол-во Трейдин факт</th>
+                            <th scope="col" style="background: #b2dfdb;">Кол-во Трейдин план</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inputs"></tbody>
+                </table>
+            </div>
+
+            <div class="button-group">
+                <button type="button" id="calcBtn">Рассчитать</button>
+            </div>
         </div>
     </div>
     <!-- Основной дашборд -->
