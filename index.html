@@ -1329,6 +1329,7 @@
     height: 32px;
     overflow: hidden;
     flex: 0 0 193px;
+    transition: width .28s ease, flex-basis .28s ease;
 }
 .header-logo-full,
 .header-logo-mini {
@@ -1357,6 +1358,10 @@
     opacity: 1;
     transform: scale(1);
 }
+.header.is-scrolled .header-logo-switch {
+    width: 32px;
+    flex-basis: 32px;
+}
 .header-brand::after { display: none !important; }
 .header-nav,
 .header-context,
@@ -1380,10 +1385,25 @@
 .user-panel-icon { width: 17px; height: 17px; color: #b8c4d3; flex: 0 0 auto; }
 .header .back-to-top { position: fixed; }
 @media (max-width: 768px) {
-    .header-main { min-height: 58px; padding: 0 14px; }
-    .header-logo-switch { width: 175px; height: 29px; flex-basis: 175px; }
-    .header-logo-full, .header-logo-mini { width: 175px; height: 29px; }
-    #userPanel { max-width: calc(100vw - 190px); }
+    .header-main { position: relative; min-height: 58px; padding: 0 14px; flex-wrap: nowrap !important; }
+    .header-brand { flex: 0 0 auto; }
+    .header-logo-switch { width: 150px; height: 25px; flex-basis: 150px; }
+    .header-logo-full, .header-logo-mini { width: 150px; height: 25px; }
+    .header.is-scrolled .header-logo-switch { width: 25px; flex-basis: 25px; }
+    #userPanel {
+        position: absolute !important;
+        top: 7px;
+        right: 8px;
+        margin: 0;
+        max-width: none;
+        gap: 5px;
+        padding: 3px 4px !important;
+        flex-wrap: nowrap;
+    }
+    #userPanel > div { display: none; }
+    #userPanel > span:first-child { display: none; }
+    #userPanel #enablePushBtn { width: 104px; min-height: 34px; padding: 4px 6px; font-size: 10px; line-height: 1.1; }
+    #userPanel #logoutBtn { min-width: 48px; min-height: 34px; padding: 5px 7px; font-size: 10px; }
 }
 
 /* ===== DATA UPDATE PUSH ===== */
