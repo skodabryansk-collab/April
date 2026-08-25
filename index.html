@@ -1749,6 +1749,64 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
           min-width: 36px !important;
       }
   }
+
+  /* Keep the document and date selector inside the mobile viewport. */
+  html,
+  body {
+      max-width: 100%;
+      overflow-x: hidden;
+  }
+  .header-logo-mini {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      object-position: center;
+  }
+  @media (max-width: 768px) {
+      body {
+          width: 100%;
+          max-width: 100%;
+      }
+      .header {
+          width: calc(100% + 16px) !important;
+          max-width: none !important;
+          margin-left: -8px !important;
+          margin-right: -8px !important;
+      }
+      .range-panel,
+      .range-selector,
+      .range-main-fields,
+      .comparison-controls,
+      .comparison-range-fields,
+      .range-field {
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+      }
+      .range-main-fields {
+          grid-template-columns: 1fr !important;
+      }
+      .range-field select,
+      .range-field input,
+      .comparison-range-fields .range-field input {
+          width: 100% !important;
+          max-width: 100%;
+          min-width: 0 !important;
+      }
+      .range-actions {
+          width: 100%;
+      }
+      .range-actions button {
+          min-width: 0;
+      }
+      /* Show the original round mark when the full logo collapses. */
+      .header-logo-mini {
+          width: 22px !important;
+          height: 22px !important;
+          object-fit: contain !important;
+          object-position: center !important;
+      }
+  }
 </style>
 </head>
 <body>
@@ -1769,7 +1827,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
             <a class="header-brand" href="#" aria-label="Дебрянск Авто">
                 <span class="header-logo-switch">
                     <img src="/images/logo.svg" alt="Дебрянск Авто" class="header-logo-full">
-                    <img src="/images/logo.svg" alt="" aria-hidden="true" class="header-logo-mini">
+                    <img src="/images/mini-logo.png" alt="" aria-hidden="true" class="header-logo-mini">
                 </span>
             </a>
             <!-- Панель пользователя -->
