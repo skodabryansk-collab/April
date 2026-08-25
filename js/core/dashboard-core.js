@@ -757,7 +757,8 @@ export class DashboardCore {
     
     enableAdminFeatures() {
         const adminButtons = [
-            'refreshDataBtn'
+            'refreshDataBtn',
+            'exportSlidesBtn'
         ];
         
         adminButtons.forEach(btnId => {
