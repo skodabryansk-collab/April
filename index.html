@@ -1765,7 +1765,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
           width: 100%;
           max-width: 100%;
           position: relative;
-          padding-top: calc(58px + env(safe-area-inset-top)) !important;
+          padding-top: 104px !important;
           overflow-x: clip;
       }
       .header {
@@ -1779,40 +1779,88 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
           z-index: 1000;
       }
       .header-main {
-          min-height: calc(58px + env(safe-area-inset-top)) !important;
-          padding-top: env(safe-area-inset-top) !important;
-          padding-bottom: 0 !important;
-          align-items: flex-start !important;
+          height: 104px !important;
+          min-height: 104px !important;
+          padding: 44px 12px 8px !important;
+          align-items: center !important;
+          justify-content: space-between !important;
       }
       .header-brand {
-          align-self: flex-start !important;
+          align-self: center !important;
+          min-width: 0 !important;
       }
       #userPanel {
           position: static !important;
           top: auto !important;
           right: auto !important;
           transform: none !important;
-          align-self: flex-start !important;
+          align-self: center !important;
           margin: 0 0 0 auto !important;
-          width: 188px !important;
-          min-width: 188px !important;
-          max-width: 188px !important;
-          min-height: 46px;
-          height: 46px;
-          padding: 3px 4px !important;
-          gap: 4px !important;
+          width: auto !important;
+          min-width: 0 !important;
+          max-width: none !important;
+          min-height: 36px;
+          height: 36px;
+          padding: 0 !important;
+          gap: 5px !important;
+          background: transparent !important;
+          border: 0 !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
       }
       #userPanel > div {
-          flex: 0 0 100px !important;
-          min-width: 100px !important;
-          max-width: 100px;
+          flex: 0 1 88px !important;
+          min-width: 0 !important;
+          max-width: 88px;
           overflow: hidden;
       }
       #userPanel #userNameDisplay {
-          max-width: 100px;
+          max-width: 88px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+      }
+      .header-logo-switch {
+          width: 116px !important;
+          flex: 0 0 116px !important;
+          height: 20px !important;
+      }
+      .header-logo-full {
+          width: 116px !important;
+          height: 20px !important;
+      }
+      .header-logo-mini {
+          width: 20px !important;
+          height: 20px !important;
+      }
+      .header.is-scrolled .header-logo-switch {
+          width: 20px !important;
+          flex-basis: 20px !important;
+      }
+      #userPanel .panel-action,
+      #userPanel #enablePushBtn,
+      #userPanel #logoutBtn {
+          flex: 0 0 34px !important;
+          width: 34px !important;
+          min-width: 34px !important;
+          height: 34px !important;
+          min-height: 34px !important;
+          padding: 0 !important;
+          border-radius: 10px !important;
+      }
+      #userPanel #userRoleDisplay {
+          max-width: 88px;
+          margin: 0 !important;
+          padding: 2px 6px !important;
+          font-size: 8px;
+      }
+      #userPanel #userNameDisplay {
+          font-size: 10px;
+          line-height: 1.05;
+      }
+      #userPanel .panel-action-icon {
+          width: 17px;
+          height: 17px;
       }
       body > *:not(.header) {
           max-width: 100%;
