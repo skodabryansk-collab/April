@@ -50,6 +50,23 @@
             .pptx-export-surface > .card .fact-percent { font-size: 11px !important; }
             .pptx-export-surface > .card .forecast-badge { padding: 2px 4px !important; font-size: 8px !important; }
             .pptx-export-surface > .card .progress-bar { height: 24px !important; margin-bottom: 2px !important; }
+            .pptx-export-surface > .card .progress-fact {
+                justify-content: flex-start !important;
+                padding-left: 8px !important;
+                padding-right: 0 !important;
+                white-space: nowrap !important;
+            }
+            .pptx-export-surface > .card .forecast-percent-badge {
+                right: 6px !important;
+                top: 50% !important;
+                z-index: 4 !important;
+                min-width: 34px !important;
+                padding: 3px 5px !important;
+                font-size: 10px !important;
+                line-height: 1 !important;
+                text-align: center !important;
+                transform: translateY(-50%) !important;
+            }
             .pptx-export-surface > .card .progress-labels { margin-top: 2px !important; min-height: 12px !important; font-size: 9px !important; }
             .pptx-export-surface > .card .metric-details { gap: 4px !important; margin-top: 4px !important; }
             .pptx-export-surface > .card .detail-item { padding: 3px 5px !important; font-size: 9px !important; }
