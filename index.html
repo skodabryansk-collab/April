@@ -1293,6 +1293,111 @@
 }
 @media (max-width: 480px) { .metric-title { font-size: 13px; } .fact-percent { font-size: 13px; } .metric-details { grid-template-columns: repeat(2, minmax(0, 1fr)); } .detail-item { min-width: 0; gap: 4px; } .detail-label, .detail-value { overflow-wrap: anywhere; } }
 
+/* ===== COMPACT BRAND HEADER ===== */
+.header {
+    position: sticky !important;
+    top: 0;
+    z-index: 1000;
+    margin: -10px -10px 22px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    background: #111317 !important;
+    border-bottom: 1px solid rgba(255,255,255,.1) !important;
+    overflow: visible;
+}
+.header-main {
+    min-height: 66px;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header-brand {
+    display: inline-flex;
+    align-items: center;
+    height: 38px;
+    color: #fff;
+    text-decoration: none;
+}
+.header-logo-switch {
+    position: relative;
+    display: block;
+    width: 178px;
+    height: 32px;
+    overflow: hidden;
+}
+.header-logo-full,
+.header-logo-mini {
+    position: absolute;
+    inset: 0 auto auto 0;
+    display: block;
+    height: 32px;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    transform-origin: left center;
+    transition: opacity .28s ease, transform .28s ease;
+}
+.header-logo-mini {
+    width: 32px;
+    object-fit: cover;
+    object-position: left center;
+    opacity: 0;
+    transform: scale(.7);
+}
+.header.is-scrolled .header-logo-full {
+    opacity: 0;
+    transform: translateX(-10px) scale(.94);
+}
+.header.is-scrolled .header-logo-mini {
+    opacity: 1;
+    transform: scale(1);
+}
+.header-brand::after {
+    content: "";
+    position: absolute;
+    left: 28px;
+    width: 178px;
+    height: 1px;
+    margin-top: 42px;
+    background: linear-gradient(90deg, #0070b8, #87b63c, transparent);
+    opacity: .75;
+    transition: width .28s ease;
+}
+.header.is-scrolled .header-brand::after { width: 32px; }
+.header-nav,
+.header-context,
+.header-strip,
+.logo-area > div {
+    display: none !important;
+}
+#userPanel {
+    position: static !important;
+    margin-left: auto;
+    padding: 6px 8px 6px 12px !important;
+    color: #f8fafc;
+    background: rgba(255,255,255,.08) !important;
+    border: 1px solid rgba(255,255,255,.14) !important;
+    border-radius: 24px !important;
+    box-shadow: none !important;
+}
+#userPanel #userNameDisplay { color: #f8fafc; }
+#userPanel #userRoleDisplay { color: #b9c1cc; background: transparent; }
+#userPanel #logoutBtn { color: #111317 !important; background: #f8fafc !important; border-color: #f8fafc !important; }
+.header .back-to-top { position: fixed; }
+@media (max-width: 768px) {
+    .header-main { min-height: 58px; padding: 0 14px; }
+    .header-logo-switch { width: 160px; height: 29px; }
+    .header-logo-full, .header-logo-mini { height: 29px; }
+    .header-logo-mini { width: 29px; }
+    .header-brand::after { left: 14px; width: 160px; margin-top: 38px; }
+    .header.is-scrolled .header-brand::after { width: 29px; }
+    #userPanel { max-width: calc(100vw - 190px); }
+}
+
 /* ===== DATA UPDATE PUSH ===== */
 .notification { position: fixed; top: 18px; right: 18px; z-index: 1100; display: none; align-items: flex-start; gap: 12px; width: min(390px, calc(100vw - 36px)); padding: 14px 14px 14px 15px; color: var(--color-text-strong); background: rgba(255,255,255,.97); border: 1px solid var(--color-border-subtle); border-left: 3px solid var(--color-focus); border-radius: 14px; box-shadow: 0 12px 30px rgba(44,62,80,.14); backdrop-filter: blur(12px); animation: notification-in 220ms cubic-bezier(.32,.72,0,1); }
 .notification.is-warning { border-left-color: var(--color-warning); }
@@ -1426,23 +1531,12 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
     <!-- ШАПКА С ЛОГОТИПОМ -->
     <div class="header">
         <div class="header-main">
-            <div class="logo-area">
-                <span class="logo-badge">
-                    <img src="/images/logo.svg" alt="Логотип компании" class="logo" onerror="this.onerror=null; this.style.display='none';">
+            <a class="header-brand" href="#" aria-label="Дебрянск Авто">
+                <span class="header-logo-switch">
+                    <img src="/images/logo.svg" alt="Дебрянск Авто" class="header-logo-full">
+                    <img src="/images/logo.svg" alt="" aria-hidden="true" class="header-logo-mini">
                 </span>
-                <div>
-                    <div class="logo-text">ДЕБРЯНСК АВТО</div>
-                    <div class="logo-subtitle">Дашборд продаж · группа компаний</div>
-                </div>
-            </div>
-            <nav class="header-nav" aria-label="Разделы дашборда">
-                <span>Дашборд</span>
-                <span>Факты и планы</span>
-                <span>Прогнозы</span>
-            </nav>
-            <div class="header-context">
-                <span>ГК <strong>Дебрянск Авто</strong></span>
-            </div>
+            </a>
             <!-- Панель пользователя -->
             <div id="userPanel">
                 <span>👤</span>
@@ -1457,8 +1551,21 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
                 <svg class="ui-icon" aria-hidden="true"><use href="#icon-arrow-up"></use></svg>
             </button>
         </div>
-        <div class="header-strip"><span class="header-strip-dot" aria-hidden="true"></span><span>Система аналитики продаж</span><span>Актуальные факты, планы и прогнозы</span></div>
     </div>
+    <script>
+        (() => {
+            const header = document.querySelector('.header');
+            const brand = document.querySelector('.header-brand');
+            if (!header || !brand) return;
+            const updateHeaderState = () => header.classList.toggle('is-scrolled', window.scrollY > 80);
+            brand.addEventListener('click', (event) => {
+                event.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            updateHeaderState();
+            window.addEventListener('scroll', updateHeaderState, { passive: true });
+        })();
+    </script>
     
     <!-- Модальное окно авторизации -->
     <div class="modal-overlay" id="loginModal" style="display: flex;">
