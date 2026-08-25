@@ -86,6 +86,21 @@ async function removePushSubscription(endpoint) {
   if (pool && dbConnected) await pool.query('DELETE FROM push_subscriptions WHERE endpoint = $1', [endpoint]);
 }
 
+async function sendPushToSubscriptions(payload) {
+  if (!configureWebPush()) return { notified: 0, configured: false };
+  let notified = 0;
+  for (const row of await listPushSubscriptions()) {
+    try {
+      await webpush.sendNotification(row.subscription || row, JSON.stringify(payload));
+      notified++;
+    } catch (error) {
+      if (error.statusCode === 404 || error.statusCode === 410) await removePushSubscription(row.endpoint);
+      else console.error('⚠️ Ошибка отправки push:', error.statusCode || error.message);
+    }
+  }
+  return { notified, configured: true };
+}
+
 async function checkForDataUpdates({ notify = true } = {}) {
   const data = await fetchExternalData(true);
   const previousState = await getDataUpdateState();
@@ -104,17 +119,8 @@ async function checkForDataUpdates({ notify = true } = {}) {
     url: '/',
     tag: 'daily-facts-update'
   });
-  let notified = 0;
-  for (const row of await listPushSubscriptions()) {
-    try {
-      await webpush.sendNotification(row.subscription || row, payload);
-      notified++;
-    } catch (error) {
-      if (error.statusCode === 404 || error.statusCode === 410) await removePushSubscription(row.endpoint);
-      else console.error('⚠️ Ошибка отправки push:', error.statusCode || error.message);
-    }
-  }
-  return { changed, notified, records: details.currentRecords, addedRecords: details.addedRecords, latestDate: details.latestDate };
+  const delivery = await sendPushToSubscriptions(JSON.parse(payload));
+  return { changed, notified: delivery.notified, records: details.currentRecords, addedRecords: details.addedRecords, latestDate: details.latestDate };
 }
 
 async function fetchExternalData(force = false) {
@@ -539,6 +545,26 @@ async function handleDataUpdateCheck(req, res) {
 
 app.get('/api/check-data-updates', handleDataUpdateCheck);
 app.post('/api/check-data-updates', handleDataUpdateCheck);
+
+app.post('/api/test-push', async (req, res) => {
+  const configuredSecret = process.env.CRON_SECRET;
+  const suppliedSecret = req.get('x-cron-secret') || (req.get('authorization') || '').replace(/^Bearer\s+/i, '');
+  if (!configuredSecret || suppliedSecret !== configuredSecret) {
+    return res.status(401).json({ success: false, error: 'Недействительный ключ проверки' });
+  }
+  try {
+    const delivery = await sendPushToSubscriptions({
+      title: 'Тестовое уведомление',
+      body: 'Push-уведомления работают. Данные дашборда будут проверяться автоматически.',
+      url: '/',
+      tag: `push-test-${Date.now()}`
+    });
+    res.json({ success: true, ...delivery });
+  } catch (error) {
+    console.error('❌ Ошибка тестовой отправки push:', error.message);
+    res.status(502).json({ success: false, error: 'Не удалось отправить тестовое уведомление' });
+  }
+});
 
 
 app.get('/health', async (req, res) => {
