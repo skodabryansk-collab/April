@@ -1157,9 +1157,140 @@
 /* UI refinement layout */
 .header { min-height: 154px; }
 .logo { max-width: 140px; }
+.header {
+    min-height: 0 !important;
+    margin: -10px -10px 22px !important;
+    padding: 0 !important;
+    display: block !important;
+    color: #f8fafc;
+    background: #111318;
+    border-bottom: 1px solid rgba(255,255,255,.1) !important;
+    overflow: hidden;
+}
+.header-main {
+    min-height: 66px;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+.logo-area {
+    position: relative;
+    display: flex !important;
+    align-items: center;
+    gap: 12px !important;
+    min-width: 210px;
+}
+.logo-badge {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 50%;
+    background: #191c22;
+    overflow: hidden;
+}
+.logo-badge::after {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.75) 50%, transparent 65%);
+    transform: translateX(-100%) rotate(12deg);
+    animation: logo-shine 5.5s ease-in-out infinite;
+}
+.logo {
+    position: relative;
+    z-index: 1;
+    width: 178px !important;
+    height: auto !important;
+    max-width: none !important;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    transition: transform .25s ease, opacity .25s ease;
+}
+.logo-badge .logo { width: 30px !important; }
+.logo-area:hover .logo { transform: scale(1.06); opacity: .94; }
+.logo-text {
+    color: #f8fafc !important;
+    font-size: 14px !important;
+    letter-spacing: .08em !important;
+    text-transform: uppercase;
+}
+.logo-subtitle {
+    margin-top: 2px !important;
+    color: #98a2b3 !important;
+    font-size: 10px !important;
+    letter-spacing: .02em;
+}
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    color: #c3c8d0;
+    font-size: 11px;
+    white-space: nowrap;
+}
+.header-nav span:first-child { color: #fff; }
+.header-nav span { transition: color .2s ease; }
+.header-nav span:hover { color: #fff; }
+.header-context {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    color: #8e96a3;
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+.header-context strong { color: #e5e7eb; font-weight: 600; }
+#userPanel {
+    position: static !important;
+    margin-left: 4px;
+    padding: 6px 8px 6px 12px !important;
+    display: none;
+    background: rgba(255,255,255,.08) !important;
+    border: 1px solid rgba(255,255,255,.14) !important;
+    border-radius: 24px !important;
+    box-shadow: none !important;
+    color: #f8fafc;
+}
+#userPanel #userNameDisplay { color: #f8fafc; font-size: 12px; }
+#userPanel #userRoleDisplay { color: #b9c1cc; background: transparent; font-size: 10px; }
+#userPanel #logoutBtn { color: #111318 !important; background: #f8fafc !important; border-color: #f8fafc !important; }
+.header-strip {
+    height: 29px;
+    border-top: 1px solid rgba(255,255,255,.07);
+    background: rgba(0,0,0,.16);
+    color: #7f8794;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 10px;
+}
+.header-strip-dot { width: 4px; height: 4px; border-radius: 50%; background: #87b63c; box-shadow: 0 0 9px #87b63c; }
+@keyframes logo-shine {
+    0%, 55% { transform: translateX(-100%) rotate(12deg); }
+    75%, 100% { transform: translateX(100%) rotate(12deg); }
+}
 .admin-field { display: flex; flex-direction: column; gap: 5px; color: var(--color-text-strong); font-size: 12px; font-weight: 600; }
 .admin-field input, .admin-field select { width: 100%; }
-@media (max-width: 768px) { .header { min-height: 0; padding: 6px 0 12px; margin-bottom: 12px; } .logo-area { gap: 6px; } .logo { width: 96px; height: 96px; } .logo-text { font-size: 18px; } .logo-subtitle { font-size: 10px; } #userPanel { margin-top: 8px; padding: 6px 12px; gap: 8px; } .card { padding: 14px; } .metric-section { margin-bottom: 14px; padding-bottom: 10px; } .metric-details { gap: 6px; margin-top: 6px; } .detail-item { padding: 5px 8px; font-size: 11px; } .admin-field { font-size: 13px; } }
+@media (max-width: 768px) {
+    .header-main { min-height: 62px; padding: 8px 14px; flex-wrap: wrap; gap: 10px 14px; }
+    .logo-area { min-width: 0; flex: 1 1 auto; }
+    .logo-area > .logo { width: 150px !important; }
+    .header-nav { order: 3; width: 100%; justify-content: space-between; gap: 8px; overflow-x: auto; padding: 2px 0 5px; }
+    .header-context { display: none; }
+    #userPanel { margin-left: auto; }
+    .header-strip { font-size: 9px; }
+    .card { padding: 14px; }
+}
 @media (max-width: 480px) { .metric-title { font-size: 13px; } .fact-percent { font-size: 13px; } .metric-details { grid-template-columns: repeat(2, minmax(0, 1fr)); } .detail-item { min-width: 0; gap: 4px; } .detail-label, .detail-value { overflow-wrap: anywhere; } }
 
 /* ===== DATA UPDATE PUSH ===== */
@@ -1294,27 +1425,39 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
     </svg>
     <!-- ШАПКА С ЛОГОТИПОМ -->
     <div class="header">
-        <div class="logo-area">
-            <img src="/images/logo.svg" alt="Логотип компании" class="logo" onerror="this.onerror=null; this.style.display='none'; this.parentElement.insertAdjacentHTML('afterbegin', '<div style=\"width:55px;height:55px;background:linear-gradient(135deg,#2196f3,#1976d2);border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(33,150,243,0.3);\"><span style=\"color:white;font-size:28px;font-weight:bold;\"></span></div>
-            <div>
-                <div class="logo-text"></div>
-                <div class="logo-subtitle"></div>
+        <div class="header-main">
+            <div class="logo-area">
+                <span class="logo-badge">
+                    <img src="/images/logo.svg" alt="Логотип компании" class="logo" onerror="this.onerror=null; this.style.display='none';">
+                </span>
+                <div>
+                    <div class="logo-text">ДЕБРЯНСК АВТО</div>
+                    <div class="logo-subtitle">Дашборд продаж · группа компаний</div>
+                </div>
             </div>
+            <nav class="header-nav" aria-label="Разделы дашборда">
+                <span>Дашборд</span>
+                <span>Факты и планы</span>
+                <span>Прогнозы</span>
+            </nav>
+            <div class="header-context">
+                <span>ГК <strong>Дебрянск Авто</strong></span>
+            </div>
+            <!-- Панель пользователя -->
+            <div id="userPanel">
+                <span>👤</span>
+                <div>
+                    <span id="userNameDisplay"></span>
+                    <span id="userRoleDisplay"></span>
+                </div>
+                <button type="button" id="enablePushBtn" class="push-subscribe-btn" hidden>Включить уведомления</button>
+                <button id="logoutBtn">Выйти</button>
+            </div>
+            <button type="button" id="backToTop" class="back-to-top" aria-label="Вернуться в начало" title="В начало">
+                <svg class="ui-icon" aria-hidden="true"><use href="#icon-arrow-up"></use></svg>
+            </button>
         </div>
-        <button type="button" id="backToTop" class="back-to-top" aria-label="Вернуться в начало" title="В начало">
-            <svg class="ui-icon" aria-hidden="true"><use href="#icon-arrow-up"></use></svg>
-        </button>
-    </div>
-
-    <!-- Панель пользователя -->
-    <div id="userPanel">
-        <span>👤</span>
-        <div>
-            <span id="userNameDisplay"></span>
-            <span id="userRoleDisplay"></span>
-        </div>
-        <button type="button" id="enablePushBtn" class="push-subscribe-btn" hidden>Включить уведомления</button>
-        <button id="logoutBtn">Выйти</button>
+        <div class="header-strip"><span class="header-strip-dot" aria-hidden="true"></span><span>Система аналитики продаж</span><span>Актуальные факты, планы и прогнозы</span></div>
     </div>
     
     <!-- Модальное окно авторизации -->
