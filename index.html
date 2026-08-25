@@ -1545,13 +1545,30 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
             const header = document.querySelector('.header');
             const brand = document.querySelector('.header-brand');
             if (!header || !brand) return;
-            const updateHeaderState = () => header.classList.toggle('is-scrolled', window.scrollY > 80);
+            let frameId = 0;
+            const getScrollTop = () => Math.max(
+                window.pageYOffset || 0,
+                window.scrollY || 0,
+                document.documentElement.scrollTop || 0,
+                document.body.scrollTop || 0
+            );
+            const updateHeaderState = () => {
+                if (frameId) return;
+                frameId = window.requestAnimationFrame(() => {
+                    header.classList.toggle('is-scrolled', getScrollTop() > 80);
+                    frameId = 0;
+                });
+            };
             brand.addEventListener('click', (event) => {
                 event.preventDefault();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
             updateHeaderState();
             window.addEventListener('scroll', updateHeaderState, { passive: true });
+            document.addEventListener('scroll', updateHeaderState, { passive: true, capture: true });
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('scroll', updateHeaderState, { passive: true });
+            }
         })();
     </script>
     
