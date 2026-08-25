@@ -98,7 +98,7 @@ export class DashboardCore {
 
     cacheElements() {
         const ids = [
-            'notification', 'brandFilter', 'inputs', 'calcBtn', 
+            'notification', 'brandFilter', 'inputs', 'calcBtn', 'dataEntryToggle', 'dataEntryContent',
             'dashboard', 'forecastContainer',
             'summaryContainer',
             'radarContainer', 'radarGrid', 'gkRadarContainer',
@@ -768,6 +768,15 @@ export class DashboardCore {
         
         const jsonSection = document.querySelector('.json-section');
         if (jsonSection) jsonSection.style.display = 'block';
+        this.setDataEntryExpanded(false);
+    }
+
+    setDataEntryExpanded(expanded) {
+        const panel = document.getElementById('dataEntryPanel');
+        const toggle = this.elements.dataEntryToggle;
+        if (!panel || !toggle) return;
+        panel.classList.toggle('is-expanded', expanded);
+        toggle.setAttribute('aria-expanded', String(expanded));
     }
     
     setupEventListeners() {
@@ -775,6 +784,13 @@ export class DashboardCore {
         
         if (this.elements.calcBtn) {
             this.elements.calcBtn.addEventListener('click', () => this.calculate());
+        }
+
+        if (this.elements.dataEntryToggle) {
+            this.elements.dataEntryToggle.addEventListener('click', () => {
+                const expanded = this.elements.dataEntryToggle.getAttribute('aria-expanded') === 'true';
+                this.setDataEntryExpanded(!expanded);
+            });
         }
         
         if (this.elements.brandFilter) {
