@@ -1522,6 +1522,14 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
       .card .metric-details { gap: 5px !important; margin-top: 5px !important; }
       .card .detail-item { padding: 4px 7px !important; font-size: 10px !important; }
   }
+
+  /* Keep floating controls below the sticky header. */
+  .back-to-top { top: 76px !important; }
+  .notification { top: 78px !important; }
+  @media (max-width: 768px) {
+      .back-to-top { top: max(68px, calc(env(safe-area-inset-top) + 68px)) !important; }
+      .notification { top: max(68px, calc(env(safe-area-inset-top) + 68px)) !important; }
+  }
 </style>
 </head>
 <body>
