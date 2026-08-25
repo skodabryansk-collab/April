@@ -3,19 +3,38 @@
     if (!button) return;
 
     const getPptxConstructor = () => window.PptxGenJS || window.pptxgen;
+    let exportLibrariesPromise = null;
 
-    const waitForExportLibraries = () => new Promise((resolve, reject) => {
-        const startedAt = Date.now();
-        const check = () => {
-            const PptxConstructor = getPptxConstructor();
-            if (window.html2canvas && PptxConstructor) return resolve(PptxConstructor);
-            if (Date.now() - startedAt >= 10000) {
-                return reject(new Error('Не удалось загрузить библиотеки экспорта. Проверьте подключение к интернету и повторите попытку.'));
-            }
-            window.setTimeout(check, 100);
-        };
-        check();
+    const loadScript = (src, ready) => new Promise((resolve, reject) => {
+        if (ready()) return resolve();
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.onload = () => ready()
+            ? resolve()
+            : reject(new Error(`Библиотека экспорта не зарегистрировалась: ${src}`));
+        script.onerror = () => reject(new Error(`Не удалось загрузить библиотеку экспорта: ${src}`));
+        document.head.appendChild(script);
     });
+
+    const waitForExportLibraries = () => {
+        if (window.html2canvas && getPptxConstructor()) {
+            return Promise.resolve(getPptxConstructor());
+        }
+        if (!exportLibrariesPromise) {
+            exportLibrariesPromise = Promise.all([
+                loadScript(
+                    'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js',
+                    () => Boolean(window.html2canvas)
+                ),
+                loadScript(
+                    'https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js',
+                    () => Boolean(getPptxConstructor())
+                )
+            ]).then(() => getPptxConstructor());
+        }
+        return exportLibrariesPromise;
+    };
 
     const getMonthLabel = () => {
         const value = document.getElementById('monthSelector')?.value || '';
