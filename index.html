@@ -24,6 +24,8 @@
     <script src="utils.js" defer></script>
     <script src="auth.js" defer></script>
     <script src="data-service.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js" defer></script>
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js" defer></script>
@@ -1091,6 +1093,8 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
 #loadDataForRangeBtn:hover, #loginBtn:hover, #addUserBtn:hover { background: #1976d2 !important; border-color: #1976d2 !important; }
 #refreshDataBtn, #calcBtn, #refreshChartBtn, #logoutBtn { color: var(--color-text-strong) !important; background: var(--color-surface) !important; border-color: var(--color-border) !important; }
 #refreshDataBtn:hover, #calcBtn:hover, #refreshChartBtn:hover, #logoutBtn:hover { color: var(--color-focus) !important; background: var(--color-surface-hover) !important; border-color: var(--color-focus) !important; }
+.export-slides-btn { color: #fff !important; background: #344054 !important; border-color: #344054 !important; }
+.export-slides-btn:hover { color: #fff !important; background: #1d2939 !important; border-color: #1d2939 !important; }
 #logoutBtn { min-height: 32px; padding: 6px 11px; font-size: 12px; }
 #notificationClose { min-width: 28px; min-height: 28px; width: 28px; padding: 0; border-color: transparent !important; box-shadow: none !important; }
 #usersTableBody button { min-width: 34px; min-height: 34px; padding: 6px 9px !important; color: var(--color-danger) !important; background: var(--color-error-surface) !important; border: 1px solid var(--color-error-border) !important; }
@@ -1282,6 +1286,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
                 </div>
             <button type="button" id="loadDataForRangeBtn">Применить период</button>
             <button type="button" id="refreshDataBtn" class="secondary-action">Обновить данные</button>
+            <button type="button" id="exportSlidesBtn" class="export-slides-btn viewer-hidden">Скачать PPTX</button>
         </div>
         <div class="range-info" id="rangeInfo">
             <span id="rangeDaysInfo"><svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg> 0 дней</span>
@@ -1408,6 +1413,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
     <script type="module" src="js/managers/auth-manager.js"></script>
     <script type="module" src="js/managers/data-manager.js"></script>
     <script type="module" src="js/managers/ui-manager.js"></script>
+    <script src="js/admin-slides-export.js" defer></script>
     <script type="module" src="js/core/dashboard-calculations.js"></script>
     <script type="module" src="js/core/dashboard-core.js"></script>
     
