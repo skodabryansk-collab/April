@@ -2,6 +2,21 @@
     const button = document.getElementById('exportSlidesBtn');
     if (!button) return;
 
+    const getPptxConstructor = () => window.PptxGenJS || window.pptxgen;
+
+    const waitForExportLibraries = () => new Promise((resolve, reject) => {
+        const startedAt = Date.now();
+        const check = () => {
+            const PptxConstructor = getPptxConstructor();
+            if (window.html2canvas && PptxConstructor) return resolve(PptxConstructor);
+            if (Date.now() - startedAt >= 10000) {
+                return reject(new Error('Не удалось загрузить библиотеки экспорта. Проверьте подключение к интернету и повторите попытку.'));
+            }
+            window.setTimeout(check, 100);
+        };
+        check();
+    });
+
     const getMonthLabel = () => {
         const value = document.getElementById('monthSelector')?.value || '';
         const [year, month] = value.split('-').map(Number);
@@ -32,12 +47,12 @@
     };
 
     const exportPresentation = async () => {
-        if (!window.html2canvas || !window.pptxgen) throw new Error('Библиотеки экспорта ещё загружаются');
+        const PptxConstructor = await waitForExportLibraries();
         const gk = document.querySelector('#totalGKContainer .total-gk-card');
         const brands = [...document.querySelectorAll('#dashboard > .card')];
         if (!gk || !brands.length) throw new Error('Сначала рассчитайте данные дашборда');
 
-        const pptx = new window.pptxgen();
+        const pptx = new PptxConstructor();
         pptx.layout = 'LAYOUT_WIDE';
         pptx.author = 'Дебрянск Авто';
         pptx.subject = 'Ежедневный отчёт по продажам';
