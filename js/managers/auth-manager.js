@@ -87,8 +87,7 @@ export class AuthManager {
         if (userPanel && this.currentUser) {
             userNameDisplay.textContent = this.currentUser.name;
             userRoleDisplay.textContent = this.currentUser.role === 'admin' ? 'Администратор' : 'Наблюдатель';
-            userRoleDisplay.style.background = this.currentUser.role === 'admin' ? '#ffebee' : '#e8f5e9';
-            userRoleDisplay.style.color = this.currentUser.role === 'admin' ? '#c62828' : '#2e7d32';
+            userRoleDisplay.dataset.role = this.currentUser.role;
             userPanel.style.display = 'flex';
         }
     }
