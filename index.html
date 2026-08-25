@@ -1755,6 +1755,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
   body {
       max-width: 100%;
       overflow-x: hidden;
+      overscroll-behavior-x: none;
   }
   .header-logo-mini {
       width: 32px;
@@ -1766,12 +1767,22 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
       body {
           width: 100%;
           max-width: 100%;
+          position: relative;
+          padding-top: calc(58px + max(8px, env(safe-area-inset-top))) !important;
+          overflow-x: clip;
       }
       .header {
-          width: calc(100% + 16px) !important;
-          max-width: none !important;
-          margin-left: -8px !important;
-          margin-right: -8px !important;
+          position: fixed !important;
+          top: env(safe-area-inset-top) !important;
+          left: 0 !important;
+          right: auto !important;
+          width: 100vw !important;
+          max-width: 100vw !important;
+          margin: 0 !important;
+          z-index: 1000;
+      }
+      body > *:not(.header) {
+          max-width: 100%;
       }
       .range-panel,
       .range-selector,
