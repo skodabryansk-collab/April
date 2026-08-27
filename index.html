@@ -553,68 +553,83 @@
             margin: 20px 0;
         }
         .pace-analysis {
-            background: #fff;
-            border: 1px solid var(--color-border-subtle);
-            border-top: 3px solid var(--color-focus);
-            border-radius: 16px;
-            padding: 22px;
-            margin: 20px 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin: 30px 0 26px;
+            padding: 22px 0 0;
+            border-top: 1px solid #d7dee6;
         }
         .pace-analysis--muted {
-            border-top-color: #90a4ae;
+            border-top-color: #b8c2cc;
         }
         .pace-analysis-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 16px;
-            margin-bottom: 18px;
+            margin-bottom: 22px;
         }
         .pace-analysis-header h2 {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin: 0 0 5px;
-            color: #2c3e50;
-            font-size: clamp(17px, 2vw, 22px);
+            gap: 7px;
+            margin: 0 0 6px;
+            color: #1e2c3a;
+            font-size: clamp(18px, 2vw, 21px);
+            font-weight: 750;
+            letter-spacing: -0.025em;
+        }
+        .pace-analysis-header h2 .ui-icon {
+            width: 17px;
+            height: 17px;
+            color: #647382;
         }
         .pace-analysis-header p {
             margin: 0;
-            color: var(--color-text-muted);
+            max-width: 62ch;
+            color: #71808e;
             font-size: 12px;
             line-height: 1.45;
         }
         .pace-scope-controls {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 16px;
-            padding-bottom: 2px;
+            gap: 22px;
+            overflow-x: auto;
+            margin-bottom: 18px;
+            padding: 0 2px;
+            border-bottom: 1px solid #e1e6eb;
+            scrollbar-width: thin;
         }
         .pace-scope-tab {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            min-height: 36px;
-            padding: 7px 12px;
-            border: 1px solid var(--color-border-subtle);
-            border-radius: 9px;
-            color: var(--color-text-muted);
-            background: var(--color-surface);
+            position: relative;
+            flex: 0 0 auto;
+            min-height: 38px;
+            padding: 0 0 10px;
+            border: 0;
+            color: #758391;
+            background: transparent;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 650;
+            white-space: nowrap;
             cursor: pointer;
+            transition: color 180ms ease;
         }
         .pace-scope-tab:hover {
-            border-color: var(--color-focus);
-            color: var(--color-focus);
+            color: #1e2c3a;
         }
         .pace-scope-tab.is-active {
-            border-color: var(--color-focus);
-            color: #fff;
-            background: var(--color-focus);
+            color: #1e2c3a;
+        }
+        .pace-scope-tab.is-active::after {
+            position: absolute;
+            right: 0;
+            bottom: -1px;
+            left: 0;
+            height: 2px;
+            background: #1e2c3a;
+            content: "";
         }
         .pace-scope-tab .ui-icon {
             width: 14px;
@@ -625,16 +640,18 @@
             justify-content: space-between;
             align-items: baseline;
             gap: 12px;
-            margin-bottom: 10px;
-            color: var(--color-text-muted);
+            margin-bottom: 9px;
+            color: #71808e;
             font-size: 12px;
         }
         .pace-scope-panel-heading strong {
-            color: #2c3e50;
-            font-size: 14px;
+            color: #1e2c3a;
+            font-size: 13px;
+            font-weight: 750;
         }
         .pace-scope-panel-heading span {
             text-align: right;
+            font-variant-numeric: tabular-nums;
         }
         .pace-scope-panel[hidden] {
             display: none;
@@ -643,91 +660,92 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            padding: 5px 10px;
-            border: 1px solid var(--color-border-subtle);
-            border-radius: 999px;
-            color: var(--color-text-muted);
-            background: var(--color-surface);
+            padding: 4px 0;
+            color: #71808e;
             font-size: 12px;
+            font-weight: 650;
             white-space: nowrap;
         }
-        .pace-grid {
+        .pace-table {
+            border-top: 1px solid #d7dee6;
+        }
+        .pace-table-row {
             display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 10px;
-        }
-        .pace-metric {
-            min-width: 0;
-            padding: 14px;
-            border: 1px solid var(--color-border-subtle);
-            border-radius: 12px;
-            background: #fbfcfe;
-            border-top: 3px solid var(--color-focus);
-        }
-        .pace-metric--positive { border-top-color: var(--color-success); }
-        .pace-metric--warning { border-top-color: #f59e0b; }
-        .pace-metric--negative { border-top-color: var(--color-danger); }
-        .pace-metric--neutral { border-top-color: #90a4ae; }
-        .pace-metric-heading {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 8px;
-            min-height: 31px;
-        }
-        .pace-metric-label {
-            display: inline-flex;
+            grid-template-columns: minmax(150px, 1.35fr) minmax(92px, .8fr) minmax(112px, .95fr) minmax(96px, .8fr) minmax(145px, 1.1fr) minmax(128px, 1fr);
             align-items: center;
-            gap: 5px;
-            color: var(--color-text-muted);
-            font-size: 12px;
+            column-gap: 18px;
+            min-height: 58px;
+            border-bottom: 1px solid #e6ebef;
+        }
+        .pace-table-row:not(.pace-table-header) {
+            transition: background-color 180ms ease;
+        }
+        .pace-table-row:not(.pace-table-header):hover {
+            background: #f7f9fb;
+        }
+        .pace-table-header {
+            min-height: 34px;
+            color: #84909c;
+            font-size: 10px;
             font-weight: 700;
+            letter-spacing: .035em;
+            text-transform: uppercase;
         }
-        .pace-status {
-            flex: 0 0 auto;
-            padding: 3px 6px;
-            border-radius: 999px;
-            font-size: 9px;
-            font-weight: 700;
-            line-height: 1.1;
-            text-align: center;
-        }
-        .pace-status--positive { color: #236b35; background: #e8f5e9; }
-        .pace-status--warning { color: #8a5a00; background: #fff4d6; }
-        .pace-status--negative { color: #a12a2a; background: #fdebec; }
-        .pace-status--neutral { color: #546e7a; background: #eef2f4; }
-        .pace-current {
-            margin: 10px 0 12px;
-            color: #2c3e50;
-            font-size: 24px;
-            font-weight: 750;
-            line-height: 1;
-            font-variant-numeric: tabular-nums;
-            white-space: nowrap;
-        }
-        .pace-current span {
-            color: var(--color-text-muted);
-            font-size: 11px;
-            font-weight: 600;
-        }
-        .pace-details {
-            display: grid;
-            gap: 6px;
-            font-size: 11px;
-            font-variant-numeric: tabular-nums;
-        }
-        .pace-details > div {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 8px;
-        }
-        .pace-details span { color: var(--color-text-muted); }
-        .pace-details strong {
-            color: #2c3e50;
-            font-size: 11px;
+        .pace-table-header > div:not(:first-child) {
             text-align: right;
         }
+        .pace-metric-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+        .pace-status-marker {
+            width: 7px;
+            height: 7px;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            background: #a5b0ba;
+        }
+        .pace-table-row--positive .pace-status-marker { background: #39815a; }
+        .pace-table-row--warning .pace-status-marker { background: #c38a27; }
+        .pace-table-row--negative .pace-status-marker { background: #b84b52; }
+        .pace-table-row--neutral .pace-status-marker { background: #93a0aa; }
+        .pace-metric-label {
+            color: #314251;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .pace-table-cell {
+            min-width: 0;
+            color: #71808e;
+            font-size: 12px;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+        .pace-table-cell strong {
+            color: #1e2c3a;
+            font-size: 14px;
+            font-weight: 750;
+        }
+        .pace-table-cell small {
+            display: inline;
+            color: #84909c;
+            font-size: 10px;
+        }
+        .pace-table-cell--completion strong {
+            color: #536372;
+        }
+        .pace-table-status {
+            color: #677684;
+            font-size: 11px;
+            font-weight: 650;
+            text-align: right;
+        }
+        .pace-table-row--positive .pace-table-status { color: #39815a; }
+        .pace-table-row--warning .pace-table-status { color: #a36f1f; }
+        .pace-table-row--negative .pace-table-status { color: #a64049; }
+        .pace-table-row--neutral .pace-table-status { color: #7a8791; }
         .pace-analysis-notice {
             display: flex;
             align-items: center;
@@ -741,8 +759,8 @@
             line-height: 1.4;
         }
         .pace-analysis-footnote {
-            margin: 16px 0 0;
-            color: var(--color-text-muted);
+            margin: 14px 0 0;
+            color: #84909c;
             font-size: 11px;
             line-height: 1.4;
         }
@@ -1138,7 +1156,6 @@
             
             .forecast-card { padding: 12px; }
             .forecast-card > div { grid-template-columns: 1fr; gap: 10px; }
-            .pace-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .pace-scope-panel-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
             .pace-scope-panel-heading span { text-align: left; }
             
@@ -1168,7 +1185,47 @@
             .pace-scope-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .pace-scope-tab { min-width: 0; padding-inline: 8px; }
             .pace-scope-tab span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-            .pace-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 900px) {
+            .pace-table { overflow-x: auto; }
+            .pace-table-row { min-width: 790px; }
+        }
+
+        @media (max-width: 600px) {
+            .pace-scope-controls { gap: 18px; }
+            .pace-table { overflow: visible; }
+            .pace-table-header { display: none; }
+            .pace-table-row:not(.pace-table-header) {
+                grid-template-columns: minmax(0, 1fr) auto;
+                row-gap: 7px;
+                min-width: 0;
+                min-height: 0;
+                padding: 14px 0;
+            }
+            .pace-table-row:not(.pace-table-header) .pace-metric-name { grid-column: 1; }
+            .pace-table-row:not(.pace-table-header) .pace-table-status {
+                grid-column: 2;
+                grid-row: 1;
+            }
+            .pace-table-row:not(.pace-table-header) .pace-table-cell {
+                display: flex;
+                grid-column: 1 / -1;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 14px;
+                text-align: right;
+            }
+            .pace-table-row:not(.pace-table-header) .pace-table-cell::before {
+                color: #84909c;
+                content: attr(data-label);
+                font-size: 10px;
+                font-weight: 600;
+                letter-spacing: .02em;
+                text-align: left;
+            }
+            .pace-table-cell strong { font-size: 13px; }
+            .pace-table-status { font-size: 10px; }
         }
     
             /* ========= АДАПТАЦИЯ ДЛЯ TOUCH И УЗКИХ ЭКРАНОВ ========= */

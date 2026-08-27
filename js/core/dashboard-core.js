@@ -1400,20 +1400,31 @@ export class DashboardCore {
         const availableScopeKeys = new Set(scopes.map(scope => scope.key));
         const activeScope = availableScopeKeys.has(this.paceScope) ? this.paceScope : 'all';
         this.paceScope = activeScope;
-        const renderPaceCards = paceData => paceData.map(({ key, label, icon, pace, status }) => `
-            <article class="pace-metric pace-metric--${status.key}">
-                <div class="pace-metric-heading">
-                    <span class="pace-metric-label"><svg class="ui-icon" aria-hidden="true"><use href="#icon-${icon}"></use></svg>${label}</span>
-                    <span class="pace-status pace-status--${status.key}">${status.label}</span>
+        const renderPaceTable = paceData => `
+            <div class="pace-table" role="table" aria-label="Показатели темпа">
+                <div class="pace-table-row pace-table-header" role="row">
+                    <div role="columnheader">Показатель</div>
+                    <div role="columnheader">Факт / день</div>
+                    <div role="columnheader">Нужно / день</div>
+                    <div role="columnheader">Выполнение</div>
+                    <div role="columnheader">Прогноз</div>
+                    <div role="columnheader">Статус</div>
                 </div>
-                <div class="pace-current">${this.formatPaceValue(key, pace.actualDailyPace)} <span>/ день</span></div>
-                <div class="pace-details">
-                    <div><span>Сейчас</span><strong>${pace.factPercent === null ? '—' : `${formatDecimal(pace.factPercent, 0)}%`}</strong></div>
-                    <div><span>Нужно</span><strong>${pace.remainingDays > 0 ? `${this.formatPaceValue(key, pace.requiredDailyPace)} / день` : '—'}</strong></div>
-                    <div><span>Прогноз</span><strong>${pace.projectedTotal === null || pace.projectedPercent === null ? '—' : `${this.formatPaceTotal(key, pace.projectedTotal)} (${formatDecimal(pace.projectedPercent, 0)}%)`}</strong></div>
-                </div>
-            </article>
-        `).join('');
+                ${paceData.map(({ key, label, pace, status }) => `
+                    <div class="pace-table-row pace-table-row--${status.key}" role="row">
+                        <div class="pace-metric-name" role="cell">
+                            <span class="pace-status-marker" aria-hidden="true"></span>
+                            <span class="pace-metric-label">${label}</span>
+                        </div>
+                        <div class="pace-table-cell" data-label="Факт / день" role="cell"><strong>${this.formatPaceValue(key, pace.actualDailyPace)}</strong> <small>/ день</small></div>
+                        <div class="pace-table-cell" data-label="Нужно / день" role="cell"><strong>${pace.remainingDays > 0 ? this.formatPaceValue(key, pace.requiredDailyPace) : '—'}</strong>${pace.remainingDays > 0 ? ' <small>/ день</small>' : ''}</div>
+                        <div class="pace-table-cell pace-table-cell--completion" data-label="Выполнение" role="cell"><strong>${pace.factPercent === null ? '—' : `${formatDecimal(pace.factPercent, 0)}%`}</strong></div>
+                        <div class="pace-table-cell" data-label="Прогноз" role="cell"><strong>${pace.projectedTotal === null || pace.projectedPercent === null ? '—' : this.formatPaceTotal(key, pace.projectedTotal)}</strong>${pace.projectedPercent === null ? '' : ` <small>(${formatDecimal(pace.projectedPercent, 0)}%)</small>`}</div>
+                        <div class="pace-table-status" role="cell">${status.label}</div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
         const renderScopeSummary = (scope) => {
             const aheadCount = scope.paceData.filter(item => item.status.key === 'positive').length;
             const remainingDays = scope.paceData[0]?.pace.remainingDays || 0;
@@ -1436,7 +1447,7 @@ export class DashboardCore {
                     <strong>${this.escapeHtml(scope.label)}</strong>
                     <span>${renderScopeSummary(scope)}</span>
                 </div>
-                <div class="pace-grid">${renderPaceCards(scope.paceData)}</div>
+                ${renderPaceTable(scope.paceData)}
             </div>
         `).join('');
 
