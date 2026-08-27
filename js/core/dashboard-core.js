@@ -1693,6 +1693,13 @@ export class DashboardCore {
         const fragment = renderRadarCharts(radarData);
         radarGrid.appendChild(fragment);
         
+        const gkContainer = this.elements.gkRadarContainer;
+        if (gkContainer) {
+            while (gkContainer.firstChild) {
+                gkContainer.removeChild(gkContainer.firstChild);
+            }
+        }
+
         if (brandDataList.length > 0) {
             totals = totals || this.calculateTotals(brandDataList);
             const salesDynamicsScore = this.calculator.getDynamicsScore(totals.sales.fact, totals.sales.plan, day, daysInMonth);
@@ -1721,13 +1728,7 @@ export class DashboardCore {
                 score: gkScore
             };
             
-            const gkContainer = this.elements.gkRadarContainer;
             if (gkContainer) {
-                // Очищаем контейнер
-                while (gkContainer.firstChild) {
-                    gkContainer.removeChild(gkContainer.firstChild);
-                }
-                
                 // Создаем заголовок
                 const title = document.createElement('h3');
                 title.style.cssText = 'margin:20px 0 10px 0; text-align:center; color:#2c3e50;';
