@@ -585,6 +585,60 @@
             font-size: 12px;
             line-height: 1.45;
         }
+        .pace-scope-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding-bottom: 2px;
+        }
+        .pace-scope-tab {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 36px;
+            padding: 7px 12px;
+            border: 1px solid var(--color-border-subtle);
+            border-radius: 9px;
+            color: var(--color-text-muted);
+            background: var(--color-surface);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .pace-scope-tab:hover {
+            border-color: var(--color-focus);
+            color: var(--color-focus);
+        }
+        .pace-scope-tab.is-active {
+            border-color: var(--color-focus);
+            color: #fff;
+            background: var(--color-focus);
+        }
+        .pace-scope-tab .ui-icon {
+            width: 14px;
+            height: 14px;
+        }
+        .pace-scope-panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 10px;
+            color: var(--color-text-muted);
+            font-size: 12px;
+        }
+        .pace-scope-panel-heading strong {
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        .pace-scope-panel-heading span {
+            text-align: right;
+        }
+        .pace-scope-panel[hidden] {
+            display: none;
+        }
         .pace-period-badge {
             display: inline-flex;
             align-items: center;
@@ -1084,6 +1138,9 @@
             
             .forecast-card { padding: 12px; }
             .forecast-card > div { grid-template-columns: 1fr; gap: 10px; }
+            .pace-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .pace-scope-panel-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
+            .pace-scope-panel-heading span { text-align: left; }
             
             #dailyChartContainer { padding: 22px 16px 18px; border-radius: 22px; }
             #dailyChartContainer h3 { font-size: 21px; }
@@ -1107,6 +1164,11 @@
             .summary-card { padding: 10px; }
             .summary-card div:first-child { font-size: 11px; }
             .summary-card div:last-child { font-size: 18px; }
+            .pace-analysis { padding: 16px; }
+            .pace-scope-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .pace-scope-tab { min-width: 0; padding-inline: 8px; }
+            .pace-scope-tab span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+            .pace-grid { grid-template-columns: 1fr; }
         }
     
             /* ========= АДАПТАЦИЯ ДЛЯ TOUCH И УЗКИХ ЭКРАНОВ ========= */

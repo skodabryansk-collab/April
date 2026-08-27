@@ -13,7 +13,7 @@
   "name": "dashboard-auto",
   "scripts": {
     "start": "node api/index.js",
-    "test": "node --test --test-isolation=none --test-concurrency=1 tests/data-flow.test.js && node --test --test-concurrency=1 tests/client-refresh.test.js && node --test --test-concurrency=1 tests/dashboard-calculations.test.js",
+    "test": "node --test --test-isolation=none --test-concurrency=1 tests/data-flow.test.js && node --test --test-isolation=none --test-concurrency=1 tests/client-refresh.test.js && node --test --test-concurrency=1 tests/dashboard-calculations.test.js",
     "vercel-build": "npm install"
   },
   "version": "1.0.0"

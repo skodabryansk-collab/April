@@ -54,6 +54,7 @@ export class DashboardCore {
         
         this.brandInputs = {};
         this.filteredBrand = 'all';
+        this.paceScope = 'all';
         
         // Кэширование DOM элементов
         this.elements = {};
@@ -1054,7 +1055,7 @@ export class DashboardCore {
                 this.renderForecastUnavailable();
             }
             
-            this.renderPaceAnalysis(totals, forecastTotals, showForecast, filteredBrands);
+            this.renderPaceAnalysis(totals, forecastTotals, showForecast, filteredBrands, brandDataList);
             this.renderTotalGKCard(totals, forecastTotals, showForecast, day, daysInMonth);
             this.renderSummaryTable(brandDataList);
             this.renderRadarChartsForBrands(brandDataList, day, daysInMonth, totals);
@@ -1324,7 +1325,7 @@ export class DashboardCore {
             : formatNumber(Math.round(value));
     }
 
-    renderPaceAnalysis(totals, forecastTotals, showForecast, brandList) {
+    renderPaceAnalysis(totals, forecastTotals, showForecast, brandList, brandDataList = []) {
         const container = this.elements.paceAnalysisContainer;
         if (!container) return;
 
@@ -1352,7 +1353,6 @@ export class DashboardCore {
             return;
         }
 
-        const fullPlans = this.getFullPlanTotals(brandList);
         const metrics = [
             { key: 'sales', label: 'Продажи', icon: 'target' },
             { key: 'traffic', label: 'Трафик', icon: 'chart' },
@@ -1360,50 +1360,114 @@ export class DashboardCore {
             { key: 'revenue', label: 'Доход', icon: 'target' },
             { key: 'trading', label: 'Трейдин', icon: 'target' }
         ];
-        const paceData = metrics.map(({ key, label, icon }) => {
+        const buildPaceData = (source, plans, forecastSource) => metrics.map(({ key, label, icon }) => {
             const pace = this.calculator.calculatePaceAnalysis(
-                totals[key].fact,
-                fullPlans[key],
+                source[key]?.fact || 0,
+                plans[key],
                 endDay,
                 this.rangeParams.totalDaysInMonth,
-                forecastTotals?.[key]?.totalForecast
+                forecastSource?.[key] ?? null
             );
             return { key, label, icon, pace, status: this.getPaceStatus(pace) };
         });
-        const aheadCount = paceData.filter(item => item.status.key === 'positive').length;
-        const remainingDays = paceData[0]?.pace.remainingDays || 0;
-        const summaryText = remainingDays > 0
-            ? `Факты за ${endDay} ${this.getDaysWord(endDay)} • осталось ${remainingDays} ${this.getDaysWord(remainingDays)}`
-            : 'Месяц завершён — показан итоговый результат';
+        const groupPlans = this.getFullPlanTotals(brandList);
+        const groupForecastSource = Object.fromEntries(
+            metrics.map(({ key }) => [key, forecastTotals?.[key]?.totalForecast ?? null])
+        );
+        const scopes = [
+            {
+                key: 'all',
+                label: 'Общая группа',
+                paceData: buildPaceData(totals, groupPlans, groupForecastSource)
+            },
+            ...brandDataList
+                .filter(item => item?.brand?.key)
+                .map(item => {
+                    const plans = this.getFullPlanTotals([item.brand]);
+                    const source = Object.fromEntries(
+                        metrics.map(({ key }) => [key, { fact: item.data?.[key]?.fact || 0 }])
+                    );
+                    const forecastSource = Object.fromEntries(
+                        metrics.map(({ key }) => [key, item[`${key}Forecast`] ?? null])
+                    );
+                    return {
+                        key: item.brand.key,
+                        label: item.brand.name,
+                        paceData: buildPaceData(source, plans, forecastSource)
+                    };
+                })
+        ];
+        const availableScopeKeys = new Set(scopes.map(scope => scope.key));
+        const activeScope = availableScopeKeys.has(this.paceScope) ? this.paceScope : 'all';
+        this.paceScope = activeScope;
+        const renderPaceCards = paceData => paceData.map(({ key, label, icon, pace, status }) => `
+            <article class="pace-metric pace-metric--${status.key}">
+                <div class="pace-metric-heading">
+                    <span class="pace-metric-label"><svg class="ui-icon" aria-hidden="true"><use href="#icon-${icon}"></use></svg>${label}</span>
+                    <span class="pace-status pace-status--${status.key}">${status.label}</span>
+                </div>
+                <div class="pace-current">${this.formatPaceValue(key, pace.actualDailyPace)} <span>/ день</span></div>
+                <div class="pace-details">
+                    <div><span>Сейчас</span><strong>${pace.factPercent === null ? '—' : `${formatDecimal(pace.factPercent, 0)}%`}</strong></div>
+                    <div><span>Нужно</span><strong>${pace.remainingDays > 0 ? `${this.formatPaceValue(key, pace.requiredDailyPace)} / день` : '—'}</strong></div>
+                    <div><span>Прогноз</span><strong>${pace.projectedTotal === null || pace.projectedPercent === null ? '—' : `${this.formatPaceTotal(key, pace.projectedTotal)} (${formatDecimal(pace.projectedPercent, 0)}%)`}</strong></div>
+                </div>
+            </article>
+        `).join('');
+        const renderScopeSummary = (scope) => {
+            const aheadCount = scope.paceData.filter(item => item.status.key === 'positive').length;
+            const remainingDays = scope.paceData[0]?.pace.remainingDays || 0;
+            return remainingDays > 0
+                ? `${aheadCount} из ${metrics.length} показателей без отставания • осталось ${remainingDays} ${this.getDaysWord(remainingDays)}`
+                : 'Месяц завершён — показан итоговый результат';
+        };
+        const scopeTabs = scopes.map(scope => `
+            <button type="button" class="pace-scope-tab${scope.key === activeScope ? ' is-active' : ''}" role="tab"
+                    id="pace-scope-${scope.key}" data-pace-scope="${scope.key}"
+                    aria-selected="${scope.key === activeScope}" aria-controls="pace-panel-${scope.key}">
+                ${scope.key === 'all' ? '<svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg>' : ''}
+                <span>${this.escapeHtml(scope.label)}</span>
+            </button>
+        `).join('');
+        const scopePanels = scopes.map(scope => `
+            <div class="pace-scope-panel" id="pace-panel-${scope.key}" data-pace-panel="${scope.key}" role="tabpanel"
+                 aria-labelledby="pace-scope-${scope.key}"${scope.key === activeScope ? '' : ' hidden'}>
+                <div class="pace-scope-panel-heading">
+                    <strong>${this.escapeHtml(scope.label)}</strong>
+                    <span>${renderScopeSummary(scope)}</span>
+                </div>
+                <div class="pace-grid">${renderPaceCards(scope.paceData)}</div>
+            </div>
+        `).join('');
 
         container.innerHTML = `
             <section class="pace-analysis" aria-labelledby="paceAnalysisTitle">
                 <div class="pace-analysis-header">
                     <div>
                         <h2 id="paceAnalysisTitle"><svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg> Темп выполнения плана</h2>
-                        <p>${summaryText}. ${aheadCount} из ${metrics.length} показателей ${remainingDays > 0 ? 'идут без отставания' : 'выполнены на уровне плана или выше'}.</p>
+                        <p>Сравнение фактического и необходимого темпа для группы и каждого бренда.</p>
                     </div>
                     <span class="pace-period-badge"><svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>${monthName}</span>
                 </div>
-                <div class="pace-grid">
-                    ${paceData.map(({ key, label, icon, pace, status }) => `
-                        <article class="pace-metric pace-metric--${status.key}">
-                            <div class="pace-metric-heading">
-                                <span class="pace-metric-label"><svg class="ui-icon" aria-hidden="true"><use href="#icon-${icon}"></use></svg>${label}</span>
-                                <span class="pace-status pace-status--${status.key}">${status.label}</span>
-                            </div>
-                            <div class="pace-current">${this.formatPaceValue(key, pace.actualDailyPace)} <span>/ день</span></div>
-                            <div class="pace-details">
-                                <div><span>Сейчас</span><strong>${pace.factPercent === null ? '—' : `${formatDecimal(pace.factPercent, 0)}%`}</strong></div>
-                                <div><span>Нужно</span><strong>${pace.remainingDays > 0 ? `${this.formatPaceValue(key, pace.requiredDailyPace)} / день` : '—'}</strong></div>
-                                <div><span>Прогноз</span><strong>${pace.projectedTotal === null || pace.projectedPercent === null ? '—' : `${this.formatPaceTotal(key, pace.projectedTotal)} (${formatDecimal(pace.projectedPercent, 0)}%)`}</strong></div>
-                            </div>
-                        </article>
-                    `).join('')}
-                </div>
+                <div class="pace-scope-controls" role="tablist" aria-label="Область аналитики темпа">${scopeTabs}</div>
+                <div class="pace-scope-panels">${scopePanels}</div>
                 <p class="pace-analysis-footnote">Факт — средний темп за прошедшие дни. «Нужно» — темп для достижения месячного плана. Прогноз использует текущую модель дашборда.</p>
             </section>
         `;
+
+        container.querySelectorAll('[data-pace-scope]').forEach(tab => {
+            tab.addEventListener('click', () => {
+                this.paceScope = tab.dataset.paceScope;
+                container.querySelectorAll('[data-pace-scope]').forEach(item => {
+                    const selected = item.dataset.paceScope === this.paceScope;
+                    item.classList.toggle('is-active', selected);
+                    item.setAttribute('aria-selected', String(selected));
+                });
+                container.querySelectorAll('[data-pace-panel]').forEach(panel => {
+                    panel.hidden = panel.dataset.pacePanel !== this.paceScope;
+                });
+            });
+        });
     }
     
     renderForecastUnavailable() {
