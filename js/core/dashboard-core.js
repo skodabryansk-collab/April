@@ -1510,13 +1510,17 @@ export class DashboardCore {
             const plan = Number(metricData.plan) || 0;
             const forecast = showForecast ? item[`${metric.key}Forecast`] : null;
             const planToDate = plan > 0 && daysInMonth > 0 ? (plan / daysInMonth) * day : 0;
+            const hasForecast = showForecast
+                && forecast !== null
+                && forecast !== undefined
+                && Number.isFinite(Number(forecast));
             const pace = canCalculatePace
-                ? this.calculator.calculatePaceAnalysis(fact, plan, day, daysInMonth, forecast)
+                ? this.calculator.calculatePaceAnalysis(fact, plan, day, daysInMonth, hasForecast ? Number(forecast) : null)
                 : null;
             const paceStatus = pace ? this.getPaceStatus(pace) : null;
             const factPlanDelta = calculateDelta(fact, plan);
             const factToDateDelta = calculateDelta(fact, planToDate);
-            const forecastPlanDelta = showForecast ? calculateDelta(Number(forecast) || 0, plan) : null;
+            const forecastPlanDelta = hasForecast ? calculateDelta(Number(forecast), plan) : null;
             const dynamics = Number(item.radarMetrics?.[metric.dynamicKey]);
             const dynamicsScore = plan > 0 && Number.isFinite(dynamics) ? dynamics : null;
             const severity = Math.max(0, -(factToDateDelta || 0))
