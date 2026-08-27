@@ -103,7 +103,7 @@ export class DashboardCore {
             'dashboard', 'forecastContainer',
             'summaryContainer',
             'radarContainer', 'radarGrid', 'gkRadarContainer',
-            'totalGKContainer', 'summaryTableContainer', 'paceAnalysisContainer',
+            'totalGKContainer', 'summaryTableContainer', 'paceAnalysisContainer', 'deviationsContainer',
             'rangeStart', 'rangeEnd', 'loadDataForRangeBtn',
             'comparePeriods', 'comparisonRangeFields', 'comparisonStart', 'comparisonEnd',
             'rangeDaysInfo', 'rangePlanInfo', 'forecastStatus', 'monthSelector',
@@ -1056,6 +1056,7 @@ export class DashboardCore {
             }
             
             this.renderPaceAnalysis(totals, forecastTotals, showForecast, filteredBrands, brandDataList);
+            this.renderBrandDeviationAnalysis(brandDataList, showForecast, day, daysInMonth);
             this.renderTotalGKCard(totals, forecastTotals, showForecast, day, daysInMonth);
             this.renderSummaryTable(brandDataList);
             this.renderRadarChartsForBrands(brandDataList, day, daysInMonth, totals);
@@ -1479,6 +1480,151 @@ export class DashboardCore {
                 });
             });
         });
+    }
+
+    renderBrandDeviationAnalysis(brandDataList, showForecast, day, daysInMonth) {
+        const container = this.elements.deviationsContainer;
+        if (!container) return;
+
+        if (!brandDataList?.length) {
+            container.innerHTML = '';
+            return;
+        }
+
+        const metrics = [
+            { key: 'sales', label: 'Продажи', dynamicKey: 'sales_dynamics' },
+            { key: 'traffic', label: 'Трафик', dynamicKey: 'traffic_dynamics' },
+            { key: 'contracts', label: 'Контракты', dynamicKey: 'contracts_dynamics' },
+            { key: 'revenue', label: 'Доход', dynamicKey: 'revenue_dynamics' },
+            { key: 'trading', label: 'Трейдинг', dynamicKey: 'trading_dynamics' }
+        ];
+        const canCalculatePace = showForecast && day > 0 && daysInMonth > 0;
+        const formatSignedPercent = value => {
+            if (value === null || value === undefined || Number.isNaN(value)) return '—';
+            return `${value > 0 ? '+' : ''}${formatDecimal(value, 0)}%`;
+        };
+        const calculateDelta = (value, target) => target > 0 ? ((value - target) / target) * 100 : null;
+        const analysisRows = brandDataList.flatMap(item => metrics.map(metric => {
+            const metricData = item.data?.[metric.key] || {};
+            const fact = Number(metricData.fact) || 0;
+            const plan = Number(metricData.plan) || 0;
+            const forecast = showForecast ? item[`${metric.key}Forecast`] : null;
+            const planToDate = plan > 0 && daysInMonth > 0 ? (plan / daysInMonth) * day : 0;
+            const pace = canCalculatePace
+                ? this.calculator.calculatePaceAnalysis(fact, plan, day, daysInMonth, forecast)
+                : null;
+            const paceStatus = pace ? this.getPaceStatus(pace) : null;
+            const factPlanDelta = calculateDelta(fact, plan);
+            const factToDateDelta = calculateDelta(fact, planToDate);
+            const forecastPlanDelta = showForecast ? calculateDelta(Number(forecast) || 0, plan) : null;
+            const dynamics = Number(item.radarMetrics?.[metric.dynamicKey]);
+            const dynamicsScore = plan > 0 && Number.isFinite(dynamics) ? dynamics : null;
+            const severity = Math.max(0, -(factToDateDelta || 0))
+                + Math.max(0, -(forecastPlanDelta || 0)) * 0.7
+                + (paceStatus?.key === 'negative' ? 12 : paceStatus?.key === 'warning' ? 4 : 0)
+                + (dynamicsScore !== null && dynamicsScore < 3 ? (3 - dynamicsScore) * 8 : 0);
+            const needsAttention = (factToDateDelta !== null && factToDateDelta <= -10)
+                || (forecastPlanDelta !== null && forecastPlanDelta <= -5)
+                || paceStatus?.key === 'negative'
+                || (dynamicsScore !== null && dynamicsScore < 2.5);
+
+            return {
+                brand: item.brand,
+                metric,
+                fact,
+                plan,
+                forecast,
+                pace,
+                paceStatus,
+                dynamicsScore,
+                factPlanDelta,
+                factToDateDelta,
+                forecastPlanDelta,
+                severity,
+                needsAttention
+            };
+        }));
+        const priorityRows = analysisRows
+            .filter(row => row.needsAttention)
+            .sort((a, b) => b.severity - a.severity)
+            .slice(0, 8);
+        const priorityMarkup = priorityRows.length
+            ? priorityRows.map((row, index) => {
+                const signals = [];
+                if (row.factToDateDelta !== null && row.factToDateDelta <= -10) {
+                    signals.push(`факт ${formatSignedPercent(row.factToDateDelta)} к темпу`);
+                }
+                if (row.forecastPlanDelta !== null && row.forecastPlanDelta <= -5) {
+                    signals.push(`прогноз ${formatSignedPercent(row.forecastPlanDelta)}`);
+                }
+                if (row.paceStatus?.key === 'negative') {
+                    signals.push('темп ниже требуемого');
+                }
+                if (row.dynamicsScore !== null && row.dynamicsScore < 2.5) {
+                    signals.push(`динамика ${formatDecimal(row.dynamicsScore, 1)}/5`);
+                }
+                return `
+                    <div class="deviation-priority-row deviation-priority-row--${row.paceStatus?.key || 'negative'}">
+                        <span class="deviation-rank">${String(index + 1).padStart(2, '0')}</span>
+                        <div class="deviation-priority-name">
+                            <strong>${this.escapeHtml(row.brand.name)}</strong>
+                            <span>${row.metric.label}</span>
+                        </div>
+                        <div class="deviation-priority-signal">${signals.join(' · ')}</div>
+                        <span class="deviation-priority-value">${formatSignedPercent(row.factToDateDelta)}</span>
+                    </div>
+                `;
+            }).join('')
+            : `
+                <div class="deviation-empty">
+                    <span class="deviation-empty-mark">✓</span>
+                    <div><strong>Критичных отклонений не найдено</strong><span>Факт и прогноз находятся в рабочем диапазоне.</span></div>
+                </div>
+            `;
+        const fullMatrixRows = analysisRows.map(row => `
+            <tr>
+                <th scope="row">
+                    <strong>${this.escapeHtml(row.brand.name)}</strong>
+                    <span>${row.metric.label}</span>
+                </th>
+                <td class="${row.factPlanDelta !== null && row.factPlanDelta < 0 ? 'is-negative' : 'is-positive'}">${formatSignedPercent(row.factPlanDelta)}</td>
+                <td class="${row.forecastPlanDelta !== null && row.forecastPlanDelta < 0 ? 'is-negative' : 'is-positive'}">${formatSignedPercent(row.forecastPlanDelta)}</td>
+                <td>${row.pace ? `${this.formatPaceValue(row.metric.key, row.pace.actualDailyPace)} / ${this.formatPaceValue(row.metric.key, row.pace.requiredDailyPace)}` : '—'}</td>
+                <td>${row.dynamicsScore === null ? '—' : `${formatDecimal(row.dynamicsScore, 1)} / 5`}</td>
+                <td class="deviation-matrix-status deviation-matrix-status--${row.paceStatus?.key || 'neutral'}">${row.paceStatus?.label || 'Нет полного периода'}</td>
+            </tr>
+        `).join('');
+
+        container.innerHTML = `
+            <section class="deviation-analysis" aria-labelledby="deviationAnalysisTitle">
+                <div class="deviation-analysis-header">
+                    <div>
+                        <h2 id="deviationAnalysisTitle">Разбор отклонений по брендам</h2>
+                        <p>Сначала — зоны внимания. Полная матрица раскрывается ниже.</p>
+                    </div>
+                    <span class="deviation-count">${priorityRows.length ? `${priorityRows.length} зон внимания` : 'В рабочем диапазоне'}</span>
+                </div>
+                <div class="deviation-priority-list">${priorityMarkup}</div>
+                <details class="deviation-details">
+                    <summary><span>Полная матрица</span><span class="deviation-details-hint">факт · прогноз · темп · динамика</span></summary>
+                    <div class="deviation-matrix-wrap">
+                        <table class="deviation-matrix">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Бренд / показатель</th>
+                                    <th scope="col">Факт к плану</th>
+                                    <th scope="col">Прогноз к плану</th>
+                                    <th scope="col">Темп факт / нужно</th>
+                                    <th scope="col">Динамика</th>
+                                    <th scope="col">Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>${fullMatrixRows}</tbody>
+                        </table>
+                    </div>
+                </details>
+            </section>
+        `;
     }
     
     renderForecastUnavailable() {
