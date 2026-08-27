@@ -1,6 +1,4 @@
 // js/core/dashboard-calculations.js
-import { calculatePercentage } from '../utils/formatters.js';
-
 export class DashboardCalculations {
     constructor() {
         // Факторы брендов для корректировки прогнозов
@@ -57,6 +55,46 @@ export class DashboardCalculations {
         forecast = Math.max(forecast, fact);
         
         return Math.round(forecast);
+    }
+
+    /**
+     * Рассчитывает фактический и необходимый дневной темп до конца месяца.
+     * `forecast` передаётся из основной модели прогноза, если она доступна.
+     */
+    calculatePaceAnalysis(fact, plan, elapsedDays, totalDays, forecast = null) {
+        const safeFact = Number.isFinite(Number(fact)) ? Number(fact) : 0;
+        const safePlan = Number.isFinite(Number(plan)) ? Number(plan) : 0;
+        const safeTotalDays = Math.max(Math.round(Number(totalDays) || 0), 0);
+        const safeElapsedDays = Math.min(
+            Math.max(Math.round(Number(elapsedDays) || 0), 0),
+            safeTotalDays,
+        );
+        const remainingDays = Math.max(safeTotalDays - safeElapsedDays, 0);
+        const actualDailyPace = safeElapsedDays > 0 ? safeFact / safeElapsedDays : 0;
+        const remainingPlan = Math.max(safePlan - safeFact, 0);
+        const requiredDailyPace = remainingDays > 0 ? remainingPlan / remainingDays : 0;
+        const projectedTotal = forecast === null || forecast === undefined
+            ? null
+            : Math.max(safeFact, Number(forecast) || 0);
+        const projectedPercent = projectedTotal !== null && safePlan > 0
+            ? (projectedTotal / safePlan) * 100
+            : null;
+
+        return {
+            fact: safeFact,
+            plan: safePlan,
+            elapsedDays: safeElapsedDays,
+            remainingDays,
+            actualDailyPace,
+            requiredDailyPace,
+            remainingPlan,
+            projectedTotal,
+            projectedPercent,
+            factPercent: safePlan > 0 ? (safeFact / safePlan) * 100 : null,
+            paceRatioPercent: requiredDailyPace > 0
+                ? (actualDailyPace / requiredDailyPace) * 100
+                : null
+        };
     }
     
     /**
@@ -253,121 +291,4 @@ export class DashboardCalculations {
         return 0.5;
     }
     
-    /**
-     * Рассчитывает данные для одного бренда
-     */
-    calculateBrandData(brand, getInputValue, day, daysInMonth) {
-        const data = {
-            sales: { fact: getInputValue(brand.key, 'sf'), plan: getInputValue(brand.key, 'sp') },
-            traffic: { fact: getInputValue(brand.key, 'tf'), plan: getInputValue(brand.key, 'tp') },
-            revenue: { fact: getInputValue(brand.key, 'rf'), plan: getInputValue(brand.key, 'rp') },
-            contracts: { fact: getInputValue(brand.key, 'cf'), plan: getInputValue(brand.key, 'cp') },
-            trading: { fact: getInputValue(brand.key, 'trf'), plan: getInputValue(brand.key, 'trp') }
-        };
-        
-        const salesForecast = this.calculateForecast(data.sales.fact, data.sales.plan, 'sales', day, daysInMonth, brand.key);
-        const trafficForecast = this.calculateForecast(data.traffic.fact, data.traffic.plan, 'traffic', day, daysInMonth, brand.key);
-        const revenueForecast = this.calculateRevenueForecast(data.sales.fact, data.sales.plan, data.revenue.fact, data.revenue.plan, day, daysInMonth, brand.key);
-        const contractsForecast = this.calculateForecast(data.contracts.fact, data.contracts.plan, 'contracts', day, daysInMonth, brand.key);
-        const tradingForecast = this.calculateForecast(data.trading.fact, data.trading.plan, 'trading', day, daysInMonth, brand.key);
-        
-        const salesPercent = calculatePercentage(data.sales.fact, data.sales.plan);
-        const salesForecastPercent = calculatePercentage(salesForecast, data.sales.plan);
-        const trafficPercent = calculatePercentage(data.traffic.fact, data.traffic.plan);
-        const trafficForecastPercent = calculatePercentage(trafficForecast, data.traffic.plan);
-        const revenuePercent = calculatePercentage(data.revenue.fact, data.revenue.plan);
-        const revenueForecastPercent = calculatePercentage(revenueForecast, data.revenue.plan);
-        const contractsPercent = calculatePercentage(data.contracts.fact, data.contracts.plan);
-        const contractsForecastPercent = calculatePercentage(contractsForecast, data.contracts.plan);
-        const tradingPercent = calculatePercentage(data.trading.fact, data.trading.plan);
-        const tradingForecastPercent = calculatePercentage(tradingForecast, data.trading.plan);
-        
-        const salesConversionPercent = data.traffic.fact > 0 ? parseFloat(((data.sales.fact / data.traffic.fact) * 100).toFixed(1)) : 0;
-        const tradingCoveragePercent = data.sales.fact > 0 ? parseFloat(((data.trading.fact / data.sales.fact) * 100).toFixed(1)) : 0;
-        
-        const salesDynamicsScore = this.getDynamicsScore(data.sales.fact, data.sales.plan, day, daysInMonth);
-        const trafficDynamicsScore = this.getDynamicsScore(data.traffic.fact, data.traffic.plan, day, daysInMonth);
-        const revenueDynamicsScore = this.getDynamicsScore(data.revenue.fact, data.revenue.plan, day, daysInMonth);
-        const contractsDynamicsScore = this.getDynamicsScore(data.contracts.fact, data.contracts.plan, day, daysInMonth);
-        const tradingDynamicsScore = this.getDynamicsScore(data.trading.fact, data.trading.plan, day, daysInMonth);
-        const conversionScore = this.getConversionScore(data.sales.plan, data.traffic.plan, data.sales.fact, data.traffic.fact);
-        
-        const radarMetrics = {
-            sales_dynamics: salesDynamicsScore,
-            traffic_dynamics: trafficDynamicsScore,
-            revenue_dynamics: revenueDynamicsScore,
-            conversion: conversionScore,
-            contracts_dynamics: contractsDynamicsScore,
-            trading_dynamics: tradingDynamicsScore
-        };
-        
-        const radarScore = Object.values(radarMetrics).reduce((a, b) => a + b, 0) / Object.keys(radarMetrics).length;
-        
-        return {
-            brand, data,
-            salesForecast, trafficForecast, revenueForecast, contractsForecast, tradingForecast,
-            salesPercent, salesForecastPercent, trafficPercent, trafficForecastPercent,
-            revenuePercent, revenueForecastPercent, contractsPercent, contractsForecastPercent,
-            tradingPercent, tradingForecastPercent, salesConversionPercent, tradingCoveragePercent,
-            radarMetrics, radarScore
-        };
-    }
-    
-    /**
-     * Рассчитывает общие итоги по всем брендам
-     */
-    calculateTotals(brandForecasts) {
-        const totals = {
-            sales: { fact: 0, plan: 0 },
-            traffic: { fact: 0, plan: 0 },
-            revenue: { fact: 0, plan: 0 },
-            contracts: { fact: 0, plan: 0 },
-            trading: { fact: 0, plan: 0 }
-        };
-        
-        const forecastTotals = {
-            sales: { totalFact: 0, totalPlan: 0, totalForecast: 0 },
-            traffic: { totalFact: 0, totalPlan: 0, totalForecast: 0 },
-            revenue: { totalFact: 0, totalPlan: 0, totalForecast: 0 },
-            contracts: { totalFact: 0, totalPlan: 0, totalForecast: 0 },
-            trading: { totalFact: 0, totalPlan: 0, totalForecast: 0 }
-        };
-        
-        brandForecasts.forEach(item => {
-            const { data, salesForecast, trafficForecast, revenueForecast, contractsForecast, tradingForecast } = item;
-            
-            forecastTotals.sales.totalFact += data.sales.fact;
-            forecastTotals.sales.totalPlan += data.sales.plan;
-            forecastTotals.sales.totalForecast += salesForecast;
-            
-            forecastTotals.traffic.totalFact += data.traffic.fact;
-            forecastTotals.traffic.totalPlan += data.traffic.plan;
-            forecastTotals.traffic.totalForecast += trafficForecast;
-            
-            forecastTotals.revenue.totalFact += data.revenue.fact;
-            forecastTotals.revenue.totalPlan += data.revenue.plan;
-            forecastTotals.revenue.totalForecast += revenueForecast;
-            
-            forecastTotals.contracts.totalFact += data.contracts.fact;
-            forecastTotals.contracts.totalPlan += data.contracts.plan;
-            forecastTotals.contracts.totalForecast += contractsForecast;
-            
-            forecastTotals.trading.totalFact += data.trading.fact;
-            forecastTotals.trading.totalPlan += data.trading.plan;
-            forecastTotals.trading.totalForecast += tradingForecast;
-            
-            totals.sales.fact += data.sales.fact;
-            totals.sales.plan += data.sales.plan;
-            totals.traffic.fact += data.traffic.fact;
-            totals.traffic.plan += data.traffic.plan;
-            totals.revenue.fact += data.revenue.fact;
-            totals.revenue.plan += data.revenue.plan;
-            totals.contracts.fact += data.contracts.fact;
-            totals.contracts.plan += data.contracts.plan;
-            totals.trading.fact += data.trading.fact;
-            totals.trading.plan += data.trading.plan;
-        });
-        
-        return { totals, forecastTotals };
-    }
 }

@@ -60,18 +60,3 @@ export const renderStars = (score) => {
     for (let i = 0; i < emptyStars; i++) stars += '<span class="star empty">★</span>';
     return `<div class="stars">${stars}</div>`;
 };
-
-export const generateMonthOptions = () => {
-    const currentDate = new Date();
-    let options = '';
-    for (let i = 0; i < 36; i++) {
-        const date = new Date(currentDate);
-        date.setMonth(date.getMonth() - i);
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const monthName = getMonthName(month);
-        const value = `${year}-${month.toString().padStart(2, '0')}`;
-        options += `<option value="${value}">${monthName} ${year}</option>`;
-    }
-    return options;
-};

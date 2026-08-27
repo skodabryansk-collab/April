@@ -552,6 +552,146 @@
             gap: 15px;
             margin: 20px 0;
         }
+        .pace-analysis {
+            background: #fff;
+            border: 1px solid var(--color-border-subtle);
+            border-top: 3px solid var(--color-focus);
+            border-radius: 16px;
+            padding: 22px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .pace-analysis--muted {
+            border-top-color: #90a4ae;
+        }
+        .pace-analysis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        .pace-analysis-header h2 {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 5px;
+            color: #2c3e50;
+            font-size: clamp(17px, 2vw, 22px);
+        }
+        .pace-analysis-header p {
+            margin: 0;
+            color: var(--color-text-muted);
+            font-size: 12px;
+            line-height: 1.45;
+        }
+        .pace-period-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border: 1px solid var(--color-border-subtle);
+            border-radius: 999px;
+            color: var(--color-text-muted);
+            background: var(--color-surface);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .pace-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+        }
+        .pace-metric {
+            min-width: 0;
+            padding: 14px;
+            border: 1px solid var(--color-border-subtle);
+            border-radius: 12px;
+            background: #fbfcfe;
+            border-top: 3px solid var(--color-focus);
+        }
+        .pace-metric--positive { border-top-color: var(--color-success); }
+        .pace-metric--warning { border-top-color: #f59e0b; }
+        .pace-metric--negative { border-top-color: var(--color-danger); }
+        .pace-metric--neutral { border-top-color: #90a4ae; }
+        .pace-metric-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            min-height: 31px;
+        }
+        .pace-metric-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--color-text-muted);
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .pace-status {
+            flex: 0 0 auto;
+            padding: 3px 6px;
+            border-radius: 999px;
+            font-size: 9px;
+            font-weight: 700;
+            line-height: 1.1;
+            text-align: center;
+        }
+        .pace-status--positive { color: #236b35; background: #e8f5e9; }
+        .pace-status--warning { color: #8a5a00; background: #fff4d6; }
+        .pace-status--negative { color: #a12a2a; background: #fdebec; }
+        .pace-status--neutral { color: #546e7a; background: #eef2f4; }
+        .pace-current {
+            margin: 10px 0 12px;
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 750;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+        .pace-current span {
+            color: var(--color-text-muted);
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .pace-details {
+            display: grid;
+            gap: 6px;
+            font-size: 11px;
+            font-variant-numeric: tabular-nums;
+        }
+        .pace-details > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .pace-details span { color: var(--color-text-muted); }
+        .pace-details strong {
+            color: #2c3e50;
+            font-size: 11px;
+            text-align: right;
+        }
+        .pace-analysis-notice {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 13px;
+            border: 1px solid #d7e0e5;
+            border-radius: 9px;
+            color: #546e7a;
+            background: #f7f9fa;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .pace-analysis-footnote {
+            margin: 16px 0 0;
+            color: var(--color-text-muted);
+            font-size: 11px;
+            line-height: 1.4;
+        }
 
         .notification {
             position: fixed;
@@ -1291,6 +1431,9 @@
 .notification-kicker { margin-bottom: 3px; color: var(--color-text-muted); font-size: 10px; font-weight: 700; letter-spacing: .08em; line-height: 1.2; text-transform: uppercase; }
 .notification-message { font-size: 14px; font-weight: 700; line-height: 1.35; }
 .notification-meta { margin-top: 5px; color: var(--color-text-muted); font-size: 11px; line-height: 1.45; }
+ .notification-actions { margin-top: 10px; }
+ .notification-retry { min-height: 32px; padding: 6px 10px; color: #b45309; background: #fff8e1; border-color: rgba(217, 119, 6, .28); font-size: 11px; }
+ .notification-retry:hover { color: #92400e; background: #ffedd5; border-color: var(--color-warning); }
 .notification-close { flex: 0 0 auto; min-width: 28px; width: 28px; height: 28px; padding: 0; color: var(--color-text-muted); background: transparent; border: 0; font-size: 22px; font-weight: 400; line-height: 1; }
 .notification-close:hover { color: var(--color-text-strong); background: var(--color-surface-hover); transform: none; }
 .push-subscribe-btn { min-width: auto; min-height: 34px; padding: 6px 10px; color: var(--color-focus); background: #f0f7ff; border: 1px solid rgba(33,150,243,.25); font-size: 11px; }
@@ -1573,6 +1716,9 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
             <div class="notification-kicker">Данные дашборда</div>
             <div class="notification-message" id="notificationMessage"></div>
             <div class="notification-meta" id="notificationMeta"></div>
+            <div class="notification-actions">
+                <button type="button" class="notification-retry" id="notificationRetry" hidden>Повторить загрузку</button>
+            </div>
         </div>
         <button type="button" class="notification-close" id="notificationClose" aria-label="Закрыть уведомление">×</button>
     </div>
@@ -1668,6 +1814,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
     <!-- Основной дашборд -->
     <div id="forecastContainer"></div>
     <div id="summaryContainer" class="summary-cards"></div>
+    <div id="paceAnalysisContainer" class="full-width-section"></div>
     <div class="dashboard" id="dashboard"></div>
     
     <!-- Карточка "Итого по ГК" -->
@@ -1938,6 +2085,31 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
                 const currentMonth = dashboardCore.rangeParams?.month;
                 if (!currentMonth) return;
 
+                const dailyValuesByDate = new Map();
+                const metrics = ['sales', 'traffic', 'contracts', 'trading', 'revenue'];
+                const addBrandValues = (target, brandData) => {
+                    if (!brandData) return;
+                    metrics.forEach(metric => {
+                        target[metric] += Number(brandData[metric]) || 0;
+                    });
+                };
+                jsonData.dailyFacts.forEach(record => {
+                    if (!record?.date || record.month) return;
+                    const values = dailyValuesByDate.get(record.date) || {
+                        sales: 0, traffic: 0, contracts: 0, trading: 0, revenue: 0
+                    };
+                    if (this.currentBrand === 'all') {
+                        Object.keys(record).forEach(key => {
+                            if (key !== 'date' && key !== 'month' && typeof record[key] === 'object') {
+                                addBrandValues(values, record[key]);
+                            }
+                        });
+                    } else {
+                        addBrandValues(values, record[this.currentBrand]);
+                    }
+                    dailyValuesByDate.set(record.date, values);
+                });
+
                 const aggregatePeriod = (startDate, endDate) => {
                     if (!startDate || !endDate) return [];
                     const result = [];
@@ -1946,24 +2118,8 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
                     for (let cursor = new Date(start), day = 1; cursor <= end; cursor.setDate(cursor.getDate() + 1), day++) {
                         const dateStr = cursor.getFullYear() + '-' + String(cursor.getMonth() + 1).padStart(2, '0') + '-' + String(cursor.getDate()).padStart(2, '0');
                         const values = { date: dateStr, day, sales: 0, traffic: 0, contracts: 0, trading: 0, revenue: 0 };
-                        jsonData.dailyFacts.forEach(record => {
-                            if (record.date !== dateStr || record.month) return;
-                            const addBrand = brandData => {
-                                if (!brandData) return;
-                                values.sales += Number(brandData.sales) || 0;
-                                values.traffic += Number(brandData.traffic) || 0;
-                                values.contracts += Number(brandData.contracts) || 0;
-                                values.trading += Number(brandData.trading) || 0;
-                                values.revenue += Number(brandData.revenue) || 0;
-                            };
-                            if (this.currentBrand === 'all') {
-                                Object.keys(record).forEach(key => {
-                                    if (key !== 'date' && key !== 'month' && typeof record[key] === 'object') addBrand(record[key]);
-                                });
-                            } else {
-                                addBrand(record[this.currentBrand]);
-                            }
-                        });
+                        const indexedValues = dailyValuesByDate.get(dateStr);
+                        if (indexedValues) Object.assign(values, indexedValues);
                         result.push(values);
                     }
                     return result;

@@ -47,39 +47,6 @@ class DashboardUtils {
         return months[monthNumber - 1] || '';
     }
     
-    static getPeriodBadgeClass(monthNumber) {
-        const classes = {
-            1: 'jan', 2: 'feb', 3: 'mar', 4: 'apr', 5: 'may', 6: 'jun',
-            7: 'jul', 8: 'aug', 9: 'sep', 10: 'oct', 11: 'nov', 12: 'dec'
-        };
-        return classes[monthNumber] || '';
-    }
-    
-    static extractMonthFromDate(dateStr) {
-        if (!dateStr) return null;
-        return dateStr.substring(0, 7);
-    }
-    
-    static extractMonthNumber(dateStr) {
-        if (!dateStr) return null;
-        return parseInt(dateStr.substring(5, 7));
-    }
-    
-    static extractYear(dateStr) {
-        if (!dateStr) return null;
-        return parseInt(dateStr.substring(0, 4));
-    }
-    
-    static getFirstDayOfMonth(dateStr) {
-        if (!dateStr) return null;
-        return dateStr.substring(0, 8) + '01';
-    }
-    
-    static getMonthPlanFromJson(jsonData, monthStr) {
-        if (!jsonData || !jsonData.monthlyPlans || !monthStr) return null;
-        return jsonData.monthlyPlans.find(plan => plan.month === monthStr) || null;
-    }
-    
     static aggregateJsonDataByMonth(jsonData, targetDateStr) {
         if (!jsonData || !jsonData.dailyFacts || !targetDateStr) return null;
 
@@ -193,27 +160,6 @@ class DashboardUtils {
         return null;
     }
     
-    static getBrandPlanForMonth(jsonData, monthStr, brandKey) {
-        if (!jsonData || !jsonData.monthlyPlans || !monthStr || !brandKey) return null;
-        const monthPlan = jsonData.monthlyPlans.find(plan => plan.month === monthStr);
-        return monthPlan?.[brandKey] || null;
-    }
-    
-    static isDateInMonth(dateStr, targetDateStr) {
-        if (!dateStr || !targetDateStr) return false;
-        return dateStr.substring(0, 7) === targetDateStr.substring(0, 7);
-    }
-    
-    static formatPeriodDisplay(dateStr) {
-        if (!dateStr) return '';
-        const date = new Date(dateStr);
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-        const monthName = this.getMonthGenitive(month);
-        return `${day} ${monthName} ${year}`;
-    }
-    
     static validateJsonStructure(jsonData) {
         if (!jsonData || typeof jsonData !== 'object') return { valid: false, error: 'JSON не является объектом' };
         if (!jsonData.dailyFacts || !Array.isArray(jsonData.dailyFacts)) return { valid: false, error: 'Отсутствует dailyFacts или это не массив' };
@@ -287,21 +233,6 @@ class DashboardUtils {
         return `<div class="stars">${stars}</div>`;
     }
     
-    static generateMonthOptions() {
-        const currentDate = new Date();
-        let options = '';
-        for (let i = 0; i < 36; i++) {
-            const date = new Date(currentDate);
-            date.setMonth(date.getMonth() - i);
-            const year = date.getFullYear();
-            const month = date.getMonth() + 1;
-            const monthName = this.getMonthName(month);
-            const value = `${year}-${month.toString().padStart(2, '0')}`;
-            const display = `${monthName} ${year}`;
-            options += `<option value="${value}">${display}</option>`;
-        }
-        return options;
-    }
 }
 
 // Добавляем глобальную переменную

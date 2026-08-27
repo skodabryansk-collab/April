@@ -102,7 +102,7 @@ export class DashboardCore {
             'dashboard', 'forecastContainer',
             'summaryContainer',
             'radarContainer', 'radarGrid', 'gkRadarContainer',
-            'totalGKContainer', 'summaryTableContainer',
+            'totalGKContainer', 'summaryTableContainer', 'paceAnalysisContainer',
             'rangeStart', 'rangeEnd', 'loadDataForRangeBtn',
             'comparePeriods', 'comparisonRangeFields', 'comparisonStart', 'comparisonEnd',
             'rangeDaysInfo', 'rangePlanInfo', 'forecastStatus', 'monthSelector',
@@ -684,9 +684,13 @@ export class DashboardCore {
     
     updateDataSourceNotice(data) {
         const jsonData = data?.jsonData || data;
-        if (jsonData) {
-            this.uiManager.showDataUpdate(jsonData, jsonData.source === 'fallback' ? 'warning' : 'success');
-        }
+        if (!jsonData || typeof this.uiManager.showDataUpdate !== 'function') return;
+        const isFallback = jsonData.source === 'fallback';
+        this.uiManager.showDataUpdate(
+            jsonData,
+            isFallback ? 'warning' : 'success',
+            isFallback ? () => this.refreshDataFromServer() : null
+        );
     }
 
     onDataLoaded(data) {
@@ -817,6 +821,17 @@ export class DashboardCore {
     }
     
     async refreshDataFromServer(silent = false) {
+        if (this.refreshInFlight) return this.refreshInFlight;
+
+        this.refreshInFlight = this.performRefreshDataFromServer(silent);
+        try {
+            return await this.refreshInFlight;
+        } finally {
+            this.refreshInFlight = null;
+        }
+    }
+
+    async performRefreshDataFromServer(silent = false) {
         console.log('🔄 Принудительное обновление данных с сервера...');
         
         if (!silent) this.uiManager.showNotification('Обновление данных...', 'info');
@@ -859,12 +874,6 @@ export class DashboardCore {
             
             this.loadDataForRange();
             
-            
-            // Пункт 5: обновить дневной график свежими данными
-            if (window.dailyChartManager && typeof window.dailyChartManager.loadData === 'function') {
-                window.dailyChartManager.loadData();
-            }
-            
             this.uiManager.showNotification(
                 `Данные обновлены! Загружено ${refreshResult.records || 0} записей`, 
                 'success'
@@ -872,7 +881,13 @@ export class DashboardCore {
             
         } catch (error) {
             console.error('❌ Ошибка обновления данных:', error);
-            if (!silent) this.uiManager.showNotification('Ошибка обновления данных: ' + error.message, 'error');
+            if (!silent) {
+                this.uiManager.showNotification(
+                    'Ошибка обновления данных: ' + error.message,
+                    'error',
+                    () => this.refreshDataFromServer()
+                );
+            }
         }
     }
     
@@ -1032,16 +1047,17 @@ export class DashboardCore {
             
             let forecastTotals = null;
             if (showForecast) {
-                forecastTotals = this.calculateForecastTotals(brandDataList, day, daysInMonth);
+                forecastTotals = this.calculateForecastTotals(brandDataList);
                 this.renderSummaryCards(totals, forecastTotals);
             } else {
                 this.renderSummaryCardsNoForecast(totals);
                 this.renderForecastUnavailable();
             }
             
+            this.renderPaceAnalysis(totals, forecastTotals, showForecast, filteredBrands);
             this.renderTotalGKCard(totals, forecastTotals, showForecast, day, daysInMonth);
             this.renderSummaryTable(brandDataList);
-            this.renderRadarChartsForBrands(brandDataList, day, daysInMonth);
+            this.renderRadarChartsForBrands(brandDataList, day, daysInMonth, totals);
             
             console.log('✅ Расчет завершен успешно');
         } catch (error) {
@@ -1229,29 +1245,22 @@ export class DashboardCore {
             trading: { fact: 0, plan: 0, percent: 0 }
         };
         
+        const metrics = ['sales', 'traffic', 'revenue', 'contracts', 'trading'];
         brandDataList.forEach(item => {
-            totals.sales.fact += item.data.sales.fact;
-            totals.sales.plan += item.data.sales.plan;
-            totals.traffic.fact += item.data.traffic.fact;
-            totals.traffic.plan += item.data.traffic.plan;
-            totals.revenue.fact += item.data.revenue.fact;
-            totals.revenue.plan += item.data.revenue.plan;
-            totals.contracts.fact += item.data.contracts.fact;
-            totals.contracts.plan += item.data.contracts.plan;
-            totals.trading.fact += item.data.trading.fact;
-            totals.trading.plan += item.data.trading.plan;
+            metrics.forEach(metric => {
+                totals[metric].fact += item.data[metric].fact;
+                totals[metric].plan += item.data[metric].plan;
+            });
         });
         
-        totals.sales.percent = calculatePercentage(totals.sales.fact, totals.sales.plan);
-        totals.traffic.percent = calculatePercentage(totals.traffic.fact, totals.traffic.plan);
-        totals.revenue.percent = calculatePercentage(totals.revenue.fact, totals.revenue.plan);
-        totals.contracts.percent = calculatePercentage(totals.contracts.fact, totals.contracts.plan);
-        totals.trading.percent = calculatePercentage(totals.trading.fact, totals.trading.plan);
+        metrics.forEach(metric => {
+            totals[metric].percent = calculatePercentage(totals[metric].fact, totals[metric].plan);
+        });
         
         return totals;
     }
     
-    calculateForecastTotals(brandDataList, day, daysInMonth) {
+    calculateForecastTotals(brandDataList) {
         const totals = {
             sales: { totalFact: 0, totalPlan: 0, totalForecast: 0 },
             traffic: { totalFact: 0, totalPlan: 0, totalForecast: 0 },
@@ -1260,74 +1269,140 @@ export class DashboardCore {
             trading: { totalFact: 0, totalPlan: 0, totalForecast: 0 }
         };
         
-        brandDataList.forEach(item => {
-            const { brand, data } = item;
-            
-            const salesForecast = this.calculator.calculateForecast(data.sales.fact, data.sales.plan, 'sales', day, daysInMonth, brand.key);
-            const trafficForecast = this.calculator.calculateForecast(data.traffic.fact, data.traffic.plan, 'traffic', day, daysInMonth, brand.key);
-            const revenueForecast = this.calculator.calculateRevenueForecast(data.sales.fact, data.sales.plan, data.revenue.fact, data.revenue.plan, day, daysInMonth, brand.key);
-            const contractsForecast = this.calculator.calculateForecast(data.contracts.fact, data.contracts.plan, 'contracts', day, daysInMonth, brand.key);
-            const tradingForecast = this.calculator.calculateForecast(data.trading.fact, data.trading.plan, 'trading', day, daysInMonth, brand.key);
-            
-            totals.sales.totalFact += data.sales.fact;
-            totals.sales.totalPlan += data.sales.plan;
-            totals.sales.totalForecast += salesForecast;
-            
-            totals.traffic.totalFact += data.traffic.fact;
-            totals.traffic.totalPlan += data.traffic.plan;
-            totals.traffic.totalForecast += trafficForecast;
-            
-            totals.revenue.totalFact += data.revenue.fact;
-            totals.revenue.totalPlan += data.revenue.plan;
-            totals.revenue.totalForecast += revenueForecast;
-            
-            totals.contracts.totalFact += data.contracts.fact;
-            totals.contracts.totalPlan += data.contracts.plan;
-            totals.contracts.totalForecast += contractsForecast;
-            
-            totals.trading.totalFact += data.trading.fact;
-            totals.trading.totalPlan += data.trading.plan;
-            totals.trading.totalForecast += tradingForecast;
+        const forecastFields = {
+            sales: 'salesForecast',
+            traffic: 'trafficForecast',
+            revenue: 'revenueForecast',
+            contracts: 'contractsForecast',
+            trading: 'tradingForecast'
+        };
+        Object.entries(forecastFields).forEach(([metric, forecastField]) => {
+            brandDataList.forEach(item => {
+                totals[metric].totalFact += item.data[metric].fact;
+                totals[metric].totalPlan += item.data[metric].plan;
+                totals[metric].totalForecast += item[forecastField];
+            });
         });
         
         return totals;
     }
-    
-    renderForecastAnalysis(forecastData) {
-        const forecastContainer = this.elements.forecastContainer;
-        if (!forecastContainer) return;
-        
-        const salesPercent = Math.round((forecastData.sales.totalForecast / forecastData.sales.totalPlan) * 100);
-        const contractsPercent = Math.round((forecastData.contracts.totalForecast / forecastData.contracts.totalPlan) * 100);
-        const revenuePercent = Math.round((forecastData.revenue.totalForecast / forecastData.revenue.totalPlan) * 100);
-        
-        forecastContainer.innerHTML = `
-            <div class="forecast-card">
-                <h3 style="margin:0 0 15px 0; color:#2196f3;"><svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз на конец месяца</h3>
-                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px;">
-                    <div>
-                        <div style="font-size:12px; color:#666;">Продажи</div>
-                        <div style="font-size:18px; font-weight:bold;">
-                            ${formatNumber(forecastData.sales.totalForecast)}/${formatNumber(forecastData.sales.totalPlan)}
-                            <span style="font-size:14px; color:${salesPercent >= 100 ? '#2e7d32' : salesPercent >= 80 ? '#ff9800' : '#d32f2f'}">(${salesPercent}%)</span>
+
+    getFullPlanTotals(brandList) {
+        const monthPlan = this.getMonthlyPlans(this.rangeParams.month);
+        const metrics = ['sales', 'traffic', 'revenue', 'contracts', 'trading'];
+        const totals = Object.fromEntries(metrics.map(metric => [metric, 0]));
+
+        (brandList || []).forEach(brand => {
+            const plan = monthPlan[brand.key];
+            if (!plan) return;
+            metrics.forEach(metric => {
+                totals[metric] += Number(plan[metric]) || 0;
+            });
+        });
+
+        return totals;
+    }
+
+    getPaceStatus(pace) {
+        if (pace.plan <= 0) return { key: 'neutral', label: 'План не задан' };
+        if (pace.fact >= pace.plan) return { key: 'positive', label: 'План выполнен' };
+        if (pace.remainingDays === 0) return { key: 'negative', label: 'Ниже плана' };
+        if (pace.actualDailyPace >= pace.requiredDailyPace * 1.05) return { key: 'positive', label: 'Опережение' };
+        if (pace.actualDailyPace >= pace.requiredDailyPace * 0.95) return { key: 'warning', label: 'В темпе' };
+        return { key: 'negative', label: 'Нужно ускориться' };
+    }
+
+    formatPaceValue(metric, value) {
+        return metric === 'revenue'
+            ? this.formatRevenueForDisplay(value)
+            : formatDecimal(value, 1);
+    }
+
+    formatPaceTotal(metric, value) {
+        return metric === 'revenue'
+            ? this.formatRevenueForDisplay(value)
+            : formatNumber(Math.round(value));
+    }
+
+    renderPaceAnalysis(totals, forecastTotals, showForecast, brandList) {
+        const container = this.elements.paceAnalysisContainer;
+        if (!container) return;
+
+        const monthName = getMonthName(parseInt(this.rangeParams.month?.substring(5) || '1'));
+        const startDay = parseInt(this.rangeParams.startDate?.substring(8) || '0', 10);
+        const endDay = parseInt(this.rangeParams.endDate?.substring(8) || '0', 10);
+        const canCalculatePace = showForecast && startDay === 1 && endDay > 0;
+
+        if (!canCalculatePace) {
+            container.innerHTML = `
+                <section class="pace-analysis pace-analysis--muted" aria-labelledby="paceAnalysisTitle">
+                    <div class="pace-analysis-header">
+                        <div>
+                            <h2 id="paceAnalysisTitle"><svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg> Темп выполнения плана</h2>
+                            <p>Показывает, какой дневной темп нужен до конца месяца.</p>
                         </div>
+                        <span class="pace-period-badge">${monthName}</span>
                     </div>
+                    <div class="pace-analysis-notice">
+                        <svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg>
+                        Для расчёта темпа выберите полный доступный диапазон данных с 1-го числа месяца.
+                    </div>
+                </section>
+            `;
+            return;
+        }
+
+        const fullPlans = this.getFullPlanTotals(brandList);
+        const metrics = [
+            { key: 'sales', label: 'Продажи', icon: 'target' },
+            { key: 'traffic', label: 'Трафик', icon: 'chart' },
+            { key: 'contracts', label: 'Контракты', icon: 'chart' },
+            { key: 'revenue', label: 'Доход', icon: 'target' },
+            { key: 'trading', label: 'Трейдин', icon: 'target' }
+        ];
+        const paceData = metrics.map(({ key, label, icon }) => {
+            const pace = this.calculator.calculatePaceAnalysis(
+                totals[key].fact,
+                fullPlans[key],
+                endDay,
+                this.rangeParams.totalDaysInMonth,
+                forecastTotals?.[key]?.totalForecast
+            );
+            return { key, label, icon, pace, status: this.getPaceStatus(pace) };
+        });
+        const aheadCount = paceData.filter(item => item.status.key === 'positive').length;
+        const remainingDays = paceData[0]?.pace.remainingDays || 0;
+        const summaryText = remainingDays > 0
+            ? `Факты за ${endDay} ${this.getDaysWord(endDay)} • осталось ${remainingDays} ${this.getDaysWord(remainingDays)}`
+            : 'Месяц завершён — показан итоговый результат';
+
+        container.innerHTML = `
+            <section class="pace-analysis" aria-labelledby="paceAnalysisTitle">
+                <div class="pace-analysis-header">
                     <div>
-                        <div style="font-size:12px; color:#666;">Контракты</div>
-                        <div style="font-size:18px; font-weight:bold;">
-                            ${formatNumber(forecastData.contracts.totalForecast)}/${formatNumber(forecastData.contracts.totalPlan)}
-                            <span style="font-size:14px; color:${contractsPercent >= 100 ? '#2e7d32' : contractsPercent >= 80 ? '#ff9800' : '#d32f2f'}">(${contractsPercent}%)</span>
-                        </div>
+                        <h2 id="paceAnalysisTitle"><svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg> Темп выполнения плана</h2>
+                        <p>${summaryText}. ${aheadCount} из ${metrics.length} показателей ${remainingDays > 0 ? 'идут без отставания' : 'выполнены на уровне плана или выше'}.</p>
                     </div>
-                    <div>
-                        <div style="font-size:12px; color:#666;">Доход</div>
-                        <div style="font-size:18px; font-weight:bold;">
-                            ${formatRevenue(forecastData.revenue.totalForecast)}/${formatRevenue(forecastData.revenue.totalPlan)}
-                            <span style="font-size:14px; color:${revenuePercent >= 100 ? '#2e7d32' : revenuePercent >= 80 ? '#ff9800' : '#d32f2f'}">(${revenuePercent}%)</span>
-                        </div>
-                    </div>
+                    <span class="pace-period-badge"><svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>${monthName}</span>
                 </div>
-            </div>
+                <div class="pace-grid">
+                    ${paceData.map(({ key, label, icon, pace, status }) => `
+                        <article class="pace-metric pace-metric--${status.key}">
+                            <div class="pace-metric-heading">
+                                <span class="pace-metric-label"><svg class="ui-icon" aria-hidden="true"><use href="#icon-${icon}"></use></svg>${label}</span>
+                                <span class="pace-status pace-status--${status.key}">${status.label}</span>
+                            </div>
+                            <div class="pace-current">${this.formatPaceValue(key, pace.actualDailyPace)} <span>/ день</span></div>
+                            <div class="pace-details">
+                                <div><span>Сейчас</span><strong>${pace.factPercent === null ? '—' : `${formatDecimal(pace.factPercent, 0)}%`}</strong></div>
+                                <div><span>Нужно</span><strong>${pace.remainingDays > 0 ? `${this.formatPaceValue(key, pace.requiredDailyPace)} / день` : '—'}</strong></div>
+                                <div><span>Прогноз</span><strong>${pace.projectedTotal === null || pace.projectedPercent === null ? '—' : `${this.formatPaceTotal(key, pace.projectedTotal)} (${formatDecimal(pace.projectedPercent, 0)}%)`}</strong></div>
+                            </div>
+                        </article>
+                    `).join('')}
+                </div>
+                <p class="pace-analysis-footnote">Факт — средний темп за прошедшие дни. «Нужно» — темп для достижения месячного плана. Прогноз использует текущую модель дашборда.</p>
+            </section>
         `;
     }
     
@@ -1525,7 +1600,7 @@ export class DashboardCore {
         container.innerHTML = html;
     }
     
-    renderRadarChartsForBrands(brandDataList, day, daysInMonth) {
+    renderRadarChartsForBrands(brandDataList, day, daysInMonth, totals) {
         const radarGrid = this.elements.radarGrid;
         if (!radarGrid) return;
         radarGrid.innerHTML = '';
@@ -1544,8 +1619,7 @@ export class DashboardCore {
         radarGrid.appendChild(fragment);
         
         if (brandDataList.length > 0) {
-            const totals = this.calculateTotals(brandDataList);
-            
+            totals = totals || this.calculateTotals(brandDataList);
             const salesDynamicsScore = this.calculator.getDynamicsScore(totals.sales.fact, totals.sales.plan, day, daysInMonth);
             const trafficDynamicsScore = this.calculator.getDynamicsScore(totals.traffic.fact, totals.traffic.plan, day, daysInMonth);
             const revenueDynamicsScore = this.calculator.getDynamicsScore(totals.revenue.fact, totals.revenue.plan, day, daysInMonth);
