@@ -12,10 +12,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const JSON_DATA_PATH = path.join(__dirname, '..', 'data', 'daily_facts.json');
+const JSON_DATA_PATH = process.env.FALLBACK_DATA_PATH || path.join(__dirname, '..', 'data', 'daily_facts.json');
 const EXTERNAL_JSON_URL = process.env.DATA_SOURCE_URL || 'https://xml.krona-auto.ru/Dashboard/daily_facts.json';
 const DATA_CACHE_TTL_MS = Number(process.env.DATA_CACHE_TTL_MS || 5 * 60 * 1000);
-let externalDataCache = { data: null, fetchedAt: 0 };
+const FALLBACK_LOCK_PATH = `${JSON_DATA_PATH}.lock`;
+const configuredFallbackLockTimeout = Number(process.env.FALLBACK_LOCK_TIMEOUT_MS);
+const FALLBACK_LOCK_TIMEOUT_MS = Number.isFinite(configuredFallbackLockTimeout) && configuredFallbackLockTimeout >= 0
+  ? configuredFallbackLockTimeout
+  : 5000;
+const FALLBACK_LOCK_RETRY_MS = 10;
+let externalDataCache = { data: null, fetchedAt: 0, requestSequence: 0 };
+let externalDataRequestSequence = 0;
+let fallbackWriteSequence = 0;
 const memoryPushSubscriptions = new Map();
 let memoryDataState = null;
 
@@ -126,11 +134,19 @@ async function checkForDataUpdates({ notify = true } = {}) {
 async function fetchExternalData(force = false) {
   const cacheIsFresh = externalDataCache.data && Date.now() - externalDataCache.fetchedAt < DATA_CACHE_TTL_MS;
   if (!force && cacheIsFresh) return externalDataCache.data;
+  const requestSequence = ++externalDataRequestSequence;
   const response = await fetch(EXTERNAL_JSON_URL, { headers: { Accept: 'application/json' } });
   if (!response.ok) throw new Error('Источник данных вернул HTTP ' + response.status);
   const data = await response.json();
   if (!data || !Array.isArray(data.dailyFacts)) throw new Error('Источник вернул JSON без массива dailyFacts');
-  externalDataCache = { data, fetchedAt: Date.now() };
+  try {
+    writeLocalFallback(data, requestSequence);
+  } catch (error) {
+    console.error('⚠️ Не удалось обновить локальный fallback:', error.message);
+  }
+  if (requestSequence >= externalDataCache.requestSequence) {
+    externalDataCache = { data, fetchedAt: Date.now(), requestSequence };
+  }
   return data;
 }
 
@@ -143,6 +159,78 @@ function readLocalFallback() {
   const data = JSON.parse(fs.readFileSync(JSON_DATA_PATH, 'utf8'));
   if (!data || !Array.isArray(data.dailyFacts)) throw new Error('Fallback-файл не содержит массив dailyFacts');
   return data;
+}
+
+function sleepSync(milliseconds) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, milliseconds);
+}
+
+function acquireFallbackLock() {
+  const deadline = Date.now() + FALLBACK_LOCK_TIMEOUT_MS;
+
+  while (true) {
+    let lockDescriptor;
+    try {
+      lockDescriptor = fs.openSync(FALLBACK_LOCK_PATH, 'wx');
+      fs.writeFileSync(lockDescriptor, `${process.pid}\n`, 'utf8');
+      return lockDescriptor;
+    } catch (error) {
+      if (lockDescriptor !== undefined) fs.closeSync(lockDescriptor);
+      if (error.code !== 'EEXIST' || Date.now() >= deadline) {
+        throw new Error(`Не удалось получить блокировку fallback: ${error.message}`);
+      }
+      sleepSync(Math.min(FALLBACK_LOCK_RETRY_MS, Math.max(1, deadline - Date.now())));
+    }
+  }
+}
+
+function releaseFallbackLock(lockDescriptor) {
+  try {
+    fs.closeSync(lockDescriptor);
+  } finally {
+    try {
+      fs.unlinkSync(FALLBACK_LOCK_PATH);
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        console.error('⚠️ Не удалось снять блокировку fallback:', error.message);
+      }
+    }
+  }
+}
+
+function writeLocalFallback(data, requestSequence) {
+  if (requestSequence < fallbackWriteSequence) return;
+
+  const lockDescriptor = acquireFallbackLock();
+
+  try {
+    if (requestSequence < fallbackWriteSequence) return;
+
+    const temporaryPath = `${JSON_DATA_PATH}.${process.pid}.${crypto.randomUUID()}.tmp`;
+    let temporaryFileExists = true;
+
+    try {
+      fs.writeFileSync(temporaryPath, JSON.stringify(data, null, 2) + '\n', {
+        encoding: 'utf8',
+        flag: 'wx',
+      });
+      fs.renameSync(temporaryPath, JSON_DATA_PATH);
+      temporaryFileExists = false;
+      fallbackWriteSequence = requestSequence;
+    } finally {
+      if (temporaryFileExists) {
+        try {
+          fs.unlinkSync(temporaryPath);
+        } catch (cleanupError) {
+          if (cleanupError.code !== 'ENOENT') {
+            console.error('⚠️ Не удалось удалить временный fallback-файл:', cleanupError.message);
+          }
+        }
+      }
+    }
+  } finally {
+    releaseFallbackLock(lockDescriptor);
+  }
 }
 
 // Подключение к PostgreSQL
