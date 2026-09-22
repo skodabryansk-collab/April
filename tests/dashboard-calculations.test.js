@@ -4,11 +4,11 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-function loadClass(filePath, className, dependencySource = '') {
+function loadClass(filePath, className, dependencySource = '', globals = {}) {
   let source = fs.readFileSync(filePath, 'utf8');
   source = source.replace(/^import[^\n]+\n/gm, dependencySource);
   source = source.replace(new RegExp(`export class ${className}`), `class ${className}`);
-  const context = { console, window: {} };
+  const context = { console, window: {}, ...globals };
   vm.runInNewContext(`${source}\nwindow.${className} = ${className};`, context, { filename: filePath });
   return context.window[className];
 }
@@ -113,4 +113,31 @@ test('forecast totals use the forecasts already calculated for each card', () =>
   assert.deepEqual(JSON.parse(JSON.stringify(totals.revenue)), { totalFact: 1400, totalPlan: 2800, totalForecast: 2600 });
   assert.deepEqual(JSON.parse(JSON.stringify(totals.contracts)), { totalFact: 7, totalPlan: 14, totalForecast: 13 });
   assert.deepEqual(JSON.parse(JSON.stringify(totals.trading)), { totalFact: 4, totalPlan: 8, totalForecast: 7 });
+});
+
+test('plan inputs accept explicit zeroes and clear brands missing from the month plan', () => {
+  const inputs = Object.fromEntries(
+    ['om-sp', 'om-tp', 'om-rp', 'om-cp', 'om-trp', 'jk-sp', 'jk-tp', 'jk-rp', 'jk-cp', 'jk-trp']
+      .map(id => [id, { value: 999 }])
+  );
+  const DashboardCore = loadClass(
+    path.join(__dirname, '..', 'js/core/dashboard-core.js'),
+    'DashboardCore',
+    '',
+    { document: { getElementById: id => inputs[id] || null } }
+  );
+  const core = Object.create(DashboardCore.prototype);
+  core.brands = [{ key: 'om' }, { key: 'jk' }];
+  core.brandInputs = {
+    om: { sp: 'om-sp', tp: 'om-tp', rp: 'om-rp', cp: 'om-cp', trp: 'om-trp' },
+    jk: { sp: 'jk-sp', tp: 'jk-tp', rp: 'jk-rp', cp: 'jk-cp', trp: 'jk-trp' },
+  };
+
+  core.updateInputsWithPlans({
+    om: { sales: 0, traffic: 0, revenue: 0, contracts: 0, trading: 0 },
+  });
+
+  for (const input of Object.values(inputs)) {
+    assert.equal(input.value, 0);
+  }
 });

@@ -634,11 +634,14 @@ export class DashboardCore {
     
     updateInputsWithPlans(adjustedPlans) {
         this.brands.forEach(brand => {
-            const planData = adjustedPlans[brand.key];
-            if (!planData) return;
-            
             const inputId = this.brandInputs[brand.key];
             if (!inputId) return;
+
+            const planData = adjustedPlans[brand.key] || {};
+            const planValue = metric => {
+                const value = Number(planData[metric]);
+                return Number.isFinite(value) ? value : 0;
+            };
             
             const salesPlanInput = document.getElementById(inputId.sp);
             const trafficPlanInput = document.getElementById(inputId.tp);
@@ -646,11 +649,11 @@ export class DashboardCore {
             const contractsPlanInput = document.getElementById(inputId.cp);
             const tradingPlanInput = document.getElementById(inputId.trp);
             
-            if (salesPlanInput && planData.sales) salesPlanInput.value = planData.sales;
-            if (trafficPlanInput && planData.traffic) trafficPlanInput.value = planData.traffic;
-            if (revenuePlanInput && planData.revenue) revenuePlanInput.value = planData.revenue;
-            if (contractsPlanInput && planData.contracts) contractsPlanInput.value = planData.contracts;
-            if (tradingPlanInput && planData.trading) tradingPlanInput.value = planData.trading;
+            if (salesPlanInput) salesPlanInput.value = planValue('sales');
+            if (trafficPlanInput) trafficPlanInput.value = planValue('traffic');
+            if (revenuePlanInput) revenuePlanInput.value = planValue('revenue');
+            if (contractsPlanInput) contractsPlanInput.value = planValue('contracts');
+            if (tradingPlanInput) tradingPlanInput.value = planValue('trading');
         });
     }
     
