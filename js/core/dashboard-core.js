@@ -55,6 +55,7 @@ export class DashboardCore {
         this.brandInputs = {};
         this.filteredBrand = 'all';
         this.paceScope = 'all';
+        this.forecastFullPlan = false;
         
         // Кэширование DOM элементов
         this.elements = {};
@@ -106,7 +107,7 @@ export class DashboardCore {
             'totalGKContainer', 'summaryTableContainer', 'paceAnalysisContainer', 'deviationsContainer',
             'rangeStart', 'rangeEnd', 'loadDataForRangeBtn',
             'comparePeriods', 'comparisonRangeFields', 'comparisonStart', 'comparisonEnd',
-            'rangeDaysInfo', 'rangePlanInfo', 'forecastStatus', 'monthSelector',
+            'rangeDaysInfo', 'rangePlanInfo', 'forecastStatus', 'forecastFullPlan', 'monthSelector',
             'refreshDataBtn'
         ];
         
@@ -340,7 +341,9 @@ export class DashboardCore {
         
             this.elements.rangeDaysInfo.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg> ${daysCount} ${this.getDaysWord(daysCount)} (${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)} ${monthName})`;
         
-        if (this.rangeParams.allDaysSelected) {
+        if (this.forecastFullPlan) {
+                this.elements.rangePlanInfo.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg> План: полный месячный`;
+        } else if (this.rangeParams.allDaysSelected) {
                 this.elements.rangePlanInfo.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg> План: полный`;
         } else {
                 this.elements.rangePlanInfo.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg> План: ${planPercent}% от месячного (${daysCount} из ${this.rangeParams.totalDaysInMonth} дней)`;
@@ -348,12 +351,12 @@ export class DashboardCore {
         
         const forecastStatus = this.elements.forecastStatus;
         if (forecastStatus) {
-            if (daysCount > 0) {
+            if (this.forecastFullPlan && daysCount > 0) {
                 forecastStatus.className = 'forecast-indicator active';
-                forecastStatus.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз: рассчитан по выбранному периоду`;
+                forecastStatus.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз: темп периода → полный план`;
             } else {
                 forecastStatus.className = 'forecast-indicator inactive';
-                forecastStatus.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз: выберите период`;
+                forecastStatus.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз на полный план выключен`;
             }
         }
     }
@@ -449,6 +452,15 @@ export class DashboardCore {
                 if (this.elements.comparisonRangeFields) this.elements.comparisonRangeFields.style.display = this.comparisonParams.enabled ? 'grid' : 'none';
                 this.calculate();
                 if (window.dailyChartManager?.loadData) window.dailyChartManager.loadData();
+            });
+        }
+
+        if (this.elements.forecastFullPlan) {
+            this.forecastFullPlan = this.elements.forecastFullPlan.checked;
+            this.elements.forecastFullPlan.addEventListener('change', () => {
+                this.forecastFullPlan = this.elements.forecastFullPlan.checked;
+                this.updateRangeInfo();
+                this.calculate();
             });
         }
 
@@ -567,6 +579,10 @@ export class DashboardCore {
         if (!monthPlan) return {};
         
         return monthPlan;
+    }
+
+    getDisplayPlan(periodPlan, fullPlan) {
+        return this.forecastFullPlan ? fullPlan : periodPlan;
     }
     
     loadDataForRange() {
@@ -952,12 +968,12 @@ export class DashboardCore {
             const startDay = parseInt(this.rangeParams.startDate?.substring(8) || '1', 10);
             const endDay = parseInt(this.rangeParams.endDate?.substring(8) || String(startDay), 10);
             const observationDays = Math.min(Math.max(this.rangeParams.daysCount || 0, 0), daysInMonth);
-            const showForecast = observationDays > 0 && daysInMonth > 0;
+            const showForecast = this.forecastFullPlan && observationDays > 0 && daysInMonth > 0;
             const monthPlan = this.getMonthlyPlans(this.rangeParams.month);
             const comparisonData = this.getComparisonData();
             
             filteredBrands.forEach(brand => {
-                const data = {
+                const periodData = {
                     sales: { fact: this.getBrandInputValue(brand.key, 'sf'), plan: this.getBrandInputValue(brand.key, 'sp') },
                     traffic: { fact: this.getBrandInputValue(brand.key, 'tf'), plan: this.getBrandInputValue(brand.key, 'tp') },
                     revenue: { fact: this.getBrandInputValue(brand.key, 'rf'), plan: this.getBrandInputValue(brand.key, 'rp') },
@@ -972,6 +988,15 @@ export class DashboardCore {
                     contracts: Number(sourceFullPlan.contracts) || 0,
                     trading: Number(sourceFullPlan.trading) || 0
                 };
+                const data = Object.fromEntries(
+                    Object.entries(periodData).map(([metric, metricData]) => [
+                        metric,
+                        {
+                            fact: metricData.fact,
+                            plan: this.getDisplayPlan(metricData.plan, fullPlan[metric])
+                        }
+                    ])
+                );
                 
                 let salesForecast = data.sales.fact;
                 let trafficForecast = data.traffic.fact;
@@ -1063,6 +1088,7 @@ export class DashboardCore {
             
             let forecastTotals = null;
             if (showForecast) {
+                if (this.elements.forecastContainer) this.elements.forecastContainer.innerHTML = '';
                 forecastTotals = this.calculateForecastTotals(brandDataList);
                 this.renderSummaryCards(totals, forecastTotals);
             } else {
@@ -1361,7 +1387,7 @@ export class DashboardCore {
                     </div>
                     <div class="pace-analysis-notice">
                         <svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg>
-                        Для расчёта темпа выберите период внутри одного месяца.
+                        Включите «Прогноз на полный план месяца» и выберите период внутри одного месяца.
                     </div>
                 </section>
             `;
@@ -1653,8 +1679,8 @@ export class DashboardCore {
             <div class="forecast-card" style="background: #fff3e0; border-left-color: #ff9800;">
                 <h3 style="margin:0 0 10px 0; color:#ff9800;"><svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз недоступен</h3>
                 <div style="font-size:13px; color:#666;">
-                    Для отображения прогноза необходимо выбрать полный диапазон доступных дат в месяце.<br>
-                    Текущий диапазон: ${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)} ${getMonthName(parseInt(this.rangeParams.month?.substring(5) || '1'))} (${this.rangeParams.daysCount} из ${this.rangeParams.availableDatesInMonth.length} доступных дней)
+                    Включите «Прогноз на полный план месяца» в верхней панели.<br>
+                    Текущий диапазон: ${this.rangeParams.startDate?.substring(8)}-${this.rangeParams.endDate?.substring(8)} ${getMonthName(parseInt(this.rangeParams.month?.substring(5) || '1'))} (${this.rangeParams.daysCount} ${this.getDaysWord(this.rangeParams.daysCount)})
                 </div>
             </div>
         `;
@@ -1778,7 +1804,7 @@ export class DashboardCore {
                 
                 <div style="margin-top:25px; padding-top:20px; border-top:2px solid #e9ecef; text-align:center;">
                     <div style="font-size:12px; color:#999; margin-top:5px;">
-                        <span class="forecast-source"><svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg>${showForecast ? `Прогноз рассчитан по выбранному периоду: ${this.rangeParams.daysCount} ${this.getDaysWord(this.rangeParams.daysCount)}` : 'Для отображения прогноза выберите период внутри месяца'}</span>
+                        <span class="forecast-source"><svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg>${showForecast ? `Факт за ${this.rangeParams.daysCount} ${this.getDaysWord(this.rangeParams.daysCount)} • прогноз и план на полный месяц` : 'Включите прогноз на полный план в верхней панели'}</span>
                     </div>
                 </div>
             </div>

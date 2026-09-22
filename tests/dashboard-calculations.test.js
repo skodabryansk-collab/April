@@ -159,6 +159,21 @@ test('forecast totals use the forecasts already calculated for each card', () =>
   assert.deepEqual(JSON.parse(JSON.stringify(totals.trading)), { totalFact: 4, totalPlan: 16, totalForecast: 7 });
 });
 
+test('full-plan forecast mode switches cards from the period plan to the monthly plan', () => {
+  const DashboardCore = loadClass(
+    path.join(__dirname, '..', 'js/core/dashboard-core.js'),
+    'DashboardCore',
+    ''
+  );
+  const core = Object.create(DashboardCore.prototype);
+
+  core.forecastFullPlan = false;
+  assert.equal(core.getDisplayPlan(10, 30), 10);
+
+  core.forecastFullPlan = true;
+  assert.equal(core.getDisplayPlan(10, 30), 30);
+});
+
 test('plan inputs accept explicit zeroes and clear brands missing from the month plan', () => {
   const inputs = Object.fromEntries(
     ['om-sp', 'om-tp', 'om-rp', 'om-cp', 'om-trp', 'jk-sp', 'jk-tp', 'jk-rp', 'jk-cp', 'jk-trp']
