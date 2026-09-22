@@ -13,6 +13,17 @@ function loadClass(filePath, className, dependencySource = '', globals = {}) {
   return context.window[className];
 }
 
+test('JSON brand keys use the current Tenet names', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'utils.js'), 'utf8');
+  const context = { console, window: {} };
+  vm.runInNewContext(source, context, { filename: 'utils.js' });
+
+  const mapping = context.window.DashboardUtils.generateBrandMapping(['ch', 'tp']);
+
+  assert.equal(mapping.ch, 'Тенет');
+  assert.equal(mapping.tp, 'Тенет Плюс');
+});
+
 test('forecast edge cases remain stable', () => {
   const DashboardCalculations = loadClass(
     path.join(__dirname, '..', 'js/core/dashboard-calculations.js'),

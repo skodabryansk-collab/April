@@ -2306,7 +2306,7 @@ button:disabled { opacity: .52; cursor: not-allowed; transform: none; box-shadow
             processJsonData(jsonData) {
                 this.jsonData = jsonData;
                 this.jsonBrands = jsonData.metadata?.brandsIncluded || [];
-                const mapping = {'hc':'Хавейл Сити','hp':'Хавейл Про','jt':'Джетур','ch':'Чери','om':'Омода','jk':'Джейку','asp':'АСП'};
+                const mapping = {'hc':'Хавейл Сити','hp':'Хавейл Про','jt':'Джетур','ch':'Тенет','tp':'Тенет Плюс','om':'Омода','jk':'Джейку','asp':'АСП'};
                 this.jsonBrandMapping = {};
                 this.jsonBrands.forEach(b => { this.jsonBrandMapping[b] = mapping[b] || b; });
             }

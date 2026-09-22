@@ -26,7 +26,8 @@ export class DashboardCore {
             {key: 'hc', name: 'Хавейл Сити', sales: [85, 160], traffic: [491, 900], revenue: [19509665, 40800000], contracts: [120, 180], trading: [90, 140]},
             {key: 'hp', name: 'Хавейл Про', sales: [48, 45], traffic: [236, 350], revenue: [5752000, 10834626], contracts: [55, 70], trading: [40, 50]},
             {key: 'jt', name: 'Джетур', sales: [28, 33], traffic: [194, 350], revenue: [2371000, 7559483], contracts: [35, 45], trading: [25, 30]},
-            {key: 'ch', name: 'Чери', sales: [42, 85], traffic: [325, 450], revenue: [7719000, 13959079], contracts: [60, 90], trading: [45, 65]},
+            {key: 'ch', name: 'Тенет', sales: [42, 85], traffic: [325, 450], revenue: [7719000, 13959079], contracts: [60, 90], trading: [45, 65]},
+            {key: 'tp', name: 'Тенет Плюс', sales: [0, 0], traffic: [0, 0], revenue: [0, 0], contracts: [0, 0], trading: [0, 0]},
             {key: 'om', name: 'Омода', sales: [35, 15], traffic: [100, 170], revenue: [1552000, 3132995], contracts: [18, 25], trading: [12, 15]},
             {key: 'jk', name: 'Джейку', sales: [12, 14], traffic: [92, 170], revenue: [1456000, 2568387], contracts: [15, 20], trading: [10, 12]},
             {key: 'asp', name: 'АСП', sales: [110, 250], traffic: [488, 900], revenue: [21279000, 45000000], contracts: [150, 220], trading: [120, 180]}
