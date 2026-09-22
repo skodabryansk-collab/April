@@ -348,12 +348,12 @@ export class DashboardCore {
         
         const forecastStatus = this.elements.forecastStatus;
         if (forecastStatus) {
-            if (this.rangeParams.allDaysSelected) {
+            if (daysCount > 0) {
                 forecastStatus.className = 'forecast-indicator active';
-                forecastStatus.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз: доступен (выбран полный диапазон данных)`;
+                forecastStatus.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз: рассчитан по выбранному периоду`;
             } else {
                 forecastStatus.className = 'forecast-indicator inactive';
-                forecastStatus.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз: недоступен (выбран неполный диапазон)`;
+                forecastStatus.innerHTML = `<svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg> Прогноз: выберите период`;
             }
         }
     }
@@ -948,9 +948,12 @@ export class DashboardCore {
             const brandDataList = [];
             const filteredBrands = this.filteredBrand === 'all' ? this.brands : this.brands.filter(b => b.key === this.filteredBrand);
             
-            const day = parseInt(this.rangeParams.endDate?.substring(8) || '15');
             const daysInMonth = this.rangeParams.totalDaysInMonth;
-            const showForecast = this.rangeParams.allDaysSelected;
+            const startDay = parseInt(this.rangeParams.startDate?.substring(8) || '1', 10);
+            const endDay = parseInt(this.rangeParams.endDate?.substring(8) || String(startDay), 10);
+            const observationDays = Math.min(Math.max(this.rangeParams.daysCount || 0, 0), daysInMonth);
+            const showForecast = observationDays > 0 && daysInMonth > 0;
+            const monthPlan = this.getMonthlyPlans(this.rangeParams.month);
             const comparisonData = this.getComparisonData();
             
             filteredBrands.forEach(brand => {
@@ -960,6 +963,14 @@ export class DashboardCore {
                     revenue: { fact: this.getBrandInputValue(brand.key, 'rf'), plan: this.getBrandInputValue(brand.key, 'rp') },
                     contracts: { fact: this.getBrandInputValue(brand.key, 'cf'), plan: this.getBrandInputValue(brand.key, 'cp') },
                     trading: { fact: this.getBrandInputValue(brand.key, 'trf'), plan: this.getBrandInputValue(brand.key, 'trp') }
+                };
+                const sourceFullPlan = monthPlan[brand.key] || {};
+                const fullPlan = {
+                    sales: Number(sourceFullPlan.sales) || 0,
+                    traffic: Number(sourceFullPlan.traffic) || 0,
+                    revenue: Number(sourceFullPlan.revenue) || 0,
+                    contracts: Number(sourceFullPlan.contracts) || 0,
+                    trading: Number(sourceFullPlan.trading) || 0
                 };
                 
                 let salesForecast = data.sales.fact;
@@ -975,17 +986,17 @@ export class DashboardCore {
                 
                 if (showForecast) {
                     // Production uses the best validated method per metric; Group forecast is the sum of brands.
-                    salesForecast = this.calculator.calculateForecast(data.sales.fact, data.sales.plan, 'sales', day, daysInMonth, brand.key);
-                    trafficForecast = this.calculator.calculateFeatureForecast(data.traffic.fact, 'traffic', day, daysInMonth, brand.key, this.jsonData.dailyFacts, this.rangeParams.month);
-                    revenueForecast = this.calculator.calculateRevenueForecast(data.sales.fact, data.sales.plan, data.revenue.fact, data.revenue.plan, day, daysInMonth, brand.key);
-                    contractsForecast = this.calculator.calculateForecast(data.contracts.fact, data.contracts.plan, 'contracts', day, daysInMonth, brand.key);
-                    tradingForecast = this.calculator.calculateForecast(data.trading.fact, data.trading.plan, 'trading', day, daysInMonth, brand.key);
+                    salesForecast = this.calculator.calculateForecast(data.sales.fact, fullPlan.sales, 'sales', observationDays, daysInMonth, brand.key);
+                    trafficForecast = this.calculator.calculateFeatureForecast(data.traffic.fact, 'traffic', observationDays, daysInMonth, brand.key, this.jsonData.dailyFacts, this.rangeParams.month, startDay, endDay);
+                    revenueForecast = this.calculator.calculateRevenueForecast(data.sales.fact, fullPlan.sales, data.revenue.fact, fullPlan.revenue, observationDays, daysInMonth, brand.key);
+                    contractsForecast = this.calculator.calculateForecast(data.contracts.fact, fullPlan.contracts, 'contracts', observationDays, daysInMonth, brand.key);
+                    tradingForecast = this.calculator.calculateForecast(data.trading.fact, fullPlan.trading, 'trading', observationDays, daysInMonth, brand.key);
                     
-                    salesForecastPercent = calculatePercentage(salesForecast, data.sales.plan);
-                    trafficForecastPercent = calculatePercentage(trafficForecast, data.traffic.plan);
-                    revenueForecastPercent = calculatePercentage(revenueForecast, data.revenue.plan);
-                    contractsForecastPercent = calculatePercentage(contractsForecast, data.contracts.plan);
-                    tradingForecastPercent = calculatePercentage(tradingForecast, data.trading.plan);
+                    salesForecastPercent = calculatePercentage(salesForecast, fullPlan.sales);
+                    trafficForecastPercent = calculatePercentage(trafficForecast, fullPlan.traffic);
+                    revenueForecastPercent = calculatePercentage(revenueForecast, fullPlan.revenue);
+                    contractsForecastPercent = calculatePercentage(contractsForecast, fullPlan.contracts);
+                    tradingForecastPercent = calculatePercentage(tradingForecast, fullPlan.trading);
                 }
                 
                 const salesPercent = calculatePercentage(data.sales.fact, data.sales.plan);
@@ -997,12 +1008,12 @@ export class DashboardCore {
                 const salesConversionPercent = data.traffic.fact > 0 ? parseFloat(((data.sales.fact / data.traffic.fact) * 100).toFixed(1)) : 0;
                 const tradingCoveragePercent = data.sales.fact > 0 ? parseFloat(((data.trading.fact / data.sales.fact) * 100).toFixed(1)) : 0;
                 
-                const salesDynamicsScore = this.calculator.getDynamicsScore(data.sales.fact, data.sales.plan, day, daysInMonth);
-                const trafficDynamicsScore = this.calculator.getDynamicsScore(data.traffic.fact, data.traffic.plan, day, daysInMonth);
-                const revenueDynamicsScore = this.calculator.getDynamicsScore(data.revenue.fact, data.revenue.plan, day, daysInMonth);
-                const contractsDynamicsScore = this.calculator.getDynamicsScore(data.contracts.fact, data.contracts.plan, day, daysInMonth);
-                const tradingDynamicsScore = this.calculator.getDynamicsScore(data.trading.fact, data.trading.plan, day, daysInMonth);
-                const conversionScore = this.calculator.getConversionScore(data.sales.plan, data.traffic.plan, data.sales.fact, data.traffic.fact);
+                const salesDynamicsScore = this.calculator.getDynamicsScore(data.sales.fact, fullPlan.sales, observationDays, daysInMonth);
+                const trafficDynamicsScore = this.calculator.getDynamicsScore(data.traffic.fact, fullPlan.traffic, observationDays, daysInMonth);
+                const revenueDynamicsScore = this.calculator.getDynamicsScore(data.revenue.fact, fullPlan.revenue, observationDays, daysInMonth);
+                const contractsDynamicsScore = this.calculator.getDynamicsScore(data.contracts.fact, fullPlan.contracts, observationDays, daysInMonth);
+                const tradingDynamicsScore = this.calculator.getDynamicsScore(data.trading.fact, fullPlan.trading, observationDays, daysInMonth);
+                const conversionScore = this.calculator.getConversionScore(fullPlan.sales, fullPlan.traffic, data.sales.fact, data.traffic.fact);
                 
                 const radarMetrics = {
                     sales_dynamics: salesDynamicsScore,
@@ -1018,6 +1029,7 @@ export class DashboardCore {
                 brandDataList.push({
                     brand,
                     data,
+                    forecastPlan: fullPlan,
                     salesPercent,
                     trafficPercent,
                     revenuePercent,
@@ -1043,7 +1055,7 @@ export class DashboardCore {
             
             const fragment = document.createDocumentFragment();
             brandDataList.forEach(item => {
-                fragment.appendChild(this.createBrandCard(item, day, daysInMonth, showForecast));
+                fragment.appendChild(this.createBrandCard(item, observationDays, daysInMonth, showForecast));
             });
             dashboard.appendChild(fragment);
             
@@ -1059,10 +1071,10 @@ export class DashboardCore {
             }
             
             this.renderPaceAnalysis(totals, forecastTotals, showForecast, filteredBrands, brandDataList);
-            this.renderBrandDeviationAnalysis(brandDataList, showForecast, day, daysInMonth);
-            this.renderTotalGKCard(totals, forecastTotals, showForecast, day, daysInMonth);
+            this.renderBrandDeviationAnalysis(brandDataList, showForecast, observationDays, daysInMonth);
+            this.renderTotalGKCard(totals, forecastTotals, showForecast, observationDays, daysInMonth);
             this.renderSummaryTable(brandDataList);
-            this.renderRadarChartsForBrands(brandDataList, day, daysInMonth, totals);
+            this.renderRadarChartsForBrands(brandDataList, observationDays, daysInMonth, totals);
             
             console.log('✅ Расчет завершен успешно');
         } catch (error) {
@@ -1210,7 +1222,7 @@ export class DashboardCore {
                     </div>
                 </div>
                 <div style="font-size:11px; color:#666; margin-top:5px;">
-                    ${showForecast ? `На основе темпа выполнения на ${day}/${daysInMonth} день` : `На основе данных за выбранный период`}
+                    ${showForecast ? `На основе среднего темпа за выбранные ${day} ${this.getDaysWord(day)}` : `На основе данных за выбранный период`}
                 </div>
             </div>
         `;
@@ -1284,7 +1296,7 @@ export class DashboardCore {
         Object.entries(forecastFields).forEach(([metric, forecastField]) => {
             brandDataList.forEach(item => {
                 totals[metric].totalFact += item.data[metric].fact;
-                totals[metric].totalPlan += item.data[metric].plan;
+                totals[metric].totalPlan += item.forecastPlan?.[metric] ?? item.data[metric].plan;
                 totals[metric].totalForecast += item[forecastField];
             });
         });
@@ -1334,9 +1346,8 @@ export class DashboardCore {
         if (!container) return;
 
         const monthName = getMonthName(parseInt(this.rangeParams.month?.substring(5) || '1'));
-        const startDay = parseInt(this.rangeParams.startDate?.substring(8) || '0', 10);
-        const endDay = parseInt(this.rangeParams.endDate?.substring(8) || '0', 10);
-        const canCalculatePace = showForecast && startDay === 1 && endDay > 0;
+        const observedDays = Math.min(Math.max(this.rangeParams.daysCount || 0, 0), this.rangeParams.totalDaysInMonth);
+        const canCalculatePace = showForecast && observedDays > 0;
 
         if (!canCalculatePace) {
             container.innerHTML = `
@@ -1350,7 +1361,7 @@ export class DashboardCore {
                     </div>
                     <div class="pace-analysis-notice">
                         <svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg>
-                        Для расчёта темпа выберите полный доступный диапазон данных с 1-го числа месяца.
+                        Для расчёта темпа выберите период внутри одного месяца.
                     </div>
                 </section>
             `;
@@ -1368,7 +1379,7 @@ export class DashboardCore {
             const pace = this.calculator.calculatePaceAnalysis(
                 source[key]?.fact || 0,
                 plans[key],
-                endDay,
+                observedDays,
                 this.rangeParams.totalDaysInMonth,
                 forecastSource?.[key] ?? null
             );
@@ -1767,7 +1778,7 @@ export class DashboardCore {
                 
                 <div style="margin-top:25px; padding-top:20px; border-top:2px solid #e9ecef; text-align:center;">
                     <div style="font-size:12px; color:#999; margin-top:5px;">
-                        <span class="forecast-source"><svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg>${showForecast ? 'Прогноз рассчитан на основе данных за полный диапазон' : 'Для отображения прогноза выберите полный диапазон доступных дат в месяце'}</span>
+                        <span class="forecast-source"><svg class="ui-icon" aria-hidden="true"><use href="#icon-forecast"></use></svg>${showForecast ? `Прогноз рассчитан по выбранному периоду: ${this.rangeParams.daysCount} ${this.getDaysWord(this.rangeParams.daysCount)}` : 'Для отображения прогноза выберите период внутри месяца'}</span>
                     </div>
                 </div>
             </div>

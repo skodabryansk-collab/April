@@ -157,14 +157,17 @@ export class DashboardCalculations {
      * Динамический прогноз по признакам из дневного JSON.
      * План намеренно не используется в основной формуле.
      */
-    calculateFeatureForecast(fact, type, day, daysInMonth, brandKey, dailyFacts, targetMonth) {
-            if (!Array.isArray(dailyFacts) || !targetMonth || day <= 0 || daysInMonth <= day) return Math.round(Number(fact) || 0);
+    calculateFeatureForecast(fact, type, observedDays, daysInMonth, brandKey, dailyFacts, targetMonth, startDay = 1, endDay = observedDays) {
+            if (!Array.isArray(dailyFacts) || !targetMonth || observedDays <= 0 || daysInMonth <= observedDays) return Math.round(Number(fact) || 0);
             const metrics = ['sales', 'traffic', 'contracts', 'trading', 'revenue'];
             if (!metrics.includes(type)) return Math.round(Number(fact) || 0);
 
             const rows = dailyFacts.filter(row => row && /^\d{4}-\d{2}-\d{2}$/.test(row.date));
             const monthOf = row => row.date.substring(0, 7);
             const dayOf = row => parseInt(row.date.substring(8, 10), 10);
+            const safeStartDay = Math.max(1, Math.min(Number(startDay) || 1, daysInMonth));
+            const safeEndDay = Math.max(safeStartDay, Math.min(Number(endDay) || safeStartDay, daysInMonth));
+            const isInSelectedRange = dayNumber => dayNumber >= safeStartDay && dayNumber <= safeEndDay;
             const isWeekend = row => { const weekday = new Date(row.date + 'T12:00:00').getDay(); return weekday === 0 || weekday === 6; };
             const seasonOf = month => {
                 const monthNumber = parseInt(month.substring(5, 7), 10);
@@ -192,15 +195,17 @@ export class DashboardCalculations {
                 return values.map(item => Math.max(center - 3 * deviation, Math.min(center + 3 * deviation, item)));
             };
             const clamp = (number, min, max) => Math.max(min, Math.min(max, Number.isFinite(number) ? number : 1));
-            const targetRows = rows.filter(row => monthOf(row) === targetMonth && dayOf(row) <= day);
+            const targetRows = rows.filter(row => monthOf(row) === targetMonth && isInSelectedRange(dayOf(row)));
             const priorMonths = [...new Set(rows.map(monthOf))].filter(month => month < targetMonth).sort();
             const seasonalMonths = priorMonths.filter(month => seasonOf(month) === seasonOf(targetMonth));
             const historyMonths = (seasonalMonths.length ? seasonalMonths : priorMonths).slice(-3);
             const historyRows = rows.filter(row => historyMonths.includes(monthOf(row)));
-            const futureRows = Array.from({ length: Math.max(0, daysInMonth - day) }, (_, index) => ({ date: targetMonth + '-' + String(day + index + 1).padStart(2, '0') }));
+            const projectedRows = Array.from({ length: daysInMonth }, (_, index) => index + 1)
+                .filter(dayNumber => !isInSelectedRange(dayNumber))
+                .map(dayNumber => ({ date: targetMonth + '-' + String(dayNumber).padStart(2, '0') }));
             const currentValues = smooth(targetRows.map(value));
             const currentFact = Number.isFinite(Number(fact)) ? Number(fact) : sum(currentValues);
-            const fallbackRate = day > 0 ? currentFact / day : 0;
+            const fallbackRate = observedDays > 0 ? currentFact / observedDays : 0;
             const rates = { weekday: [], weekend: [] };
             const historicalRates = { weekday: [], weekend: [] };
             targetRows.forEach(row => rates[isWeekend(row) ? 'weekend' : 'weekday'].push(value(row)));
@@ -213,15 +218,15 @@ export class DashboardCalculations {
             };
             // Прогноз строится только по бренду. ГК не имеет собственной модели:
             // итог ГК формируется суммированием результатов брендов в dashboard-core.
-            const brandRemaining = sum(futureRows.map(row => expectedRate(isWeekend(row) ? 'weekend' : 'weekday')));
+            const brandRemaining = sum(projectedRows.map(row => expectedRate(isWeekend(row) ? 'weekend' : 'weekday')));
 
             const period = monthRows => {
-                const early = monthRows.filter(row => dayOf(row) <= day).map(value);
-                const late = monthRows.filter(row => dayOf(row) > day).map(value);
-                return { early: average(smooth(early)), late: average(smooth(late)) };
+                const selected = monthRows.filter(row => isInSelectedRange(dayOf(row))).map(value);
+                const outside = monthRows.filter(row => !isInSelectedRange(dayOf(row))).map(value);
+                return { selected: average(smooth(selected)), outside: average(smooth(outside)) };
             };
             const brandPeriod = period(historyRows);
-            const brandFactor = brandPeriod.early > 0 && brandPeriod.late > 0 ? brandPeriod.late / brandPeriod.early : 1;
+            const brandFactor = brandPeriod.selected > 0 && brandPeriod.outside > 0 ? brandPeriod.outside / brandPeriod.selected : 1;
             const seasonalCorrection = historyMonths.length >= 2 ? clamp(brandFactor, 0.9, 1.1) : 1;
             const recent = smooth(currentValues.slice(-Math.min(7, currentValues.length)));
             const previous = smooth(currentValues.slice(-Math.min(14, currentValues.length), -Math.min(7, currentValues.length)));

@@ -27,6 +27,36 @@ test('forecast edge cases remain stable', () => {
   assert.equal(typeof calculator.calculateBrandData, 'undefined');
 });
 
+test('traffic forecast extrapolates only from the selected date range', () => {
+  const DashboardCalculations = loadClass(
+    path.join(__dirname, '..', 'js/core/dashboard-calculations.js'),
+    'DashboardCalculations',
+    ''
+  );
+  const calculator = new DashboardCalculations();
+  const dailyFacts = Array.from({ length: 30 }, (_, index) => {
+    const day = index + 1;
+    return {
+      date: `2026-09-${String(day).padStart(2, '0')}`,
+      om: { traffic: day >= 11 && day <= 20 ? 10 : 100 },
+    };
+  });
+
+  const forecast = calculator.calculateFeatureForecast(
+    100,
+    'traffic',
+    10,
+    30,
+    'om',
+    dailyFacts,
+    '2026-09',
+    11,
+    20
+  );
+
+  assert.equal(forecast, 300);
+});
+
 test('pace analysis calculates actual and required daily rates', () => {
   const DashboardCalculations = loadClass(
     path.join(__dirname, '..', 'js/core/dashboard-calculations.js'),
@@ -90,6 +120,13 @@ test('forecast totals use the forecasts already calculated for each card', () =>
       revenueForecast: 1900,
       contractsForecast: 9,
       tradingForecast: 5,
+      forecastPlan: {
+        sales: 40,
+        traffic: 400,
+        revenue: 4000,
+        contracts: 20,
+        trading: 12,
+      },
     },
     {
       data: {
@@ -104,15 +141,22 @@ test('forecast totals use the forecasts already calculated for each card', () =>
       revenueForecast: 700,
       contractsForecast: 4,
       tradingForecast: 2,
+      forecastPlan: {
+        sales: 16,
+        traffic: 200,
+        revenue: 1600,
+        contracts: 8,
+        trading: 4,
+      },
     },
   ];
 
   const totals = core.calculateForecastTotals(items);
-  assert.deepEqual(JSON.parse(JSON.stringify(totals.sales)), { totalFact: 14, totalPlan: 28, totalForecast: 25 });
-  assert.deepEqual(JSON.parse(JSON.stringify(totals.traffic)), { totalFact: 150, totalPlan: 300, totalForecast: 265 });
-  assert.deepEqual(JSON.parse(JSON.stringify(totals.revenue)), { totalFact: 1400, totalPlan: 2800, totalForecast: 2600 });
-  assert.deepEqual(JSON.parse(JSON.stringify(totals.contracts)), { totalFact: 7, totalPlan: 14, totalForecast: 13 });
-  assert.deepEqual(JSON.parse(JSON.stringify(totals.trading)), { totalFact: 4, totalPlan: 8, totalForecast: 7 });
+  assert.deepEqual(JSON.parse(JSON.stringify(totals.sales)), { totalFact: 14, totalPlan: 56, totalForecast: 25 });
+  assert.deepEqual(JSON.parse(JSON.stringify(totals.traffic)), { totalFact: 150, totalPlan: 600, totalForecast: 265 });
+  assert.deepEqual(JSON.parse(JSON.stringify(totals.revenue)), { totalFact: 1400, totalPlan: 5600, totalForecast: 2600 });
+  assert.deepEqual(JSON.parse(JSON.stringify(totals.contracts)), { totalFact: 7, totalPlan: 28, totalForecast: 13 });
+  assert.deepEqual(JSON.parse(JSON.stringify(totals.trading)), { totalFact: 4, totalPlan: 16, totalForecast: 7 });
 });
 
 test('plan inputs accept explicit zeroes and clear brands missing from the month plan', () => {
