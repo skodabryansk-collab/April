@@ -888,9 +888,14 @@ export class DashboardCore {
             
             // Пункт 3: сдвинуть дату на последнюю доступную после обновления
             const newLastDate = this.dataManager.getLastDataDate();
-            if (newLastDate && this.elements.rangeStart && this.elements.rangeEnd) {
-                this.elements.rangeStart.value = newLastDate;
-                this.elements.rangeEnd.value   = newLastDate;
+            if (newLastDate) {
+                this.rangeParams.startDate = newLastDate;
+                this.rangeParams.endDate = newLastDate;
+                this.rangeParams.month = newLastDate.substring(0, 7);
+                if (this.elements.rangeStart) this.elements.rangeStart.value = newLastDate;
+                if (this.elements.rangeEnd) this.elements.rangeEnd.value = newLastDate;
+                if (this.elements.monthSelector) this.elements.monthSelector.value = this.rangeParams.month;
+                this.updateRangeParams();
             }
             
             this.loadDataForRange();

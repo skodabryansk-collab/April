@@ -123,10 +123,26 @@ test('DashboardCore refresh reloads data and moves range to the latest date', { 
     getJsonBrandMapping: () => ({}),
     getLastDataDate: () => '2099-01-04',
   };
-  core.elements = { rangeStart, rangeEnd };
+  core.elements = { rangeStart, rangeEnd, monthSelector: { value: '2098-12' } };
+  core.rangeParams = {
+    availableDates: ['2099-01-01', '2099-01-02', '2099-01-03', '2099-01-04'],
+    availableDatesInMonth: [],
+    startDate: '2099-01-01',
+    endDate: '2099-01-04',
+    month: '2099-01',
+    daysCount: 4,
+    totalDaysInMonth: 31,
+    planAdjustmentFactor: 1,
+    allDaysSelected: true,
+  };
   core.updateAvailableDates = () => calls.push(['updateAvailableDates']);
   core.updateBrandsFromJson = () => calls.push(['updateBrandsFromJson']);
-  core.loadDataForRange = () => calls.push(['loadDataForRange']);
+  core.loadDataForRange = () => calls.push([
+    'loadDataForRange',
+    core.rangeParams.startDate,
+    core.rangeParams.endDate,
+    core.rangeParams.daysCount,
+  ]);
 
   const fallbackData = {
     metadata: { brandsIncluded: ['Test Brand'] },
@@ -150,6 +166,11 @@ test('DashboardCore refresh reloads data and moves range to the latest date', { 
   );
   assert.deepEqual(rangeStart.value, '2099-01-04');
   assert.deepEqual(rangeEnd.value, '2099-01-04');
+  assert.equal(core.elements.monthSelector.value, '2099-01');
+  assert.equal(core.rangeParams.startDate, '2099-01-04');
+  assert.equal(core.rangeParams.endDate, '2099-01-04');
+  assert.equal(core.rangeParams.daysCount, 1);
+  assert.deepEqual(calls.find(([name]) => name === 'loadDataForRange'), ['loadDataForRange', '2099-01-04', '2099-01-04', 1]);
   assert.deepEqual(core.jsonData, freshData);
   assert.equal(dataUpdateNotices.at(-1)[0], freshData);
   assert.equal(dataUpdateNotices.at(-1)[1], 'success');
@@ -190,8 +211,10 @@ test('DashboardCore refresh error keeps a retry action until refresh succeeds', 
     rangeStart: { value: '2099-01-01' },
     rangeEnd: { value: '2099-01-01' },
   };
+  core.rangeParams = { startDate: '2099-01-01', endDate: '2099-01-01', month: '2099-01' };
   core.updateAvailableDates = () => {};
   core.updateBrandsFromJson = () => {};
+  core.updateRangeParams = () => {};
   core.loadDataForRange = () => {};
 
   await core.refreshDataFromServer();
