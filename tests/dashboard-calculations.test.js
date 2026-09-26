@@ -24,6 +24,19 @@ test('JSON brand keys use the current Tenet names', () => {
   assert.equal(mapping.tp, 'Тенет Плюс');
 });
 
+test('dashboard hides pace analysis and places the brand summary before KPI cards', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  const summaryTablePosition = html.indexOf('id="summaryTableContainer"');
+  const summaryCardsPosition = html.indexOf('id="summaryContainer"');
+  const brandCardsPosition = html.indexOf('id="dashboard"');
+
+  assert.ok(summaryTablePosition >= 0);
+  assert.ok(summaryTablePosition < summaryCardsPosition);
+  assert.ok(summaryTablePosition < brandCardsPosition);
+  assert.equal(html.includes('id="paceAnalysisContainer"'), false);
+  assert.equal(html.includes('id="deviationsContainer"'), false);
+});
+
 test('forecast edge cases remain stable', () => {
   const DashboardCalculations = loadClass(
     path.join(__dirname, '..', 'js/core/dashboard-calculations.js'),

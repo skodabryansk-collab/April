@@ -105,7 +105,7 @@ export class DashboardCore {
             'dashboard', 'forecastContainer',
             'summaryContainer',
             'radarContainer', 'radarGrid', 'gkRadarContainer',
-            'totalGKContainer', 'summaryTableContainer', 'paceAnalysisContainer', 'deviationsContainer',
+            'totalGKContainer', 'summaryTableContainer',
             'rangeStart', 'rangeEnd', 'loadDataForRangeBtn',
             'comparePeriods', 'comparisonRangeFields', 'comparisonStart', 'comparisonEnd',
             'rangeDaysInfo', 'rangePlanInfo', 'forecastStatus', 'forecastFullPlan', 'monthSelector',
@@ -1097,8 +1097,6 @@ export class DashboardCore {
                 this.renderForecastUnavailable();
             }
             
-            this.renderPaceAnalysis(totals, forecastTotals, showForecast, filteredBrands, brandDataList);
-            this.renderBrandDeviationAnalysis(brandDataList, showForecast, observationDays, daysInMonth);
             this.renderTotalGKCard(totals, forecastTotals, showForecast, observationDays, daysInMonth);
             this.renderSummaryTable(brandDataList);
             this.renderRadarChartsForBrands(brandDataList, observationDays, daysInMonth, totals);
