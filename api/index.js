@@ -380,9 +380,8 @@ app.get('/api/wakeup', async (req, res) => {
   }
 });
 
-// Получить данные
-app.get('/api/data', async (req, res) => {
-  console.log('📥 GET /api/data');
+// Общий обработчик данных для основного дашборда и годового отчёта.
+async function handleDashboardDataRequest(req, res) {
   try {
     const data = await fetchExternalData(req.query.refresh === 'true');
     res.json(addSourceMetadata(data, 'external'));
@@ -396,6 +395,16 @@ app.get('/api/data', async (req, res) => {
     }
     res.status(502).json({ error: 'Не удалось получить данные из внешнего источника' });
   }
+}
+
+app.get('/api/data', (req, res) => {
+  console.log('📥 GET /api/data');
+  return handleDashboardDataRequest(req, res);
+});
+
+app.get('/api/daily-facts', (req, res) => {
+  console.log('📥 GET /api/daily-facts');
+  return handleDashboardDataRequest(req, res);
 });
 
 // Авторизация с автоматическим пробуждением

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Годовой дашборд брендов</title>
+    <meta name="description" content="Годовой дашборд брендов — built on Replit. Update this description to reflect the app." />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Годовой дашборд брендов" />
+    <meta property="og:description" content="Годовой дашборд брендов — built on Replit. Update this description to reflect the app." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Годовой дашборд брендов" />
+    <meta name="twitter:description" content="Годовой дашборд брендов — built on Replit. Update this description to reflect the app." />
+    <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      html.annual-auth-checking #root { visibility: hidden; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      (() => {
+        const path = window.location.pathname;
+        if (path !== "/annual" && !path.startsWith("/annual/")) return;
+        document.documentElement.classList.add("annual-auth-checking");
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          window.location.replace("/");
+          return;
+        }
+        fetch("/api/check-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+        })
+          .then((response) => response.ok ? response.json() : null)
+          .then((result) => {
+            if (!result?.valid) {
+              window.location.replace("/");
+              return;
+            }
+            document.documentElement.classList.remove("annual-auth-checking");
+          })
+          .catch(() => window.location.replace("/"));
+      })();
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

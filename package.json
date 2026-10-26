@@ -14,7 +14,8 @@
   "scripts": {
     "start": "node api/index.js",
     "test": "node --test --test-isolation=none --test-concurrency=1 tests/data-flow.test.js && node --test --test-isolation=none --test-concurrency=1 tests/client-refresh.test.js && node --test --test-concurrency=1 tests/dashboard-calculations.test.js",
-    "vercel-build": "npm install"
+    "vercel-build": "npm install && npm run build:annual",
+    "build:annual": "npm install --prefix annual-app && npm run build --prefix annual-app"
   },
   "version": "1.0.0"
 }
