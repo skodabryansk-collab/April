@@ -38,12 +38,24 @@
     {
       "src": "favicon/**/*",
       "use": "@vercel/static"
+    },
+    {
+      "src": "annual/**/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "/api/index.js"
+    },
+    {
+      "src": "/annual",
+      "dest": "/annual/index.html"
+    },
+    {
+      "src": "/annual/",
+      "dest": "/annual/index.html"
     },
     {
       "src": "/favicon.ico",
