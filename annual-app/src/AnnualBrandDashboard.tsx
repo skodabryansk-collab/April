@@ -114,12 +114,13 @@ function pieArcPath(start: number, end: number) {
 }
 
 function Chart({
-  metric, selectedMonth, onMonth, data,
+  metric, selectedMonth, onMonth, data, visibleBrandIds, onVisibleBrandIdsChange,
 }: {
   metric: Metric; selectedMonth: number | null; onMonth: (month: number) => void;
   data: LiveSeries;
+  visibleBrandIds: string[];
+  onVisibleBrandIdsChange: (ids: string[]) => void;
 }) {
-  const [visibleBrandIds, setVisibleBrandIds] = useState<string[]>(brands.map(brand => brand.id));
   const [showTotal, setShowTotal] = useState(true);
   const [activePoint, setActivePoint] = useState<{ id: string; month: number } | null>(null);
   const series = useMemo(() => {
@@ -140,10 +141,10 @@ function Chart({
   const toggleBrand = (id: string) => {
     if (visibleBrandIds.includes(id) && visibleBrandIds.length > 1) {
       if (activePoint?.id === id) setActivePoint(null);
-      setVisibleBrandIds(current => current.filter(item => item !== id));
+      onVisibleBrandIdsChange(visibleBrandIds.filter(item => item !== id));
       return;
     }
-    if (!visibleBrandIds.includes(id)) setVisibleBrandIds(current => [...current, id]);
+    if (!visibleBrandIds.includes(id)) onVisibleBrandIdsChange([...visibleBrandIds, id]);
   };
   const totalName = visibleBrandIds.length === brands.length ? "Итого по группе · с АСП" : "Итого выбранных брендов";
   const activeBrand = activePoint ? brands.find(brand => brand.id === activePoint.id) : undefined;
@@ -539,13 +540,17 @@ export function AnnualBrandDashboard() {
   const data = useMemo(() => query.data ? buildLiveSeries(query.data) : null, [query.data]);
   const [metric, setMetric] = useState<Metric>("sales");
   const [heatMode, setHeatMode] = useState<"plan" | "fact">("plan");
+  const [visibleBrandIds, setVisibleBrandIds] = useState<string[]>(() => brands.map(brand => brand.id));
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [monthControl, setMonthControl] = useState("all");
   if (query.isError) return <main className="aba-shell"><section className="aba-panel"><h1>Не удалось загрузить данные</h1><p>Проверьте доступность источника JSON и попробуйте ещё раз.</p><button type="button" onClick={() => query.refetch()}>Повторить загрузку</button></section></main>;
   if (query.isLoading || !data) return <main className="aba-shell"><p>Загружаем фактические данные брендов из JSON…</p></main>;
   const factTotal = allActual(data, metric);
-  const allBrandsTotal = allVehiclesActual(data, metric);
+  const chartBrandsTotal = visibleBrandIds.reduce((sum, id) => sum + actualForBrand(data, id, metric), 0);
+  const chartBrandsLabel = visibleBrandIds.length === brands.length
+    ? "Все бренды · факт с начала года"
+    : "Выбранные бренды · факт с начала года";
   const planTotal = allPlan(data, metric);
   const attainment = planTotal > 0 ? Math.round(factTotal / planTotal * 100) : 0;
   const activeBrands = brands.filter(brand => !selectedBrand || brand.id === selectedBrand);
@@ -622,8 +627,8 @@ export function AnnualBrandDashboard() {
       })}
     </section>
     <section className="aba-panel aba-trend" aria-labelledby="trend-title">
-       <div className="aba-section-heading"><div><h2 id="trend-title">Месячный тренд</h2><p>Выбранные бренды, включая АСП</p></div><div className="aba-chart-caption"><span className="aba-caption-value">{displayMetric(allBrandsTotal, metric)}</span><span>Все бренды · факт с начала года</span></div></div>
-       <Chart data={data} metric={metric} selectedMonth={selectedMonth} onMonth={month => { setSelectedMonth(month); setMonthControl(String(month)); }} />
+       <div className="aba-section-heading"><div><h2 id="trend-title">Месячный тренд</h2><p>Выбранные бренды, включая АСП</p></div><div className="aba-chart-caption"><span className="aba-caption-value">{displayMetric(chartBrandsTotal, metric)}</span><span>{chartBrandsLabel}</span></div></div>
+       <Chart data={data} metric={metric} selectedMonth={selectedMonth} visibleBrandIds={visibleBrandIds} onVisibleBrandIdsChange={setVisibleBrandIds} onMonth={month => { setSelectedMonth(month); setMonthControl(String(month)); }} />
     </section>
     <section className="aba-panel aba-heat-panel" aria-labelledby="matrix-title">
       <div className="aba-section-heading aba-matrix-heading">
