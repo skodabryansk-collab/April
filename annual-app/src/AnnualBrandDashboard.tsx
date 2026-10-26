@@ -34,9 +34,9 @@ const displayMetric = (value: number, metric: Metric) => metric === "revenue" ? 
 const formatDate = (date: string) => new Date(`${date}T00:00:00`).toLocaleDateString("ru-RU", { day: "2-digit", month: "short", year: "numeric" });
 type LiveSeries = ReturnType<typeof buildLiveSeries>;
 const actualForBrand = (data: LiveSeries, id: string, metric: Metric) => data.monthly[id].slice(0, data.latestMonth + 1).reduce((sum, month) => sum + month[metric], 0);
-const planForBrand = (data: LiveSeries, id: string, metric: Metric) => data.planSeries[id][metric].slice(0, data.latestMonth + 1).reduce((sum, value, index) => sum + value * (index === data.latestMonth ? data.partialFactor : 1), 0);
+const planForBrand = (data: LiveSeries, id: string, metric: Metric) => data.planSeries[id][metric].slice(0, data.latestMonth + 1).reduce((sum, value) => sum + value, 0);
 const actualForMonth = (data: LiveSeries, month: number, metric: Metric) => newCarBrands.reduce((sum, brand) => sum + data.monthly[brand.id][month][metric], 0);
-const planForMonth = (data: LiveSeries, month: number, metric: Metric) => newCarBrands.reduce((sum, brand) => sum + data.planSeries[brand.id][metric][month] * (month === data.latestMonth ? data.partialFactor : 1), 0);
+const planForMonth = (data: LiveSeries, month: number, metric: Metric) => newCarBrands.reduce((sum, brand) => sum + data.planSeries[brand.id][metric][month], 0);
 const allActual = (data: LiveSeries, metric: Metric) => newCarBrands.reduce((sum, brand) => sum + actualForBrand(data, brand.id, metric), 0);
 const allPlan = (data: LiveSeries, metric: Metric) => newCarBrands.reduce((sum, brand) => sum + planForBrand(data, brand.id, metric), 0);
 const allVehiclesActual = (data: LiveSeries, metric: Metric) => brands.reduce((sum, brand) => sum + actualForBrand(data, brand.id, metric), 0);
@@ -565,7 +565,7 @@ export function AnnualBrandDashboard() {
   const cellValue = (id: string, month: number) => {
     const fact = monthActual(data, id, month, metric);
     if (fact === null || heatMode === "fact") return fact;
-    const plan = data.planSeries[id][metric][month] * (month === data.latestMonth ? data.partialFactor : 1);
+    const plan = data.planSeries[id][metric][month];
     return plan > 0 ? Math.round(fact / plan * 100) : null;
   };
   const ytdValue = (id: string) => {
@@ -632,7 +632,7 @@ export function AnnualBrandDashboard() {
     </section>
     <section className="aba-panel aba-heat-panel" aria-labelledby="matrix-title">
       <div className="aba-section-heading aba-matrix-heading">
-          <div><h2 id="matrix-title">Бренд × месяц</h2><p>{heatMode === "plan" ? "Выполнение плана рассчитано по прошедшим дням месяца" : `Факт: ${metricInfo[metric].label.toLowerCase()} за месяц`}</p></div>
+          <div><h2 id="matrix-title">Бренд × месяц</h2><p>{heatMode === "plan" ? "Факт за месяц ÷ полный месячный план" : `Факт: ${metricInfo[metric].label.toLowerCase()} за месяц`}</p></div>
         <div className="aba-matrix-tools">
           <div className="aba-mode-switch" role="group" aria-label="Режим тепловой карты">
             <button type="button" className={heatMode === "plan" ? "is-active" : ""} aria-pressed={heatMode === "plan"} onClick={() => setHeatMode("plan")} data-testid="matrix-mode-plan">Выполнение плана</button>
