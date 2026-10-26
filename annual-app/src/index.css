@@ -203,6 +203,10 @@
 .aba-market-chart { display:block;width:100%;min-width:560px;height:auto;margin-top:5px;overflow:visible }
 .aba-market-line { fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;opacity:.9 }
 .aba-market-line.is-own { stroke-width:2.8;opacity:1 }.aba-market-line.is-focused { stroke-width:3.2;opacity:1 }.aba-market-chart g.is-unfocused { opacity:.82 }.aba-market-chart circle { stroke:#fbfcf8;stroke-width:1.5 }
+.aba-market-total-line { fill:none;stroke:#34404f;stroke-width:2.8;stroke-dasharray:7 5;stroke-linecap:round;stroke-linejoin:round }
+.aba-market-total-point { fill:#34404f;stroke:#fbfcf8;stroke-width:2 }
+.aba-market-legend button i.aba-market-total-swatch { position:relative;width:14px;height:0;border:0;border-top:2px dashed #34404f;border-radius:0 }
+.aba-market-legend button i.aba-market-total-swatch::after { position:absolute;left:5px;top:-3px;width:4px;height:4px;border-radius:50%;background:#34404f;content:"" }
 .aba-market-point-label { fill:#183633;stroke:#fbfcf8;stroke-width:4px;stroke-linejoin:round;paint-order:stroke;font:700 11px 'DM Mono',monospace;pointer-events:none }
 .aba-market-chart .aba-market-hit { fill:transparent;stroke:transparent;stroke-width:2;cursor:pointer;pointer-events:all }.aba-market-chart .aba-market-hit:focus-visible { stroke:#d0a354 }
 .aba-market-chart-foot { grid-column:1;grid-row:5;display:flex;justify-content:space-between;gap:12px;padding:1px 2px 0;color:#99a49d;font-size:8px }

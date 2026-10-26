@@ -222,6 +222,7 @@ function Chart({
 function MarketPanel() {
   const [view, setView] = useState<"sales" | "share">("share");
   const [visible, setVisible] = useState<string[]>(dealerGroups.map(group => group.id));
+  const [showMarketTotal, setShowMarketTotal] = useState(true);
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>("ours");
   const [activeMarketPoint, setActiveMarketPoint] = useState<{ groupId: string; month: number } | null>(null);
   const [brandShareMonth, setBrandShareMonth] = useState(8);
@@ -265,7 +266,7 @@ function MarketPanel() {
   const groupShareHeatMax = Math.max(...dealerGroups.flatMap((_, index) => dealerGroups[index].values.map((__, month) => share(index, month))), 1);
   const brandShareHeatMax = Math.max(...brandShareRows.flatMap(brand => brand.values.map((sales, month) => sales / marketTotals[month] * 100)), 1);
   const chartMax = view === "sales"
-    ? Math.max(...activeGroups.flatMap(group => group.values)) * 1.12
+    ? Math.max(...activeGroups.flatMap(group => group.values), ...(showMarketTotal ? marketTotals : [])) * 1.12
     : Math.max(...activeGroups.flatMap(group => group.values.map((_, month) => share(dealerGroups.indexOf(group), month)))) * 1.16;
   const x = (month: number) => 62 + month * 94;
   const shortMarket = (value: number) => view === "share" ? `${value.toFixed(0)}%` : number(value);
@@ -279,11 +280,17 @@ function MarketPanel() {
     }
     setVisible(current => [...current, id]);
   };
-  const marketTooltipGroup = activeMarketPoint ? dealerGroups.find(group => group.id === activeMarketPoint.groupId) : undefined;
-  const marketTooltipValue = activeMarketPoint && marketTooltipGroup
-    ? view === "share"
-      ? share(dealerGroups.indexOf(marketTooltipGroup), activeMarketPoint.month)
-      : marketTooltipGroup.values[activeMarketPoint.month]
+  const marketTooltipGroup = activeMarketPoint && activeMarketPoint.groupId !== "market-total"
+    ? dealerGroups.find(group => group.id === activeMarketPoint.groupId)
+    : undefined;
+  const marketTooltipValue = activeMarketPoint
+    ? activeMarketPoint.groupId === "market-total"
+      ? view === "sales" ? marketTotals[activeMarketPoint.month] : null
+      : marketTooltipGroup
+        ? view === "share"
+          ? share(dealerGroups.indexOf(marketTooltipGroup), activeMarketPoint.month)
+          : marketTooltipGroup.values[activeMarketPoint.month]
+        : null
     : null;
   const marketTooltipX = activeMarketPoint ? Math.max(8, Math.min(x(activeMarketPoint.month) + 9, 714)) : 0;
   const marketTooltipY = activeMarketPoint && marketTooltipGroup && marketTooltipValue !== null
@@ -293,7 +300,7 @@ function MarketPanel() {
     const bounds = event.currentTarget.getBoundingClientRect();
     const clickX = (event.clientX - bounds.left) * 900 / bounds.width;
     const clickY = (event.clientY - bounds.top) * 420 / bounds.height;
-    const candidates = activeGroups.flatMap(group => {
+    const groupCandidates = activeGroups.flatMap(group => {
       const groupIndex = dealerGroups.indexOf(group);
       return group.values.map((rawValue, month) => {
         const value = view === "share" ? share(groupIndex, month) : rawValue;
@@ -303,7 +310,15 @@ function MarketPanel() {
           distance: Math.hypot(x(month) - clickX, 315 - value / (chartMax || 1) * 250 - clickY),
         };
       });
-    }).sort((a, b) => a.distance - b.distance);
+    });
+    const marketCandidates = view === "sales" && showMarketTotal
+      ? marketTotals.map((value, month) => ({
+        groupId: "market-total",
+        month,
+        distance: Math.hypot(x(month) - clickX, 315 - value / (chartMax || 1) * 250 - clickY),
+      }))
+      : [];
+    const candidates = [...groupCandidates, ...marketCandidates].sort((a, b) => a.distance - b.distance);
     const nearest = candidates[0];
     if (nearest && nearest.distance < 24) setActiveMarketPoint({ groupId: nearest.groupId, month: nearest.month });
     else setActiveMarketPoint(null);
@@ -339,8 +354,8 @@ function MarketPanel() {
         <div className="aba-market-chart-head">
           <div><h3>{view === "share" ? "Доля рынка новых авто" : "Объём продаж"}</h3><p>{view === "share" ? "Доля от объёма новых авто в файле, %" : "Продажи новых автомобилей по месяцам, шт."}</p></div>
           <div className="aba-mode-switch aba-market-switch" role="group" aria-label="Показатель сравнения">
-            <button type="button" className={view === "share" ? "is-active" : ""} aria-pressed={view === "share"} onClick={() => setView("share")} data-testid="market-view-share">Доля рынка</button>
-            <button type="button" className={view === "sales" ? "is-active" : ""} aria-pressed={view === "sales"} onClick={() => setView("sales")} data-testid="market-view-sales">Объём</button>
+            <button type="button" className={view === "share" ? "is-active" : ""} aria-pressed={view === "share"} onClick={() => { setView("share"); setActiveMarketPoint(null); }} data-testid="market-view-share">Доля рынка</button>
+            <button type="button" className={view === "sales" ? "is-active" : ""} aria-pressed={view === "sales"} onClick={() => { setView("sales"); setActiveMarketPoint(null); }} data-testid="market-view-sales">Объём</button>
           </div>
         </div>
         <section className="aba-market-pie" aria-label="Структура рынка по дилерским группам">
@@ -355,11 +370,17 @@ function MarketPanel() {
             <div className="aba-market-pie-legend">{pieRows.map(row => <button type="button" key={row.id} className={selectedGroupId === row.id ? "is-selected" : ""} onClick={() => setSelectedGroupId(row.id)}><i style={{ background: row.color }} /><span>{row.name}</span><strong>{view === "share" ? `${decimal(row.value)}%` : number(row.value)}</strong></button>)}</div>
           </div>
         </section>
-        <div className="aba-market-legend" aria-label="Фильтр дилерских групп">
+        <div className="aba-market-legend" aria-label="Показатели графика">
           {dealerGroups.map(group => {
             const active = visible.includes(group.id);
             return <button type="button" key={group.id} className={active ? "is-active" : "is-muted"} onClick={() => toggleSeries(group.id)} aria-pressed={active} data-testid={`filter-group-${group.id}`}><i style={{ background: group.color }} />{group.name}</button>;
           })}
+          {view === "sales" && <button type="button" className={showMarketTotal ? "is-active" : "is-muted"} onClick={() => {
+            setShowMarketTotal(current => !current);
+            if (activeMarketPoint?.groupId === "market-total") setActiveMarketPoint(null);
+          }} aria-pressed={showMarketTotal} data-testid="toggle-market-total">
+            <i className="aba-market-total-swatch" />Общий рынок
+          </button>}
         </div>
         <div className="aba-market-chart-scroll">
             <svg className="aba-market-chart" viewBox="0 0 900 420" role="img" aria-label={`Нажмите на точку графика, чтобы увидеть ${view === "share" ? "долю рынка" : "объём продаж"} дилерской группы`} onClick={handleMarketChartClick}>
@@ -385,10 +406,25 @@ function MarketPanel() {
                   </g>)}
               </g>;
             })}
+             {view === "sales" && showMarketTotal && (() => {
+               const path = marketTotals.map((value, month) => `${month ? "L" : "M"} ${x(month)} ${315 - value / (chartMax || 1) * 250}`).join(" ");
+               return <g className="aba-market-total-series" key="market-total">
+                 <path d={path} className="aba-market-total-line" />
+                 {marketTotals.map((value, month) => <g key={month}>
+                   <circle cx={x(month)} cy={315 - value / (chartMax || 1) * 250} r="10" className="aba-market-hit" role="button" tabIndex={0} aria-label={`Общий рынок, ${months[month]}: ${number(value)} авто`} onClick={event => { event.stopPropagation(); setActiveMarketPoint({ groupId: "market-total", month }); }} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") setActiveMarketPoint({ groupId: "market-total", month }); }} />
+                   <circle cx={x(month)} cy={315 - value / (chartMax || 1) * 250} r="4" className="aba-market-total-point" pointerEvents="none"><title>{`Общий рынок · ${months[month]}: ${number(value)} авто`}</title></circle>
+                 </g>)}
+               </g>;
+             })()}
              {activeMarketPoint && marketTooltipGroup && marketTooltipValue !== null && <g className="aba-chart-tooltip" role="status" aria-live="polite" transform={`translate(${marketTooltipX} ${marketTooltipY})`} pointerEvents="none">
                <rect width="178" height="34" rx="5" />
                <text x="8" y="13">{`${months[activeMarketPoint.month]} · ${marketTooltipGroup.name}`}</text>
                <text x="8" y="27" className="aba-chart-tooltip-value">{view === "share" ? `${decimal(marketTooltipValue)}%` : `${number(marketTooltipValue)} авто`}</text>
+             </g>}
+             {activeMarketPoint?.groupId === "market-total" && marketTooltipValue !== null && <g className="aba-chart-tooltip" role="status" aria-live="polite" transform={`translate(${marketTooltipX} ${marketTooltipY})`} pointerEvents="none">
+               <rect width="178" height="34" rx="5" />
+               <text x="8" y="13">{`${months[activeMarketPoint.month]} · Общий рынок`}</text>
+               <text x="8" y="27" className="aba-chart-tooltip-value">{`${number(marketTooltipValue)} авто`}</text>
              </g>}
           </svg>
         </div>
