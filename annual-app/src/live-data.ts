@@ -11,8 +11,6 @@ export function buildLiveSeries(payload: DailyFactsResponse) {
   const dailyFacts = payload.dailyFacts.filter(fact => fact.date.startsWith(`${year}-`));
   const latestDate = dailyFacts.map(fact => fact.date.slice(0, 10)).sort().at(-1) ?? "";
   const latestMonth = latestDate ? Number(latestDate.slice(5, 7)) - 1 : -1;
-  const latestDay = latestDate ? Number(latestDate.slice(8, 10)) : 0;
-  const monthDays = latestMonth >= 0 ? new Date(Number(year), latestMonth + 1, 0).getDate() : 1;
   const empty = (): Measure => ({ sales: 0, traffic: 0, contracts: 0, revenue: 0, trading: 0 });
   const monthly: Record<string, Measure[]> = Object.fromEntries(brands.map(brand => [brand.id, Array.from({ length: 12 }, empty)]));
   const planSeries: Record<string, Record<Metric, number[]>> = {};
@@ -35,5 +33,5 @@ export function buildLiveSeries(payload: DailyFactsResponse) {
       for (const metric of Object.keys(empty()) as Metric[]) planSeries[brand.id][metric][month] = values[metric];
     }
   }
-  return { year, latestDate, latestMonth, partialFactor: latestDay / monthDays, monthly, planSeries, months };
+  return { year, latestDate, latestMonth, monthly, planSeries, months };
 }
