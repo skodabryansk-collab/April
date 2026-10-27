@@ -18,7 +18,9 @@ export default defineConfig({
   },
   build: {
     outDir: path.resolve(appDir, "../annual"),
-    emptyOutDir: true,
+    // Legacy Vercel builders may still package pre-build hashed assets.
+    // Keep those files available until Vercel finishes packaging the build.
+    emptyOutDir: process.env.VERCEL !== "1",
   },
   server: {
     host: "0.0.0.0",
