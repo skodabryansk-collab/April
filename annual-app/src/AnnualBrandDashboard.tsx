@@ -217,7 +217,7 @@ function ShareHeatmapCell({
   const isOpen = activeId === id;
   const highlightLabel = highlight === "increase" ? "Самый сильный рост за период" : highlight === "decrease" ? "Самое сильное снижение за период" : null;
   const description = annual
-    ? `${rowName} · итого за год: ${decimal(value)}%, по данным за январь—сентябрь 2026`
+    ? `${rowName} · ${period}: ${decimal(value)}% ${shareLabel}`
     : `${rowName} · ${period}: ${decimal(value)}% ${shareLabel}${delta !== null && previousMonth ? `; изменение к ${previousMonth}: ${signedDecimal(delta)} п.п.` : ""}${highlightLabel ? `; ${highlightLabel.toLowerCase()}` : ""}`;
 
   return <td className={`${tone ?? ""} ${annual ? "aba-annual-share-cell" : ""} ${highlight === "increase" ? "is-max-share-increase" : ""} ${highlight === "decrease" ? "is-max-share-decrease" : ""}`}>
