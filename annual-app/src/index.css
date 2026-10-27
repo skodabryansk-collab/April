@@ -254,6 +254,8 @@
 .aba-sales-table thead th:first-child,.aba-sales-table tbody th { text-align:left }
 .aba-sales-table tbody th { color:#63766d;font-weight:600 }
 .aba-sales-table tbody th span { display:flex;align-items:center;gap:7px }
+.aba-sales-group-select { display:inline-flex;align-items:center;gap:7px;border:0;padding:2px 0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer }
+.aba-sales-group-select:focus-visible { outline:2px solid #31574c;outline-offset:3px;border-radius:3px }
 .aba-sales-table td { color:#708077;font:500 9px 'DM Mono',monospace }
 .aba-sales-table td.aba-sales-total { color:#31574c;font-weight:700;background:#f5f8f3 }
 .aba-sales-table tr.is-muted { opacity:.4 }
