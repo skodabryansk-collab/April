@@ -60,9 +60,9 @@ function CompetitorSalesPanel() {
   const [visibleGroups, setVisibleGroups] = useState<string[]>([]);
   const [activePoint, setActivePoint] = useState<{ group: string; month: number } | null>(null);
 
-  if (query.isLoading) return <section className="aba-panel aba-competitor-sales"><p>Загружаем сравнение продаж из вкладки «2026»…</p></section>;
+  if (query.isLoading) return <section className="aba-panel aba-competitor-sales"><p>Загружаем сравнение АСП из вкладки «2026»…</p></section>;
   if (query.isError || !query.data) return <section className="aba-panel aba-competitor-sales">
-    <div className="aba-section-heading"><div><h2>Продажи по дилерским группам</h2><p>Помесячные данные из вкладки «2026»</p></div></div>
+    <div className="aba-section-heading"><div><h2>Продажи АСП по дилерским группам</h2><p>Помесячные данные из вкладки «2026»</p></div></div>
     <p className="aba-data-error">Не удалось получить данные из таблицы. <button type="button" onClick={() => query.refetch()}>Повторить</button></p>
   </section>;
 
@@ -77,10 +77,10 @@ function CompetitorSalesPanel() {
 
   return <section className="aba-panel aba-competitor-sales" aria-labelledby="competitor-sales-title">
     <div className="aba-section-heading">
-      <div><h2 id="competitor-sales-title">Продажи по дилерским группам</h2><p>Сравнение по месяцам · данные вкладки «2026»</p></div>
+      <div><h2 id="competitor-sales-title">Продажи АСП по дилерским группам</h2><p>Автомобили с пробегом · помесячные данные вкладки «2026»</p></div>
       <span className="aba-demo-pill"><i />ТАБЛИЦА · 2026</span>
     </div>
-    <div className="aba-competitor-sales-meta"><Info size={13} /><span>Продажи новых автомобилей по группам. Суммы в таблице — за месяцы, доступные в источнике.</span></div>
+    <div className="aba-competitor-sales-meta"><Info size={13} /><span>Продажи автомобилей с пробегом по группам. Итоги рассчитаны за месяцы, заполненные в таблице.</span></div>
     <div className="aba-sales-legend" role="group" aria-label="Показать дилерские группы">
       {groups.map((group, index) => {
         const selected = activeIds.includes(group.name);
