@@ -21,8 +21,11 @@ const shareHeatTone = (value: number, max: number) => {
   return ratio < .2 ? "tone-1" : ratio < .4 ? "tone-2" : ratio < .6 ? "tone-3" : ratio < .8 ? "tone-4" : "tone-5";
 };
 type ShareChange = { month: number; delta: number };
-const strongestShareChanges = (values: number[]) => {
-  const changes = values.slice(1).map((value, index) => ({ month: index + 1, delta: value - values[index] }));
+const strongestShareChanges = (values: Array<number | null>) => {
+  const changes = values.slice(1).flatMap((value, index) => {
+    const previous = values[index];
+    return value === null || previous === null ? [] : [{ month: index + 1, delta: value - previous }];
+  });
   return {
     increase: changes.reduce<ShareChange | null>((best, change) => change.delta > 0 && (!best || change.delta > best.delta) ? change : best, null),
     decrease: changes.reduce<ShareChange | null>((best, change) => change.delta < 0 && (!best || change.delta < best.delta) ? change : best, null),
@@ -58,7 +61,10 @@ async function fetchCompetitorSales(): Promise<CompetitorSales> {
 function CompetitorSalesPanel() {
   const query = useQuery({ queryKey: ["competitor-sales-2026"], queryFn: fetchCompetitorSales, staleTime: 5 * 60 * 1000 });
   const [visibleGroups, setVisibleGroups] = useState<string[]>([]);
+  const [selectedGroupName, setSelectedGroupName] = useState<string | null>(null);
+  const [chartView, setChartView] = useState<"share" | "sales">("share");
   const [activePoint, setActivePoint] = useState<{ group: string; month: number } | null>(null);
+  const [activeShareCell, setActiveShareCell] = useState<string | null>(null);
 
   if (query.isLoading) return <section className="aba-panel aba-competitor-sales"><p>Загружаем сравнение АСП из вкладки «2026»…</p></section>;
   if (query.isError || !query.data) return <section className="aba-panel aba-competitor-sales">
@@ -69,11 +75,53 @@ function CompetitorSalesPanel() {
   const { months: monthLabels, groups } = query.data;
   const activeIds = visibleGroups.length ? visibleGroups : groups.map(group => group.name);
   const activeGroups = groups.filter(group => activeIds.includes(group.name));
-  const chartMax = Math.max(...activeGroups.flatMap(group => group.values.filter((value): value is number => value !== null)), 1);
-  const x = (index: number) => 70 + index * (700 / Math.max(monthLabels.length - 1, 1));
-  const y = (value: number) => 254 - value / chartMax * 202;
   const total = (group: CompetitorSales["groups"][number]) => group.total ?? group.values.reduce<number>((sum, value) => sum + (value ?? 0), 0);
   const active = activePoint ? groups.find(group => group.name === activePoint.group) : null;
+  const focusedGroupName = selectedGroupName ?? groups[0]?.name ?? null;
+  const monthlyTotals = monthLabels.map((_, month) => groups.reduce((sum, group) => sum + (group.values[month] ?? 0), 0));
+  const groupTotals = groups.map(total);
+  const periodTotal = groupTotals.reduce((sum, value) => sum + value, 0);
+  const shareAt = (group: CompetitorSales["groups"][number], month: number) => {
+    const value = group.values[month];
+    const denominator = monthlyTotals[month] ?? 0;
+    return value === null || !denominator ? null : value / denominator * 100;
+  };
+  const chartMax = Math.max(...activeGroups.flatMap(group => group.values.map((value, month) =>
+    chartView === "share" ? (shareAt(group, month) ?? 0) : (value ?? 0),
+  )), 1) * (chartView === "share" ? 1.16 : 1.12);
+  const x = (index: number) => 62 + index * (826 / Math.max(monthLabels.length - 1, 1));
+  const y = (value: number) => 315 - value / chartMax * 250;
+  const colors = ["#173f3a", "#9a7860", "#64859a", "#957d9d"];
+  const pieRows = groups.map((group, index) => ({
+    id: group.name, name: group.name, color: colors[index % colors.length],
+    value: chartView === "share" ? (periodTotal ? total(group) / periodTotal * 100 : 0) : total(group),
+  }));
+  const pieTotal = pieRows.reduce((sum, row) => sum + row.value, 0);
+  let pieAngle = -Math.PI / 2;
+  const pieSlices = pieRows.map(row => {
+    const start = pieAngle;
+    pieAngle += pieTotal ? row.value / pieTotal * Math.PI * 2 : 0;
+    return { ...row, start, end: pieAngle };
+  });
+  const selectedPieRow = pieRows.find(row => row.id === focusedGroupName);
+  const activePointValue = active && activePoint
+    ? chartView === "share" ? shareAt(active, activePoint.month) : active.values[activePoint.month]
+    : null;
+  const selectGroup = (name: string) => {
+    setSelectedGroupName(name);
+    if (!activeIds.includes(name)) setVisibleGroups(current => current.length ? [...current, name] : current);
+    setActivePoint(null);
+  };
+  const toggleVisible = (name: string) => {
+    setVisibleGroups(current => {
+      const base = current.length ? current : groups.map(group => group.name);
+      if (base.length === 1 && base[0] === name) return current;
+      const next = base.includes(name) ? base.filter(item => item !== name) : [...base, name];
+      return next.length === groups.length ? [] : next;
+    });
+    setActivePoint(null);
+  };
+  const shareHeatMax = Math.max(...groups.flatMap(group => monthLabels.map((_, month) => shareAt(group, month) ?? 0)), 1);
 
   return <section className="aba-panel aba-competitor-sales" aria-labelledby="competitor-sales-title">
     <div className="aba-section-heading">
@@ -81,52 +129,58 @@ function CompetitorSalesPanel() {
       <span className="aba-demo-pill"><i />ТАБЛИЦА · 2026</span>
     </div>
     <div className="aba-competitor-sales-meta"><Info size={13} /><span>Продажи автомобилей с пробегом по группам. Итоги рассчитаны за месяцы, заполненные в таблице.</span></div>
-    <div className="aba-sales-legend" role="group" aria-label="Показать дилерские группы">
-      {groups.map((group, index) => {
-        const selected = activeIds.includes(group.name);
-        return <button type="button" key={group.name} className={selected ? "is-active" : "is-muted"} aria-pressed={selected} onClick={() => {
-          setVisibleGroups(current => {
-            const base = current.length ? current : groups.map(item => item.name);
-            if (base.length === 1 && base[0] === group.name) return current;
-            const next = base.includes(group.name) ? base.filter(name => name !== group.name) : [...base, group.name];
-            return next.length === groups.length ? [] : next;
-          });
-          setActivePoint(null);
-        }}><i style={{ background: ["#173f3a", "#9a7860", "#64859a", "#957d9d"][index % 4] }} />{group.name}</button>;
-      })}
+    <div className="aba-market-chart-block">
+      <div className="aba-market-chart-head">
+        <div><h3>{chartView === "share" ? "Доля АСП среди групп" : "Объём продаж АСП"}</h3>
+          <p>{chartView === "share" ? "Доля от продаж АСП групп из таблицы, %" : "Продажи автомобилей с пробегом по месяцам, шт."}</p></div>
+        <div className="aba-mode-switch aba-market-switch" role="group" aria-label="Показатель АСП">
+          <button type="button" className={chartView === "share" ? "is-active" : ""} aria-pressed={chartView === "share"} onClick={() => { setChartView("share"); setActivePoint(null); }}>Доля</button>
+          <button type="button" className={chartView === "sales" ? "is-active" : ""} aria-pressed={chartView === "sales"} onClick={() => { setChartView("sales"); setActivePoint(null); }}>Объём</button>
+        </div>
+      </div>
+      <section className="aba-market-pie" aria-label="Структура АСП по дилерским группам">
+        <div className="aba-market-pie-head"><div><h3>{chartView === "share" ? "Доли групп · январь—сентябрь" : "Объём по группам · январь—сентябрь"}</h3><p>Нажмите на сектор, чтобы выбрать группу</p></div><strong>{chartView === "share" ? "100%" : `${number(periodTotal)} авто`}</strong></div>
+        <div className="aba-market-pie-body">
+          <svg className="aba-market-pie-svg" viewBox="0 0 240 224" role="img" aria-label="Доли АСП по дилерским группам">
+            {pieSlices.map(row => <path key={row.id} d={pieArcPath(row.start, row.end)} fill={row.color} className={focusedGroupName === row.id ? "is-selected" : ""} role="button" tabIndex={0} aria-label={`${row.name}: ${chartView === "share" ? `${decimal(row.value)}%` : `${number(row.value)} авто`}`} onClick={() => selectGroup(row.name)} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") selectGroup(row.name); }}><title>{`${row.name} · ${chartView === "share" ? `${decimal(row.value)}%` : `${number(row.value)} авто`}`}</title></path>)}
+            <text x="120" y="108" textAnchor="middle" className="aba-pie-center-label">{selectedPieRow?.name ?? "Все группы"}</text>
+            <text x="120" y="128" textAnchor="middle" className="aba-pie-center-value">{selectedPieRow ? chartView === "share" ? `${decimal(selectedPieRow.value)}%` : number(selectedPieRow.value) : "100%"}</text>
+            <text x="120" y="143" textAnchor="middle" className="aba-pie-center-unit">{chartView === "share" ? "доля АСП" : "авто"}</text>
+          </svg>
+          <div className="aba-market-pie-legend">{pieRows.map(row => <button type="button" key={row.id} className={focusedGroupName === row.id ? "is-selected" : ""} onClick={() => selectGroup(row.name)}><i style={{ background: row.color }} /><span>{row.name}</span><strong>{chartView === "share" ? `${decimal(row.value)}%` : number(row.value)}</strong></button>)}</div>
+        </div>
+      </section>
+      <div className="aba-market-legend" role="group" aria-label="Показать группы на графике">{groups.map((group, index) => <button type="button" key={group.name} className={activeIds.includes(group.name) ? "is-active" : "is-muted"} aria-pressed={activeIds.includes(group.name)} onClick={() => toggleVisible(group.name)}><i style={{ background: colors[index % colors.length] }} />{group.name}</button>)}</div>
+      <div className="aba-market-chart-scroll">
+        <svg className="aba-market-chart" viewBox="0 0 900 420" role="img" aria-label={`Динамика ${chartView === "share" ? "доли АСП" : "объёма продаж АСП"} по месяцам`}>
+          {[0, 1, 2, 3].map(tick => { const value = chartMax / 3 * (3 - tick); return <g key={tick}><line x1="58" x2="884" y1={52 + tick * 90} y2={52 + tick * 90} className="aba-grid-line" /><text x="0" y={56 + tick * 90} className="aba-axis-label">{chartView === "share" ? `${Math.round(value)}%` : number(value)}</text></g>; })}
+          {monthLabels.map((month, index) => <text key={month} x={x(index)} y="398" textAnchor="middle" className="aba-axis-label">{month.slice(0, 3)}</text>)}
+          {activeGroups.map(group => { const color = colors[groups.indexOf(group) % colors.length]; const values = group.values.map((value, month) => chartView === "share" ? shareAt(group, month) : value); let start = true; const path = values.map((value, month) => { if (value === null) { start = true; return null; } const command = start ? "M" : "L"; start = false; return `${command} ${x(month)} ${y(value)}`; }).filter((point): point is string => point !== null).join(" "); const selected = focusedGroupName === group.name; return <g key={group.name} className={focusedGroupName && !selected ? "is-unfocused" : ""}><path d={path} className={`aba-market-line ${selected ? "is-focused" : ""}`} stroke={color} />{values.map((value, month) => value === null ? null : <g key={month}><circle cx={x(month)} cy={y(value)} r="4" fill={color} />{selected && <text x={x(month)} y={y(value) - 13} textAnchor="middle" className="aba-market-point-label">{chartView === "share" ? decimal(value) : number(value)}</text>}<circle cx={x(month)} cy={y(value)} r="10" className="aba-market-hit" role="button" tabIndex={0} aria-label={`${group.name}, ${monthLabels[month]}: ${chartView === "share" ? `${decimal(value)}%` : `${number(value)} авто`}`} onClick={() => setActivePoint({ group: group.name, month })} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") setActivePoint({ group: group.name, month }); }} /></g>)}</g>; })}
+        </svg>
+      </div>
+      <div className="aba-market-chart-foot"><span><i /> {monthLabels[0]} — {monthLabels[monthLabels.length - 1]} 2026</span><span>Нажмите на точку, чтобы увидеть значение</span></div>
     </div>
-    <div className="aba-sales-chart-scroll">
-      <svg className="aba-sales-chart" viewBox="0 0 800 300" role="img" aria-label="Динамика ежемесячных продаж по дилерским группам">
-        {[0, .5, 1].map((ratio, index) => {
-          const value = Math.round(chartMax * ratio);
-          const yy = 254 - ratio * 202;
-          return <g key={index}><line x1="60" x2="780" y1={yy} y2={yy} className="aba-grid-line" /><text x="0" y={yy + 4} className="aba-axis-label">{number(value)}</text></g>;
-        })}
-        {monthLabels.map((label, month) => <text key={label} x={x(month)} y="284" textAnchor="middle" className="aba-axis-label">{label.slice(0, 3)}</text>)}
-        {activeGroups.map((group, index) => {
-          const color = ["#173f3a", "#9a7860", "#64859a", "#957d9d"][groups.indexOf(group) % 4];
-          const points = group.values.map((value, month) => value === null ? null : `${month ? "L" : "M"} ${x(month)} ${y(value)}`).filter(Boolean).join(" ");
-          return <g key={group.name}>
-            <path d={points} className="aba-sales-line" stroke={color} />
-            {group.values.map((value, month) => value === null ? null : <g key={month}>
-              <circle cx={x(month)} cy={y(value)} r="4" fill={color} className="aba-sales-point" />
-              <circle cx={x(month)} cy={y(value)} r="10" className="aba-sales-hit" role="button" tabIndex={0} aria-label={`${group.name}, ${monthLabels[month]}: ${number(value)} автомобилей`} onClick={() => setActivePoint({ group: group.name, month })} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") setActivePoint({ group: group.name, month }); }} />
-            </g>)}
-          </g>;
-        })}
-      </svg>
-    </div>
-    {active && activePoint && <div className="aba-sales-tooltip"><strong>{active.name}</strong><span>{monthLabels[activePoint.month]} 2026</span><b>{number(active.values[activePoint.month] ?? 0)} авто</b><button type="button" onClick={() => setActivePoint(null)} aria-label="Закрыть подсказку">×</button></div>}
+    {active && activePoint && activePointValue !== null && activePointValue !== undefined && <div className="aba-sales-tooltip"><strong>{active.name}</strong><span>{monthLabels[activePoint.month]} 2026</span><b>{chartView === "share" ? `${decimal(activePointValue)}%` : `${number(activePointValue)} авто`}</b><button type="button" onClick={() => setActivePoint(null)} aria-label="Закрыть подсказку">×</button></div>}
     <div className="aba-sales-table-wrap">
       <table className="aba-sales-table">
         <thead><tr><th scope="col">ГРУППА</th>{monthLabels.map(month => <th key={month} scope="col">{month.slice(0, 3).toUpperCase()}</th>)}<th scope="col">ИТОГО</th></tr></thead>
-        <tbody>{groups.map(group => <tr key={group.name} className={activeIds.includes(group.name) ? "" : "is-muted"}>
-          <th scope="row"><span><i style={{ background: ["#173f3a", "#9a7860", "#64859a", "#957d9d"][groups.indexOf(group) % 4] }} />{group.name}</span></th>
+        <tbody>{groups.map(group => <tr key={group.name} className={`${activeIds.includes(group.name) ? "" : "is-muted"} ${focusedGroupName === group.name ? "is-focus-row" : ""}`}>
+          <th scope="row"><button type="button" className="aba-sales-group-select" onClick={() => selectGroup(group.name)}><i style={{ background: colors[groups.indexOf(group) % colors.length] }} />{group.name}</button></th>
           {group.values.map((value, month) => <td key={month}>{value === null ? "—" : number(value)}</td>)}
           <td className="aba-sales-total">{number(total(group))}</td>
         </tr>)}</tbody>
       </table>
     </div>
+    <section className="aba-share-heatmap aba-group-share-heatmap" aria-labelledby="asp-share-heat-title">
+      <div className="aba-share-heatmap-heading"><div><h3 id="asp-share-heat-title">Доля АСП по группам</h3><p>Продажи группы ÷ сумма продаж групп АСП в таблице за тот же месяц</p></div><span>ЯНВ—СЕН · 2026</span></div>
+      <ShareChangeLegend />
+      <div className="aba-share-heatmap-scroll"><table className="aba-share-heatmap-table" data-testid="asp-share-heatmap"><thead><tr><th scope="col">ГРУППА</th>{monthLabels.map(month => <th key={month} scope="col">{month.slice(0, 3).toUpperCase()}</th>)}<th scope="col" className="aba-annual-share-head">ИТОГО<br />ЗА ПЕРИОД</th></tr></thead>
+        <tbody>{groups.map(group => { const shares = monthLabels.map((_, month) => shareAt(group, month)); const extremes = strongestShareChanges(shares); const annualShare = periodTotal ? total(group) / periodTotal * 100 : null; return <tr key={group.name} className={focusedGroupName === group.name ? "is-focus-row" : ""}><th scope="row"><span className="aba-share-heatmap-name"><i style={{ background: colors[groups.indexOf(group) % colors.length] }} />{group.name}</span></th>
+          {shares.map((value, month) => { if (value === null) return <td key={month} className="tone-empty aba-unavailable">—</td>; const previous = month ? shares[month - 1] : null; const delta = previous === null ? null : value - previous; return <ShareHeatmapCell key={month} id={`asp-${group.name}-${month}`} activeId={activeShareCell} onActiveChange={setActiveShareCell} rowName={group.name} period={monthLabels[month]} value={value} delta={delta} previousMonth={previous === null ? null : monthLabels[month - 1]} highlight={extremes.increase?.month === month ? "increase" : extremes.decrease?.month === month ? "decrease" : null} tone={shareHeatTone(value, shareHeatMax)} shareLabel="доля среди указанных групп АСП" annualNote="Продажи группы за заполненные месяцы ÷ сумма продаж АСП всех групп в таблице за тот же период." />; })}
+          {annualShare === null ? <td className="tone-empty aba-unavailable aba-annual-share-cell">—</td> : <ShareHeatmapCell id={`asp-${group.name}-period`} activeId={activeShareCell} onActiveChange={setActiveShareCell} rowName={group.name} period="Итого за период · 2026" value={annualShare} delta={null} previousMonth={null} highlight={null} annual tone="tone-3" shareLabel="доля среди указанных групп АСП" annualNote="Продажи группы за заполненные месяцы ÷ сумма продаж АСП всех групп в таблице за тот же период." />}
+        </tr>; })}</tbody>
+      </table></div>
+    </section>
     <p className="aba-sales-source">Источник: Google Sheets, вкладка «2026». Период охватывает месяцы, заполненные в таблице.</p>
   </section>;
 }
@@ -151,17 +205,20 @@ type ShareHeatmapCellProps = {
   highlight: "increase" | "decrease" | null;
   tone?: string;
   annual?: boolean;
+  shareLabel?: string;
+  annualNote?: string;
 };
 
 function ShareHeatmapCell({
   id, activeId, onActiveChange, rowName, period, value, delta, previousMonth,
-  highlight, tone, annual = false,
+  highlight, tone, annual = false, shareLabel = "доля рынка новых авто",
+  annualNote = "Продажи за январь—сентябрь ÷ объём рынка за тот же период.",
 }: ShareHeatmapCellProps) {
   const isOpen = activeId === id;
   const highlightLabel = highlight === "increase" ? "Самый сильный рост за период" : highlight === "decrease" ? "Самое сильное снижение за период" : null;
   const description = annual
     ? `${rowName} · итого за год: ${decimal(value)}%, по данным за январь—сентябрь 2026`
-    : `${rowName} · ${period}: ${decimal(value)}% рынка новых авто${delta !== null && previousMonth ? `; изменение к ${previousMonth}: ${signedDecimal(delta)} п.п.` : ""}${highlightLabel ? `; ${highlightLabel.toLowerCase()}` : ""}`;
+    : `${rowName} · ${period}: ${decimal(value)}% ${shareLabel}${delta !== null && previousMonth ? `; изменение к ${previousMonth}: ${signedDecimal(delta)} п.п.` : ""}${highlightLabel ? `; ${highlightLabel.toLowerCase()}` : ""}`;
 
   return <td className={`${tone ?? ""} ${annual ? "aba-annual-share-cell" : ""} ${highlight === "increase" ? "is-max-share-increase" : ""} ${highlight === "decrease" ? "is-max-share-decrease" : ""}`}>
     <Popover open={isOpen} onOpenChange={open => onActiveChange(open ? id : null)}>
@@ -176,9 +233,9 @@ function ShareHeatmapCell({
       </PopoverTrigger>
       <PopoverContent className="aba-share-cell-popover" side="top" align="center" sideOffset={8}>
         <div className="aba-share-cell-popover-heading"><strong>{rowName}</strong><span>{period}</span></div>
-        <div className="aba-share-cell-popover-value"><strong>{decimal(value)}%</strong><span>доля рынка новых авто</span></div>
+        <div className="aba-share-cell-popover-value"><strong>{decimal(value)}%</strong><span>{shareLabel}</span></div>
         {annual
-          ? <p className="aba-share-cell-popover-note">Продажи за январь—сентябрь ÷ объём рынка за тот же период.</p>
+          ? <p className="aba-share-cell-popover-note">{annualNote}</p>
           : delta !== null && previousMonth
             ? <div className="aba-share-cell-popover-change"><span>К {previousMonth}</span><strong className={delta >= 0 ? "is-positive" : "is-negative"}>{signedDecimal(delta)} п.п.</strong></div>
             : <p className="aba-share-cell-popover-note">Первый месяц периода — без сравнения.</p>}
