@@ -230,6 +230,36 @@
 .aba-market-pie-legend span { overflow:hidden;text-overflow:ellipsis;white-space:nowrap }
 .aba-market-pie-legend strong { font:500 8px 'DM Mono',monospace;white-space:nowrap }
 .aba-competitor-ranking { padding:14px 14px 10px;border:1px solid #e3ebe5;border-radius:8px;background:#f8faf6;min-width:0 }
+.aba-competitor-sales { position:relative }
+.aba-competitor-sales-meta { display:flex;align-items:center;gap:7px;margin:0 0 12px;color:#8a9790;font-size:9px }
+.aba-competitor-sales-meta svg { flex:none;color:#8ba399 }
+.aba-sales-legend { display:flex;flex-wrap:wrap;gap:7px 16px;margin:0 0 10px }
+.aba-sales-legend button { display:flex;align-items:center;gap:6px;padding:3px 0;border:0;background:transparent;color:#71827b;font:500 9px 'Manrope',sans-serif;cursor:pointer }
+.aba-sales-legend button.is-active { color:#31564d;font-weight:700 }.aba-sales-legend button.is-muted { opacity:.42 }
+.aba-sales-legend button:focus-visible { outline:2px solid #91bdb1;outline-offset:2px }
+.aba-sales-legend i,.aba-sales-table th i { width:7px;height:7px;border-radius:50%;flex:none }
+.aba-sales-chart-scroll { overflow-x:auto;scrollbar-width:thin }
+.aba-sales-chart { display:block;width:100%;min-width:600px;height:auto;overflow:visible }
+.aba-sales-line { fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round }
+.aba-sales-point { stroke:#fbfcf8;stroke-width:1.8 }
+.aba-sales-hit { fill:transparent;stroke:transparent;stroke-width:2;cursor:pointer;pointer-events:all }
+.aba-sales-hit:focus-visible { stroke:#d0a354 }
+.aba-sales-tooltip { position:relative;display:flex;align-items:center;gap:10px;width:max-content;max-width:100%;margin:4px 0 10px;padding:7px 30px 7px 10px;border:1px solid #dfe9e2;border-radius:6px;background:#f2f7f2;color:#60766b;font-size:9px }
+.aba-sales-tooltip strong { color:#31564d }.aba-sales-tooltip b { color:#173f3a;font:600 10px 'DM Mono',monospace }
+.aba-sales-tooltip button { position:absolute;right:7px;top:50%;transform:translateY(-50%);border:0;background:none;color:#85968d;font-size:15px;cursor:pointer }
+.aba-sales-table-wrap { overflow-x:auto;margin-top:8px;border-top:1px solid #e7ece7 }
+.aba-sales-table { width:100%;min-width:600px;border-collapse:collapse;font-size:9px }
+.aba-sales-table th,.aba-sales-table td { padding:9px 8px;border-bottom:1px solid #e9eee8;text-align:right;white-space:nowrap }
+.aba-sales-table thead th { color:#97a49c;font:7px 'DM Mono',monospace;letter-spacing:.35px }
+.aba-sales-table thead th:first-child,.aba-sales-table tbody th { text-align:left }
+.aba-sales-table tbody th { color:#63766d;font-weight:600 }
+.aba-sales-table tbody th span { display:flex;align-items:center;gap:7px }
+.aba-sales-table td { color:#708077;font:500 9px 'DM Mono',monospace }
+.aba-sales-table td.aba-sales-total { color:#31574c;font-weight:700;background:#f5f8f3 }
+.aba-sales-table tr.is-muted { opacity:.4 }
+.aba-sales-source { margin:9px 0 0;color:#9aa59e;font-size:8px }
+.aba-data-error { color:#876b5d;font-size:10px }
+.aba-data-error button { border:0;background:none;color:#35695d;text-decoration:underline;cursor:pointer }
 .aba-ranking-heading { display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:15px }
 .aba-ranking-heading>span { padding:5px 7px;border-radius:4px;background:#edf3ed;color:#729087;font:9px 'DM Mono',monospace }
 .aba-ranking-columns,.aba-ranking-row { display:grid;grid-template-columns:minmax(90px,1.3fr) minmax(44px,.65fr) minmax(40px,.6fr) minmax(54px,.75fr);align-items:center;gap:5px }
@@ -374,6 +404,7 @@
   .aba-market-switch { align-self:flex-end }.aba-market-legend { gap:4px 10px;margin-top:9px }
   .aba-market-legend button { font-size:8px }.aba-market-chart { min-width:560px }
   .aba-market-chart-foot { font-size:7px }.aba-competitor-ranking { padding:12px 10px }
+  .aba-competitor-sales { padding:15px 12px 12px }.aba-sales-legend { gap:5px 11px }.aba-sales-legend button { font-size:8px }.aba-sales-table { min-width:620px }
   .aba-ranking-columns,.aba-ranking-row { grid-template-columns:minmax(95px,1.2fr) minmax(47px,.65fr) minmax(43px,.6fr) minmax(57px,.75fr) }
   .aba-group-brand-columns,.aba-group-brand-row { grid-template-columns:minmax(85px,1fr) minmax(42px,.55fr) minmax(58px,.75fr) }
   .aba-brand-share-heading { align-items:flex-start;flex-direction:column }.aba-brand-share-month { align-self:flex-end }

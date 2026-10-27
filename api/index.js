@@ -14,6 +14,7 @@ app.use(express.json());
 
 const JSON_DATA_PATH = process.env.FALLBACK_DATA_PATH || path.join(__dirname, '..', 'data', 'daily_facts.json');
 const EXTERNAL_JSON_URL = process.env.DATA_SOURCE_URL || 'https://xml.krona-auto.ru/Dashboard/daily_facts.json';
+const COMPETITOR_SALES_CSV_URL = 'https://docs.google.com/spreadsheets/d/18mUM3qWFxS3Lkwmh-iHUghJokMSitG73PmkerO3OGOg/gviz/tq?tqx=out:csv&sheet=2026';
 const DATA_CACHE_TTL_MS = Number(process.env.DATA_CACHE_TTL_MS || 5 * 60 * 1000);
 const FALLBACK_LOCK_PATH = `${JSON_DATA_PATH}.lock`;
 const configuredFallbackLockTimeout = Number(process.env.FALLBACK_LOCK_TIMEOUT_MS);
@@ -26,7 +27,61 @@ let externalDataRequestSequence = 0;
 let fallbackWriteSequence = 0;
 const memoryPushSubscriptions = new Map();
 let memoryDataState = null;
+let competitorSalesCache = { data: null, fetchedAt: 0 };
 
+function parseCsvRow(line) {
+  const fields = [];
+  let value = '';
+  let quoted = false;
+  for (let index = 0; index < line.length; index += 1) {
+    const char = line[index];
+    if (char === '"') {
+      if (quoted && line[index + 1] === '"') {
+        value += '"';
+        index += 1;
+      } else {
+        quoted = !quoted;
+      }
+    } else if (char === ',' && !quoted) {
+      fields.push(value);
+      value = '';
+    } else {
+      value += char;
+    }
+  }
+  fields.push(value);
+  return fields;
+}
+
+function parseCompetitorSalesCsv(csv) {
+  const rows = csv.replace(/^\uFEFF/, '').split(/\r?\n/).filter(line => line.trim()).map(parseCsvRow);
+  if (rows.length < 2 || !rows[0].some(cell => cell.toLowerCase().includes('январь'))) {
+    throw new Error('В таблице не найдены помесячные продажи за 2026 год');
+  }
+  const header = rows[0].map(cell => cell.trim());
+  const groupIndex = 0;
+  const monthColumns = header
+    .map((label, index) => ({ label, index }))
+    .filter(({ label }) => /^(январь|февраль|март|апрель|май|июнь|июль|август|сентябрь|октябрь|ноябрь|декабрь)\s+2026$/i.test(label));
+  if (!monthColumns.length) throw new Error('В таблице не найдены месяцы 2026 года');
+  const groups = rows.slice(1).map(row => ({
+    name: (row[groupIndex] ?? '').trim(),
+    values: monthColumns.map(({ index }) => {
+      const raw = String(row[index] ?? '').trim().replace(/\s/g, '').replace(',', '.');
+      if (!raw) return null;
+      const value = Number(raw);
+      return Number.isFinite(value) ? value : null;
+    }),
+    total: (() => {
+      const totalIndex = header.findIndex(label => /^ВСЕГО\s+2026$/i.test(label));
+      const raw = totalIndex >= 0 ? String(row[totalIndex] ?? '').trim().replace(/\s/g, '').replace(',', '.') : '';
+      const value = raw ? Number(raw) : NaN;
+      return Number.isFinite(value) ? value : null;
+    })(),
+  })).filter(group => group.name);
+  if (!groups.length) throw new Error('В таблице нет строк с дилерскими группами');
+  return { months: monthColumns.map(({ label }) => label.replace(/\s+2026$/i, '')), groups };
+}
 function configureWebPush() {
   const publicKey = process.env.VAPID_PUBLIC_KEY;
   const privateKey = process.env.VAPID_PRIVATE_KEY;
@@ -405,6 +460,23 @@ app.get('/api/data', (req, res) => {
 app.get('/api/daily-facts', (req, res) => {
   console.log('📥 GET /api/daily-facts');
   return handleDashboardDataRequest(req, res);
+});
+
+app.get('/api/competitor-sales', async (req, res) => {
+  const now = Date.now();
+  if (competitorSalesCache.data && now - competitorSalesCache.fetchedAt < DATA_CACHE_TTL_MS) {
+    return res.json({ ...competitorSalesCache.data, fetchedAt: new Date(competitorSalesCache.fetchedAt).toISOString() });
+  }
+  try {
+    const response = await fetch(COMPETITOR_SALES_CSV_URL, { signal: AbortSignal.timeout(12000) });
+    if (!response.ok) throw new Error(`Таблица ответила кодом ${response.status}`);
+    const data = parseCompetitorSalesCsv(await response.text());
+    competitorSalesCache = { data, fetchedAt: Date.now() };
+    return res.json({ ...data, fetchedAt: new Date(competitorSalesCache.fetchedAt).toISOString() });
+  } catch (error) {
+    console.error('❌ Не удалось загрузить сравнение продаж групп:', error.message);
+    return res.status(502).json({ error: 'Не удалось загрузить данные продаж групп' });
+  }
 });
 
 // Авторизация с автоматическим пробуждением

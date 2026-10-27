@@ -43,6 +43,94 @@ const allVehiclesActual = (data: LiveSeries, metric: Metric) => brands.reduce((s
 const allVehiclesPlan = (data: LiveSeries, metric: Metric) => brands.reduce((sum, brand) => sum + planForBrand(data, brand.id, metric), 0);
 const monthActual = (data: LiveSeries, id: string, month: number, metric: Metric) => month <= data.latestMonth ? data.monthly[id][month][metric] : null;
 
+type CompetitorSales = {
+  months: string[];
+  groups: { name: string; values: (number | null)[]; total: number | null }[];
+  fetchedAt: string;
+};
+
+async function fetchCompetitorSales(): Promise<CompetitorSales> {
+  const response = await fetch("/api/competitor-sales");
+  if (!response.ok) throw new Error(`Не удалось загрузить сравнение: ${response.status}`);
+  return response.json() as Promise<CompetitorSales>;
+}
+
+function CompetitorSalesPanel() {
+  const query = useQuery({ queryKey: ["competitor-sales-2026"], queryFn: fetchCompetitorSales, staleTime: 5 * 60 * 1000 });
+  const [visibleGroups, setVisibleGroups] = useState<string[]>([]);
+  const [activePoint, setActivePoint] = useState<{ group: string; month: number } | null>(null);
+
+  if (query.isLoading) return <section className="aba-panel aba-competitor-sales"><p>Загружаем сравнение продаж из вкладки «2026»…</p></section>;
+  if (query.isError || !query.data) return <section className="aba-panel aba-competitor-sales">
+    <div className="aba-section-heading"><div><h2>Продажи по дилерским группам</h2><p>Помесячные данные из вкладки «2026»</p></div></div>
+    <p className="aba-data-error">Не удалось получить данные из таблицы. <button type="button" onClick={() => query.refetch()}>Повторить</button></p>
+  </section>;
+
+  const { months: monthLabels, groups } = query.data;
+  const activeIds = visibleGroups.length ? visibleGroups : groups.map(group => group.name);
+  const activeGroups = groups.filter(group => activeIds.includes(group.name));
+  const chartMax = Math.max(...activeGroups.flatMap(group => group.values.filter((value): value is number => value !== null)), 1);
+  const x = (index: number) => 70 + index * (700 / Math.max(monthLabels.length - 1, 1));
+  const y = (value: number) => 254 - value / chartMax * 202;
+  const total = (group: CompetitorSales["groups"][number]) => group.total ?? group.values.reduce<number>((sum, value) => sum + (value ?? 0), 0);
+  const active = activePoint ? groups.find(group => group.name === activePoint.group) : null;
+
+  return <section className="aba-panel aba-competitor-sales" aria-labelledby="competitor-sales-title">
+    <div className="aba-section-heading">
+      <div><h2 id="competitor-sales-title">Продажи по дилерским группам</h2><p>Сравнение по месяцам · данные вкладки «2026»</p></div>
+      <span className="aba-demo-pill"><i />ТАБЛИЦА · 2026</span>
+    </div>
+    <div className="aba-competitor-sales-meta"><Info size={13} /><span>Продажи новых автомобилей по группам. Суммы в таблице — за месяцы, доступные в источнике.</span></div>
+    <div className="aba-sales-legend" role="group" aria-label="Показать дилерские группы">
+      {groups.map((group, index) => {
+        const selected = activeIds.includes(group.name);
+        return <button type="button" key={group.name} className={selected ? "is-active" : "is-muted"} aria-pressed={selected} onClick={() => {
+          setVisibleGroups(current => {
+            const base = current.length ? current : groups.map(item => item.name);
+            if (base.length === 1 && base[0] === group.name) return current;
+            const next = base.includes(group.name) ? base.filter(name => name !== group.name) : [...base, group.name];
+            return next.length === groups.length ? [] : next;
+          });
+          setActivePoint(null);
+        }}><i style={{ background: ["#173f3a", "#9a7860", "#64859a", "#957d9d"][index % 4] }} />{group.name}</button>;
+      })}
+    </div>
+    <div className="aba-sales-chart-scroll">
+      <svg className="aba-sales-chart" viewBox="0 0 800 300" role="img" aria-label="Динамика ежемесячных продаж по дилерским группам">
+        {[0, .5, 1].map((ratio, index) => {
+          const value = Math.round(chartMax * ratio);
+          const yy = 254 - ratio * 202;
+          return <g key={index}><line x1="60" x2="780" y1={yy} y2={yy} className="aba-grid-line" /><text x="0" y={yy + 4} className="aba-axis-label">{number(value)}</text></g>;
+        })}
+        {monthLabels.map((label, month) => <text key={label} x={x(month)} y="284" textAnchor="middle" className="aba-axis-label">{label.slice(0, 3)}</text>)}
+        {activeGroups.map((group, index) => {
+          const color = ["#173f3a", "#9a7860", "#64859a", "#957d9d"][groups.indexOf(group) % 4];
+          const points = group.values.map((value, month) => value === null ? null : `${month ? "L" : "M"} ${x(month)} ${y(value)}`).filter(Boolean).join(" ");
+          return <g key={group.name}>
+            <path d={points} className="aba-sales-line" stroke={color} />
+            {group.values.map((value, month) => value === null ? null : <g key={month}>
+              <circle cx={x(month)} cy={y(value)} r="4" fill={color} className="aba-sales-point" />
+              <circle cx={x(month)} cy={y(value)} r="10" className="aba-sales-hit" role="button" tabIndex={0} aria-label={`${group.name}, ${monthLabels[month]}: ${number(value)} автомобилей`} onClick={() => setActivePoint({ group: group.name, month })} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") setActivePoint({ group: group.name, month }); }} />
+            </g>)}
+          </g>;
+        })}
+      </svg>
+    </div>
+    {active && activePoint && <div className="aba-sales-tooltip"><strong>{active.name}</strong><span>{monthLabels[activePoint.month]} 2026</span><b>{number(active.values[activePoint.month] ?? 0)} авто</b><button type="button" onClick={() => setActivePoint(null)} aria-label="Закрыть подсказку">×</button></div>}
+    <div className="aba-sales-table-wrap">
+      <table className="aba-sales-table">
+        <thead><tr><th scope="col">ГРУППА</th>{monthLabels.map(month => <th key={month} scope="col">{month.slice(0, 3).toUpperCase()}</th>)}<th scope="col">ИТОГО</th></tr></thead>
+        <tbody>{groups.map(group => <tr key={group.name} className={activeIds.includes(group.name) ? "" : "is-muted"}>
+          <th scope="row"><span><i style={{ background: ["#173f3a", "#9a7860", "#64859a", "#957d9d"][groups.indexOf(group) % 4] }} />{group.name}</span></th>
+          {group.values.map((value, month) => <td key={month}>{value === null ? "—" : number(value)}</td>)}
+          <td className="aba-sales-total">{number(total(group))}</td>
+        </tr>)}</tbody>
+      </table>
+    </div>
+    <p className="aba-sales-source">Источник: Google Sheets, вкладка «2026». Период охватывает месяцы, заполненные в таблице.</p>
+  </section>;
+}
+
 function ShareChangeLegend() {
   return <div className="aba-share-heatmap-legend" aria-label="Обозначения изменения доли">
     <span><ArrowUpRight aria-hidden="true" /> Самый сильный рост к прошлому месяцу</span>
@@ -704,6 +792,7 @@ export function AnnualBrandDashboard() {
        <div className="aba-footnote"><Info size={14} /><span>Факты и планы из JSON по {formatDate(data.latestDate)}. АСП не входит в строку «Новые авто» и долю рынка. Будущих фактических данных нет.</span><span className="aba-footnote-right">{heatMode === "plan" ? "% выполнения" : metricInfo[metric].unit}</span></div>
     </section>
     <MarketPanel />
+     <CompetitorSalesPanel />
     <footer className="aba-footer"><span>Внутренний отчёт · Авто Прайм</span><span>Бренды: JSON · до {formatDate(data.latestDate)} · рынок: Excel · январь—сентябрь 2026</span></footer>
   </main>;
 }
